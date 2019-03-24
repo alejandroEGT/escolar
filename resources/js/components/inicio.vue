@@ -5,10 +5,10 @@
         <div class="banner_inner">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-7">
+                    <div class="col-lg-7 col-sm-4 col-md-4 col-sx-4">
                         <div class="banner_content">
                             <h3 class="text-uppercase">Hola!!</h3>
-                            <h1 class="text-uppercase">ESTAMOS TRABAJANDO</h1>
+                            <h1 class="text-uppercase">ESTAMOS en desarrollo</h1>
                             <h5 class="text-uppercase">YA VOLVEMOS</h5>
                             <div class="d-flex align-items-center">
                                 <a class="primary_btn" @click="url_login"><span style="color:black">Log in</span></a>

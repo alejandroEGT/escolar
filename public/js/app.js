@@ -41898,12 +41898,12 @@ var render = function() {
       _c("div", { staticClass: "banner_inner" }, [
         _c("div", { staticClass: "container" }, [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-7" }, [
+            _c("div", { staticClass: "col-lg-7 col-sm-4 col-md-4 col-sx-4" }, [
               _c("div", { staticClass: "banner_content" }, [
                 _c("h3", { staticClass: "text-uppercase" }, [_vm._v("Hola!!")]),
                 _vm._v(" "),
                 _c("h1", { staticClass: "text-uppercase" }, [
-                  _vm._v("ESTAMOS TRABAJANDO")
+                  _vm._v("ESTAMOS en desarrollo")
                 ]),
                 _vm._v(" "),
                 _c("h5", { staticClass: "text-uppercase" }, [
