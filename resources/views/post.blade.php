@@ -5,15 +5,15 @@
      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="img/favicon.png" type="image/png">
         <title>Laravel</title>
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+       <!--  <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
         <link rel="stylesheet" href="https://unpkg.com/vue-material@beta/dist/theme/default.css">
         <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> -->
 
         <!-- imports new -->
         <!-- Bootstrap CSS -->
-        <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
+        <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="vendors/linericon/style.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
@@ -27,7 +27,7 @@
         <meta name="csrf-token" value="{{ csrf_token() }}" />
     </head>
     <body>
-  
+   
 
         <div id="app">
         
@@ -64,8 +64,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos
         </div>
     </footer>
     <!--================End Footer Area =================-->
-    
-       <!--  <script src="js/jquery-3.2.1.min.js"></script> -->
+
+        <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
+
+
+        <!-- <script src="js/jquery-3.2.1.min.js"></script> -->
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/stellar.js"></script>
@@ -80,8 +83,5 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
     <script src="js/gmaps.min.js"></script>
     <script src="js/theme.js"></script>
-        <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
-
-
     </body>
 </html>
