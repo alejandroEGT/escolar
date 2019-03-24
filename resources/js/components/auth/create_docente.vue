@@ -6,61 +6,70 @@
 
       <md-card class="">
         <md-card-header>
-          <div class="md-title">Users</div>
+          <div class="md-title"><i class="fas fa-chalkboard-teacher"></i> Crear Docente</div>
         </md-card-header>
 
        
 
          <md-card-content>
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field >
-                <label for="first-name">First Name</label>
-                <md-input name="first-name" id="first-name" autocomplete="given-name" v-model="form.firstName" />
-                <span class="md-error" >The first name is required</span>
-                <span class="md-error" >Invalid first name</span>
-              </md-field>
-            </div>
+          <div>
+          	<div class="container">
+				  <div class="row">
+				    <div class="col-sm-2">
+				      <md-field>
+					      <label>Run</label>
+					      <md-input v-model="form.run"></md-input>
+					    </md-field>
+				    </div>
+				    <div class="col-sm-1">
+				      <md-field>
+					      <label>Dv</label>
+					      <md-input v-model="form.dv"></md-input>
+					    </md-field>
+				    </div>
+				    <div class="col-sm-3">
+				     	<md-field>
+					      <label>Nombre</label>
+					      <md-input v-model="form.nombre"></md-input>
+					    </md-field>
+				    </div>
+				    <div class="col-sm-3">
+				     	<md-field>
+					      <label>Apellido 1</label>
+					      <md-input v-model="form.apellido_p"></md-input>
+					    </md-field>
+				    </div>
+				    <div class="col-sm-3">
+				     	<md-field>
+					      <label>Apellido 2</label>
+					      <md-input v-model="form.apellido_m"></md-input>
+					    </md-field>
+				    </div>
+				  </div>
 
-            <div class="md-layout-item md-small-size-100">
-              <md-field >
-                <label for="last-name">Last Name</label>
-                <md-input name="last-name" id="last-name" autocomplete="family-name" v-model="form.lastName"  />
-                <span class="md-error" >The last name is required</span>
-                <span class="md-error" >Invalid last name</span>
-              </md-field>
-            </div>
+				  <div class="row">
+				  	<div class="col-md-3">
+				  		 <div>
+						    <md-datepicker v-model="selectedDate" />
+						    <md-field>
+						      <label for="movie">First day of a week</label>
+						      <md-select v-model="firstDayOfAWeek">
+						        <md-option value="0">Sunday</md-option>
+						        <md-option value="1">Monday</md-option>
+						      </md-select>
+						      <span class="md-helper-text">This config is global.</span>
+						    </md-field>
+						  </div>
+				  	</div>
+				  </div>
+			</div>
+          <!-- 	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
+          	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
+          	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
+          	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm"> -->
           </div>
 
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field >
-                <label for="gender">Gender</label>
-                <md-select name="gender" id="gender" v-model="form.gender" md-dense >
-                  <md-option></md-option>
-                  <md-option value="M">M</md-option>
-                  <md-option value="F">F</md-option>
-                </md-select>
-                <span class="md-error">The gender is required</span>
-              </md-field>
-            </div>
-
-            <div class="md-layout-item md-small-size-100">
-              <md-field >
-                <label for="age">Age</label>
-                <md-input type="number" id="age" name="age" autocomplete="age" v-model="form.age"  />
-                <span class="md-error" >The age is required</span>
-                <span class="md-error" >Invalid age</span>
-              </md-field>
-            </div>
-          </div>
-
-          <md-field >
-            <label for="email">Email</label>
-            <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email" />
-            <span class="md-error" >The email is required</span>
-            <span class="md-error" >Invalid email</span>
-          </md-field>
+          
         </md-card-content>
       </md-card>
     </form>
@@ -73,13 +82,24 @@
   export default {
 	  	data(){
 	  		return{
-	  			form:{}
+	  			form:{},
+	  			selectedDate: null
 	  		}
 	  	},
 	  	methods:{
 	  		userSaved(){
 
 	  		}
+	  	},
+	  	computed:{
+	  		firstDayOfAWeek: {
+        get () {
+          return this.$material.locale.firstDayOfAWeek
+        },
+        set (val) {
+          this.$material.locale.firstDayOfAWeek = val
+        }
+      }
 	  	}
     }
 </script>

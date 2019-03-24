@@ -1,15 +1,15 @@
 <template>
   <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-8" style="margin-top: 110px">
           <div class="card card-default">
               <div class="card-header">Crear usuario</div>
 
-              <div class="card-body">
+              <div class="card-body home_banner_area">
                   <div class="row justify-content-md-center">
                         <div class="col col-lg-5">
                              <div class="">
                                  <div class="card-body">
-                                    <h5 class="card-title">Log in</h5>
+                                   <!--  <h5 class="card-title">Log in</h5> -->
                                     <md-field>
                                           <label>Nombres</label>
                                           <md-input v-model="nombre"></md-input>
@@ -24,7 +24,7 @@
                                      </md-field>
                                      <md-field>
                                           <label for="movie">Sexo</label>
-                                          <md-select v-model="sexo" name="sexo" id="sexo">
+                                          <md-select v-model="sexo" name="sexo" >
                                             <md-option value="F">Femenino</md-option>
                                             <md-option value="M">Masculino</md-option>
                                           </md-select>

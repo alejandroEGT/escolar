@@ -8,6 +8,14 @@ import IndexComponent from './components/inicio.vue';
  import Auth from "./components/auth/auth.vue";
  import Index from './components/auth/index.vue';
  import CreateDocente from "./components/auth/create_docente.vue"
+ import CreateCuenta from "./components/auth/create_cuentas.vue"
+
+
+
+
+
+ import AuthAdmin from "./components/authAdmin/authadmin.vue"
+ import IndexAdmin from "./components/authAdmin/indexAdmin.vue"
 
 const routes = [
   {
@@ -45,12 +53,26 @@ const routes = [
     name: 'Administration',
     redirect:'index',
     iconCls: 'el-icon-message',
-    meta: {auth: true},
+    meta: {auth: 1},
     children: [
       {path: '/index',name: 'index',component: Index},
       {path: '/creardocente',name: 'creardocente',component: CreateDocente},
+      {path: '/crearcuenta',name: 'crearcuenta',component: CreateCuenta},
     ]
-},
+ },
+ {
+    path: '/admin',
+    component: AuthAdmin,
+    name: 'Administration',
+    redirect:'admin',
+    iconCls: 'el-icon-message',
+    meta: {auth: 2},
+    children: [
+      {path: '/admin',name: 'admin',component: IndexAdmin},
+      {path: '/admincreardocente',name: 'admincreardocente',component: CreateDocente},
+      // {path: '/crearcuenta',name: 'crearcuenta',component: CreateCuenta},
+    ]
+ },
   // {
   //     name: 'posts',
   //     path: '/posts',

@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="container">
-    <md-card :style="img_section_styles">
+    <md-card :style="img_section_style">
       <md-card-header>
         <md-card-header-text>
           <div  class="md-title">Calendario</div>
@@ -18,7 +18,7 @@
         
       </md-card-actions>
     </md-card>
-    <md-card :style="img_section_styles">
+    <md-card :style="img_section_style">
       <md-card-header>
         <md-card-header-text>
           <div class="md-title">Docentes</div>
@@ -36,7 +36,7 @@
       </md-card-actions>
     </md-card>
     
-    <md-card :style="img_section_styles">
+    <md-card :style="img_section_style">
       <md-card-header>
         <md-card-header-text>
           <div class="md-title">Alumnos</div>
@@ -54,7 +54,7 @@
       </md-card-actions>
     </md-card>
 
-    <md-card :style="img_section_styles">
+    <md-card :style="img_section_style">
       <md-card-header>
         <md-card-header-text>
           <div class="md-title">Cursos/Grados</div>
@@ -72,27 +72,25 @@
       </md-card-actions>
     </md-card>
 
-    <md-card>
-      <md-card-media-actions>
+    <md-card :style="img_section_style">
+      <md-card-header>
+        <md-card-header-text>
+          <div class="md-title">Cuentas</div>
+          <div class="md-subhead">23 cursos</div>
+        </md-card-header-text>
+
         <md-card-media>
-          <img src="/assets/examples/villains.png" alt="Cover">
+          <img src="https://hyipsoftware.com/wp-content/uploads/2016/02/admin.png" alt="People">
         </md-card-media>
+      </md-card-header>
 
-        <md-card-actions>
-          <md-button class="md-icon-button">
-            <md-icon>favorite</md-icon>
-          </md-button>
-
-          <md-button class="md-icon-button">
-            <md-icon>bookmark</md-icon>
-          </md-button>
-
-          <md-button class="md-icon-button">
-            <md-icon>share</md-icon>
-          </md-button>
-        </md-card-actions>
-      </md-card-media-actions>
+      <md-card-actions>
+        <md-button @click="url_crearcuenta" class="md-raised md-primary">Ver</md-button>
+        
+      </md-card-actions>
     </md-card>
+
+    
   </div>
 </div>
 </template>	
@@ -110,7 +108,10 @@
 
      methods:{
        url_creardocente(){
-         this.$router.push('creardocente') 
+         this.$router.push('creardocente'); 
+       },
+       url_crearcuenta(){
+        this.$router.push('crearcuenta');
        }
      } 
      ,

@@ -21,10 +21,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::post('auth/register', 'AuthController@register');
 
 Route::post('auth/login', 'AuthController@login');
+Route::get('auth/valida_rol/{correo}','AuthController@valida_rol');
+
 Route::group(['middleware' => 'jwt.auth'], function(){
+
   Route::get('auth/user', 'AuthController@user');
   Route::post('auth/logout', 'AuthController@logout');
+
+
+  Route::post('auth/sa/crearcuenta','CuentaController@crearCuenta');
+
+
+
+//ADMIN DEL COLEGIO///////////////////////////
+  Route::get('auth/sa/logo','CuentaController@logo');
+
 });
+
 Route::group(['middleware' => 'jwt.refresh'], function(){
   Route::get('auth/refresh', 'AuthController@refresh');
 });

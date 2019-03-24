@@ -1,43 +1,56 @@
 <template>
-  <div class="row justify-content-center">
-      <div class="col-md-8">
-          <div class="card card-default">
-              <div class="card-header">Crear usuario</div>
+  <div class="banner_content">
+        <div class="row justify-content-center">
+          
+            <div class="col-md-8" style="margin-top: 110px">
+                <div class="card card-default">
+                    <div class="card-header">Log in</div>
 
-              <div class="card-body">
-                  <div class="row justify-content-md-center">
-                        <div class="col col-lg-5">
-                             <div class="">
-                                 <div class="card-body">
-                                    <h5 class="card-title">Log in</h5>
-                                    <md-field>
-                                          <label>Email</label>
-                                          <md-input v-model="email"></md-input>
-                                     </md-field>
+                    <div class="card-body home_banner_area">
+                        <div class="row justify-content-md-center">
+                              <div class="col col-lg-5">
+                                   <div class="">
+                                       <div class="card-body">
+                                          <!-- <h5 class="card-title">Log in</h5> -->
+                                          <md-field>
+                                                <label>Email</label>
+                                                <md-input v-model="email"></md-input>
+                                           </md-field>
 
-                                      <md-field>
-                                        <label>Password</label>
-                                        <md-input v-model="password" type="password"></md-input>
-                                      </md-field>
+                                            <md-field>
+                                              <label>Password</label>
+                                              <md-input v-model="password" type="password"></md-input>
+                                            </md-field>
 
-                                      <md-button class="md-raised md-primary" @click="login">Ingresar</md-button>
+                                            <!-- <md-field>
+                                              <label for="movie">Tipo de usuario</label>
+                                              <md-select v-model="rol" >
+                                                <md-option value="1">Super Administrador</md-option>
+                                                <md-option value="2">Administrador</md-option>
+                                                <md-option value="3">Docente</md-option>
+                                                
+                                              </md-select>
+                                            </md-field> -->
 
-                                      <md-button type="submit" class="md-primary" @click="redirect_create_user">Create user</md-button>
-                      
-                                      <!-- <a href="">Crear una cuenta</a> -->
+                                            <md-button class="md-raised md-primary" @click="login">Ingresar</md-button>
+
+                                            <md-button type="submit" class="md-primary" @click="redirect_create_user">Create user</md-button>
+                            
+                                            <!-- <a href="">Crear una cuenta</a> -->
+                                        </div>
+
+
                                   </div>
-
-
-                            </div>
-                        </div>
-                   <!--  <div class="col-md-auto">
-                      Variable width content
-                    </div> -->
-                    
+                              </div>
+                         <!--  <div class="col-md-auto">
+                            Variable width content
+                          </div> -->
+                          
+                      </div>
+                    </div>
                 </div>
-              </div>
-          </div>
-      </div>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -57,7 +70,8 @@ export default {
     return{
       email:'',
       password:'',
-      error:false
+      error:false,
+      rol:'',
     }
   },
 
@@ -66,18 +80,37 @@ export default {
       this.$router.push('create') 
     },
     login(){
-        var app = this
-        this.$auth.login({
-            params: {
-              email: app.email,
-              password: app.password
-            }, 
-            success: function () {},
-            error: function () {},
-            rememberMe: true,
-            redirect: '/index',
-            fetchUser: true,
-        });       
+
+      axios.get('api/auth/valida_rol/'+this.email).then((res)=>{
+              
+           var app = this
+           if (1 == res.data) {
+               this.$auth.login({
+                params: {
+                  email: app.email,
+                  password: app.password
+                }, 
+                success: function () {},
+                error: function () {},
+                rememberMe: true,
+                redirect: '/index',
+                fetchUser: true,
+            });
+           }
+           if (2 == res.data) {
+             this.$auth.login({
+                params: {
+                  email: app.email,
+                  password: app.password
+                }, 
+                success: function () {},
+                error: function () {},
+                rememberMe: true,
+                redirect: '/admin',
+                fetchUser: true,
+            });
+           } 
+       })      
     },
   }
 }

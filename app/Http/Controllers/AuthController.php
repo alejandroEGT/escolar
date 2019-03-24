@@ -66,4 +66,9 @@ class AuthController extends Controller
 	            'msg' => 'Logged out Successfully.'
 	        ], 200);
 	}
+	public function valida_rol($correo)
+	{
+		$user = User::where('email', $correo)->first();
+		return $user->rol_id;
+	}
 }

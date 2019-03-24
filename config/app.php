@@ -177,6 +177,9 @@ return [
 
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
+        Laravolt\Avatar\ServiceProvider::class,
+
+
     ],
 
     /*
@@ -227,6 +230,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+
+        'Avatar'    => Laravolt\Avatar\Facade::class,
 
     ],
 

@@ -36,7 +36,7 @@
       </md-app-drawer>
 
       <md-app-content>
-        <div  >
+        <div >
                  <router-view :key="$route.path"></router-view>  
               </div>
       </md-app-content>
