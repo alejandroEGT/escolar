@@ -61743,7 +61743,10 @@ var staticRenderFns = [
             _c("div", { staticClass: "col-md-2" }, [
               _c("input", {
                 staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Run (Sin puntos ni gion)" }
+                attrs: {
+                  type: "text",
+                  placeholder: "Run (Sin puntos ni guion)"
+                }
               }),
               _vm._v(" "),
               _c("br")

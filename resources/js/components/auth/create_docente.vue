@@ -8,7 +8,7 @@
 		    <div class="row">
 		   		<div class="col-md-2">
 		   			
-		   			<input class="form-control form-control-sm"  type="text" placeholder="Run (Sin puntos ni gion)">
+		   			<input class="form-control form-control-sm"  type="text" placeholder="Run (Sin puntos ni guion)">
 		   			<br>
 		   		</div>
 		   		<div class="col-md-2">
