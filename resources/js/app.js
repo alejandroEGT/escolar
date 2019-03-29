@@ -18,6 +18,8 @@ const app = new Vue(Vue.util.extend({ router })).$mount('#app');*/
 
 // app.js
 
+
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -38,6 +40,12 @@ import 'vue-material/dist/vue-material.min.css'
 import VueAuth from '@websanova/vue-auth'
 
 Vue.use(VueMaterial)
+
+
+ import datePicker from 'vue-bootstrap-datetimepicker';
+  import 'bootstrap/dist/css/bootstrap.css';
+  import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+  Vue.use(datePicker);
 
 
 

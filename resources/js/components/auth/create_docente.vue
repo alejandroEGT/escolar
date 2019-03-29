@@ -1,90 +1,68 @@
 
 <template>
   <div class="">
-    <form novalidate class="md-layout" >
-      
-
-      <md-card class="">
-        <md-card-header>
-          <div class="md-title"><i class="fas fa-chalkboard-teacher"></i> Crear Docente</div>
-        </md-card-header>
-
-       
-
-         <md-card-content>
-          <div>
-          	<div class="container">
-				  <div class="row">
-				    <div class="col-sm-2">
-				      <md-field>
-					      <label>Run</label>
-					      <md-input v-model="form.run"></md-input>
-					    </md-field>
-				    </div>
-				    <div class="col-sm-1">
-				      <md-field>
-					      <label>Dv</label>
-					      <md-input v-model="form.dv"></md-input>
-					    </md-field>
-				    </div>
-				    <div class="col-sm-3">
-				     	<md-field>
-					      <label>Nombre</label>
-					      <md-input v-model="form.nombre"></md-input>
-					    </md-field>
-				    </div>
-				    <div class="col-sm-3">
-				     	<md-field>
-					      <label>Apellido 1</label>
-					      <md-input v-model="form.apellido_p"></md-input>
-					    </md-field>
-				    </div>
-				    <div class="col-sm-3">
-				     	<md-field>
-					      <label>Apellido 2</label>
-					      <md-input v-model="form.apellido_m"></md-input>
-					    </md-field>
-				    </div>
-				  </div>
-
-				  <div class="row">
-				  	<div class="col-md-3">
-				  		 <div>
-						    <md-datepicker v-model="selectedDate" />
-						    <md-field>
-						      <label for="movie">First day of a week</label>
-						      <md-select v-model="firstDayOfAWeek">
-						        <md-option value="0">Sunday</md-option>
-						        <md-option value="1">Monday</md-option>
-						      </md-select>
-						      <span class="md-helper-text">This config is global.</span>
-						    </md-field>
-						  </div>
-				  	</div>
-				  </div>
-			</div>
-          <!-- 	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
-          	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
-          	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
-          	<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm"> -->
-          </div>
-
-          
-        </md-card-content>
-      </md-card>
-    </form>
+  	<div class="card" style="width: 100%;">
+		  <div class="card-body">
+		    <h5 class="card-title">Crear Docente</h5>
+		    <h6 class="card-subtitle mb-2 text-muted"><br></h6>
+		    <div class="row">
+		   		<div class="col-md-2">
+		   			
+		   			<input class="form-control form-control-sm"  type="text" placeholder="Run (Sin puntos ni gion)">
+		   			<br>
+		   		</div>
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="date" placeholder="fecha">
+		   		</div>
+		   		
+		   </div>
+		   <div class="row">
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="text" placeholder="Nombres"><br>
+		   		</div>
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="text" placeholder="Apellidos paterno">
+		   		</div>
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="text" placeholder="Apellido materno">
+		   		</div>
+		   </div>
+		    <div class="row">
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="text" placeholder="Contacto">
+		   		</div>
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="text" placeholder="Email">
+		   		</div>
+		   		<div class="col-md-2">
+		   			<input class="form-control form-control-sm" type="text" placeholder="Password">
+		   		</div>
+		   </div>
+			<br>
+		    <button class="btn btn-primary btn-block">Guardar</button>
+		    <!-- <a href="#" class="btn btn-primary">Another link</a> -->
+		  </div>
+	</div>
+   
   </div>
 </template>
 
 <script>
-  
-
+  	
   export default {
+  		components: {
+        	
+    	},
 	  	data(){
 	  		return{
 	  			form:{},
-	  			selectedDate: null
+	  			selectedDate: null,
+	  			date:'',
+
 	  		}
+	  	},
+	  	created(){
+	  		 
 	  	},
 	  	methods:{
 	  		userSaved(){
