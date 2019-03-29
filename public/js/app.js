@@ -3514,6 +3514,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -40983,7 +40990,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", {}, [
     _c(
       "form",
       { staticClass: "md-layout", attrs: { novalidate: "" } },
@@ -41130,7 +41137,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-2" }, [
+                    _c("div", { staticClass: "col-md-3" }, [
                       _c(
                         "div",
                         [
@@ -41142,7 +41149,44 @@ var render = function() {
                               },
                               expression: "selectedDate"
                             }
-                          })
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "md-field",
+                            [
+                              _c("label", { attrs: { for: "movie" } }, [
+                                _vm._v("First day of a week")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "md-select",
+                                {
+                                  model: {
+                                    value: _vm.firstDayOfAWeek,
+                                    callback: function($$v) {
+                                      _vm.firstDayOfAWeek = $$v
+                                    },
+                                    expression: "firstDayOfAWeek"
+                                  }
+                                },
+                                [
+                                  _c("md-option", { attrs: { value: "0" } }, [
+                                    _vm._v("Sunday")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("md-option", { attrs: { value: "1" } }, [
+                                    _vm._v("Monday")
+                                  ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "md-helper-text" }, [
+                                _vm._v("This config is global.")
+                              ])
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
