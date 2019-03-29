@@ -29,13 +29,13 @@
 		   </div>
 		    <div class="row">
 		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="text" placeholder="Contacto">
+		   			<input class="form-control form-control-sm" type="numeric" placeholder="Contacto">
 		   		</div>
 		   		<div class="col-md-2">
 		   			<input class="form-control form-control-sm" type="text" placeholder="Email">
 		   		</div>
 		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="text" placeholder="Password">
+		   			<input class="form-control form-control-sm" type="password" placeholder="Password">
 		   		</div>
 		   </div>
 			<br>

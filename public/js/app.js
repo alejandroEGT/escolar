@@ -61788,7 +61788,7 @@ var staticRenderFns = [
             _c("div", { staticClass: "col-md-2" }, [
               _c("input", {
                 staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Contacto" }
+                attrs: { type: "numeric", placeholder: "Contacto" }
               })
             ]),
             _vm._v(" "),
@@ -61802,7 +61802,7 @@ var staticRenderFns = [
             _c("div", { staticClass: "col-md-2" }, [
               _c("input", {
                 staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Password" }
+                attrs: { type: "password", placeholder: "Password" }
               })
             ])
           ]),
