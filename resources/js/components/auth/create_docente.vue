@@ -1,83 +1,138 @@
 
 <template>
   <div class="">
-  	<div class="card" style="width: 100%;">
-		  <div class="card-body">
-		    <h5 class="card-title">Crear Docente</h5>
-		    <h6 class="card-subtitle mb-2 text-muted"><br></h6>
-		    <div class="row">
-		   		<div class="col-md-2">
-		   			
-		   			<input class="form-control form-control-sm"  type="text" placeholder="Run (Sin puntos ni guion)">
-		   			<br>
-		   		</div>
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="date" placeholder="fecha">
-		   		</div>
-		   		
-		   </div>
-		   <div class="row">
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="text" placeholder="Nombres"><br>
-		   		</div>
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="text" placeholder="Apellidos paterno">
-		   		</div>
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="text" placeholder="Apellido materno">
-		   		</div>
-		   </div>
-		    <div class="row">
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="numeric" placeholder="Contacto">
-		   		</div>
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="text" placeholder="Email">
-		   		</div>
-		   		<div class="col-md-2">
-		   			<input class="form-control form-control-sm" type="password" placeholder="Password">
-		   		</div>
-		   </div>
-			<br>
-		    <button class="btn btn-primary btn-block">Guardar</button>
-		    <!-- <a href="#" class="btn btn-primary">Another link</a> -->
-		  </div>
+
+    <div class="row justify-content-md-center">
+		    <form novalidate class="md-layout" >
+		      
+
+		      <md-card class="">
+		        <md-card-header>
+		          <div class="md-title"><!-- Formulario --></div>
+		        </md-card-header>
+				
+
+		       
+
+		         <md-card-content>
+		         
+		            <h5 class="card-title"><i class="fas fa-chalkboard-teacher fa-2x"></i>
+		                 Docente</h5>
+
+					<div class="md-layout md-gutter md-alignment-center">
+					    <div class="md-layout-item md-size-25 md-medium-size-30 md-small-size-50 md-xsmall-size-80">
+					    	<md-field>
+		                 <label>Run</label>
+		                 <md-input v-model="form.nombre"></md-input>
+		             </md-field>
+					    </div>
+					    <div class="md-layout-item md-size-10 md-medium-size-10 md-small-size-10 md-xsmall-size-20">
+					    	<md-field>
+		                 <label>Dv</label>
+		                 <md-input v-model="form.nombre"></md-input>
+		             </md-field>
+					    </div>
+					    <div class="md-layout-item">
+					    	
+		                 <md-datepicker v-model="selectedDate">
+					      <label>Fecha de nacimiento</label>
+					    </md-datepicker>
+		            
+					    </div>
+
+					    <div class="md-layout-item">
+					    	<md-field>
+				                 <label for="movie">Sexo</label>
+				                 <md-select v-model="form.sexo" name="sexo" >
+				                        <md-option value="F">Femenino</md-option>
+				                        <md-option value="M">Masculino</md-option>
+				                 </md-select>
+				             </md-field>
+					    </div>
+					</div>
+
+					<div class="md-layout md-gutter">
+					    <div class="md-layout-item">
+					    	 <md-field>
+				                 <label>Nombres</label>
+				                 <md-input v-model="form.nombre"></md-input>
+				             </md-field>
+					    </div>
+					    <div class="md-layout-item">
+					    	<md-field>
+				                 <label>Apellido Paterno</label>
+				                    <md-input v-model="form.apellido_p" ></md-input>
+				             </md-field>
+					    </div>
+					    <div class="md-layout-item">
+					    	 <md-field>
+		                 <label>Apellido Materno</label>
+			                 <md-input v-model="form.apellido_m"></md-input>
+			             </md-field>
+					    </div>
+					 </div>
+
+					 <div class="md-layout md-gutter">
+					 	 <div class="md-layout-item">
+					    	 <md-field>
+				                 <label>Contacto</label>
+				                 <md-input v-model="form.contacto" type="text"></md-input>
+				             </md-field>
+					    </div>
+					    <div class="md-layout-item">
+					    	<md-field>
+				                   <label>Email</label>
+				                   <md-input v-model="form.email"></md-input>
+				             </md-field>
+					    </div>
+					    <div class="md-layout-item">
+					    	 <md-field>
+				                 <label>Password</label>
+				                 <md-input v-model="form.password" type="password"></md-input>
+				             </md-field>
+					    </div>
+					   
+					  </div>
+
+
+		           <md-button class="md-raised md-primary" @click="register">Crear Establecimiento</md-button>
+		             
+
+		             
+		                                    
+
+
+		            
+
+		             
+
+		             
+
+		                                     
+		                      
+		                               
+		        </md-card-content>
+		      </md-card>
+		    </form>
 	</div>
-   
   </div>
 </template>
 
 <script>
-  	
+  
+
   export default {
-  		components: {
-        	
-    	},
 	  	data(){
 	  		return{
-	  			form:{},
-	  			selectedDate: null,
-	  			date:'',
-
+	  			form:{}
 	  		}
-	  	},
-	  	created(){
-	  		 
 	  	},
 	  	methods:{
-	  		userSaved(){
-
+	  		register(){
+	  			axios.post('api/auth/sa/crearcuenta', this.form).then((res)=>{
+		            
+		        })
 	  		}
-	  	},
-	  	computed:{
-	  		firstDayOfAWeek: {
-        get () {
-          return this.$material.locale.firstDayOfAWeek
-        },
-        set (val) {
-          this.$material.locale.firstDayOfAWeek = val
-        }
-      }
 	  	}
     }
 </script>

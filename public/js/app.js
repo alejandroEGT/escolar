@@ -3419,6 +3419,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3492,27 +3498,86 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {},
   data: function data() {
     return {
-      form: {},
-      selectedDate: null,
-      date: ''
+      form: {}
     };
   },
-  created: function created() {},
   methods: {
-    userSaved: function userSaved() {}
-  },
-  computed: {
-    firstDayOfAWeek: {
-      get: function get() {
-        return this.$material.locale.firstDayOfAWeek;
-      },
-      set: function set(val) {
-        this.$material.locale.firstDayOfAWeek = val;
-      }
+    register: function register() {
+      axios.post('api/auth/sa/crearcuenta', this.form).then(function (res) {});
     }
   }
 });
@@ -61682,6 +61747,24 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
+                    "md-field",
+                    [
+                      _c("label", [_vm._v("Fecha nacimiento")]),
+                      _vm._v(" "),
+                      _c("md-datepicker", {
+                        model: {
+                          value: _vm.selectedDate,
+                          callback: function($$v) {
+                            _vm.selectedDate = $$v
+                          },
+                          expression: "selectedDate"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
                     "md-button",
                     {
                       staticClass: "md-raised md-primary",
@@ -61723,100 +61806,327 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", {}, [
-      _c("div", { staticClass: "card", staticStyle: { width: "100%" } }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("h5", { staticClass: "card-title" }, [_vm._v("Crear Docente")]),
-          _vm._v(" "),
-          _c("h6", { staticClass: "card-subtitle mb-2 text-muted" }, [
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: {
-                  type: "text",
-                  placeholder: "Run (Sin puntos ni guion)"
-                }
-              }),
+  return _c("div", {}, [
+    _c("div", { staticClass: "row justify-content-md-center" }, [
+      _c(
+        "form",
+        { staticClass: "md-layout", attrs: { novalidate: "" } },
+        [
+          _c(
+            "md-card",
+            {},
+            [
+              _c("md-card-header", [_c("div", { staticClass: "md-title" })]),
               _vm._v(" "),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "date", placeholder: "fecha" }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Nombres" }
-              }),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Apellidos paterno" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Apellido materno" }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "numeric", placeholder: "Contacto" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "text", placeholder: "Email" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                staticClass: "form-control form-control-sm",
-                attrs: { type: "password", placeholder: "Password" }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("button", { staticClass: "btn btn-primary btn-block" }, [
-            _vm._v("Guardar")
-          ])
-        ])
-      ])
+              _c(
+                "md-card-content",
+                [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _c("i", { staticClass: "fas fa-chalkboard-teacher fa-2x" }),
+                    _vm._v("\n\t\t                 Docente")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "md-layout md-gutter md-alignment-center" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "md-layout-item md-size-25 md-medium-size-30 md-small-size-50 md-xsmall-size-80"
+                        },
+                        [
+                          _c(
+                            "md-field",
+                            [
+                              _c("label", [_vm._v("Run")]),
+                              _vm._v(" "),
+                              _c("md-input", {
+                                model: {
+                                  value: _vm.form.nombre,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "nombre", $$v)
+                                  },
+                                  expression: "form.nombre"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "md-layout-item md-size-10 md-medium-size-10 md-small-size-10 md-xsmall-size-20"
+                        },
+                        [
+                          _c(
+                            "md-field",
+                            [
+                              _c("label", [_vm._v("Dv")]),
+                              _vm._v(" "),
+                              _c("md-input", {
+                                model: {
+                                  value: _vm.form.nombre,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "nombre", $$v)
+                                  },
+                                  expression: "form.nombre"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "md-layout-item" },
+                        [
+                          _c(
+                            "md-datepicker",
+                            {
+                              model: {
+                                value: _vm.selectedDate,
+                                callback: function($$v) {
+                                  _vm.selectedDate = $$v
+                                },
+                                expression: "selectedDate"
+                              }
+                            },
+                            [_c("label", [_vm._v("Fecha de nacimiento")])]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "md-layout-item" },
+                        [
+                          _c(
+                            "md-field",
+                            [
+                              _c("label", { attrs: { for: "movie" } }, [
+                                _vm._v("Sexo")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "md-select",
+                                {
+                                  attrs: { name: "sexo" },
+                                  model: {
+                                    value: _vm.form.sexo,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.form, "sexo", $$v)
+                                    },
+                                    expression: "form.sexo"
+                                  }
+                                },
+                                [
+                                  _c("md-option", { attrs: { value: "F" } }, [
+                                    _vm._v("Femenino")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("md-option", { attrs: { value: "M" } }, [
+                                    _vm._v("Masculino")
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "md-layout md-gutter" }, [
+                    _c(
+                      "div",
+                      { staticClass: "md-layout-item" },
+                      [
+                        _c(
+                          "md-field",
+                          [
+                            _c("label", [_vm._v("Nombres")]),
+                            _vm._v(" "),
+                            _c("md-input", {
+                              model: {
+                                value: _vm.form.nombre,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "nombre", $$v)
+                                },
+                                expression: "form.nombre"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "md-layout-item" },
+                      [
+                        _c(
+                          "md-field",
+                          [
+                            _c("label", [_vm._v("Apellido Paterno")]),
+                            _vm._v(" "),
+                            _c("md-input", {
+                              model: {
+                                value: _vm.form.apellido_p,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "apellido_p", $$v)
+                                },
+                                expression: "form.apellido_p"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "md-layout-item" },
+                      [
+                        _c(
+                          "md-field",
+                          [
+                            _c("label", [_vm._v("Apellido Materno")]),
+                            _vm._v(" "),
+                            _c("md-input", {
+                              model: {
+                                value: _vm.form.apellido_m,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "apellido_m", $$v)
+                                },
+                                expression: "form.apellido_m"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "md-layout md-gutter" }, [
+                    _c(
+                      "div",
+                      { staticClass: "md-layout-item" },
+                      [
+                        _c(
+                          "md-field",
+                          [
+                            _c("label", [_vm._v("Contacto")]),
+                            _vm._v(" "),
+                            _c("md-input", {
+                              attrs: { type: "text" },
+                              model: {
+                                value: _vm.form.contacto,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "contacto", $$v)
+                                },
+                                expression: "form.contacto"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "md-layout-item" },
+                      [
+                        _c(
+                          "md-field",
+                          [
+                            _c("label", [_vm._v("Email")]),
+                            _vm._v(" "),
+                            _c("md-input", {
+                              model: {
+                                value: _vm.form.email,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "email", $$v)
+                                },
+                                expression: "form.email"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "md-layout-item" },
+                      [
+                        _c(
+                          "md-field",
+                          [
+                            _c("label", [_vm._v("Password")]),
+                            _vm._v(" "),
+                            _c("md-input", {
+                              attrs: { type: "password" },
+                              model: {
+                                value: _vm.form.password,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "password", $$v)
+                                },
+                                expression: "form.password"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "md-button",
+                    {
+                      staticClass: "md-raised md-primary",
+                      on: { click: _vm.register }
+                    },
+                    [_vm._v("Crear Establecimiento")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
