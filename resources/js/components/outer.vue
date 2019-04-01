@@ -4,7 +4,7 @@
          <!--================ Start Header Area =================-->
     <header class="header_area">
         <div class="main_menu">
-            <nav class="navbar navbar-expand-lg navbar-light">
+            <nav class="navbar navbar-expand-lg navbar-light" >
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <a class="navbar-brand logo_h" href="index.html"><img src="img/bogi.png" width="95" height="100" alt=""></a>

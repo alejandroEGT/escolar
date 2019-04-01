@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Docente;
 use App\User;
 use App\cuentas;
 use Illuminate\Http\Request;
@@ -58,6 +59,32 @@ class CuentaController extends Controller
     	}
     }
 
+    public function crearDocente(Request $r)
+    {
+
+    	$user = new User;
+    	$user->nombres = $r->nombre;
+    	$user->apellido_paterno = $r->apellido_p;
+    	$user->apellido_materno = $r->apellido_m;
+    	$user->email = $r->email;
+    	$user->rol_id = '3';
+    	$user->sexo = $r->sexo;
+    	$user->password = bcrypt($r->password);
+
+    	if ($user->save()) {
+    		$docente = new Docente;
+    		$docente->user_id = $user->id;
+    		$docente->run = $r->run;
+    		$docente->dv = $r->dv;
+    		$docente->fecha_nacimiento = date("Y-m-d",strtotime($r->nacimiento));
+    		$docente->contacto = $r->contacto;
+    		$docente->activo = 'S';
+    		if ($docente->save()) {
+    			return "success";
+    		}
+    	}
+    }
+
     public function logo()
     {
     	$logo = DB::table('cuentas')->select(['logo','establecimiento'])
@@ -67,6 +94,11 @@ class CuentaController extends Controller
     		'logo' => $logo->logo,
     		'establecimiento' => $logo->establecimiento
     	];
+    }
+    public function obtener_docentes()
+    {
+    	return User::join('docente as d','d.user_id','users.id')->get();
+    	      
     }
 }
 

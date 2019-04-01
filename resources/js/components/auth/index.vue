@@ -34,7 +34,8 @@
             </md-card-header>
 
             <md-card-actions>
-              <md-button @click="url_creardocente" class="md-raised md-primary">Ver</md-button>
+              <md-button @click="url_listardocente" class="md-raised md-primary">Ver</md-button>
+              <md-button @click="url_creardocente" class="md-raised md-primary">Crear</md-button>
               
             </md-card-actions>
           </md-card>
@@ -115,6 +116,9 @@
        },
        url_crearcuenta(){
         this.$router.push('crearcuenta');
+       },
+       url_listardocente(){
+         this.$router.push('listardocente'); 
        }
      } 
      ,

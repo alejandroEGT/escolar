@@ -20,8 +20,7 @@
 		              <md-field >
 		                <label for="first-name">Establecimiento</label>
 		                <md-input name="first-name" id="first-name"  v-model="form.establecimiento" />
-		                <!-- <span class="md-error" >The first name is required</span> -->
-		                <!-- <span class="md-error" >Invalid first name</span> -->
+		                
 		              </md-field>
 		            </div>
 
@@ -29,16 +28,14 @@
 		              <md-field >
 		                <label for="last-name">Dirección</label>
 		                <md-input name="last-name" id="last-name"  v-model="form.direccion"  />
-		               <!--  <span class="md-error" >The last name is required</span>
-		                <span class="md-error" >Invalid last name</span> -->
+		               
 		              </md-field>
 		            </div>
 		             <div class="md-layout-item md-small-size-100">
 		              <md-field >
 		                <label for="last-name">Contacto</label>
 		                <md-input name="last-name" id="last-name"  v-model="form.contacto"  />
-		               <!--  <span class="md-error" >The last name is required</span>
-		                <span class="md-error" >Invalid last name</span> -->
+		               
 		              </md-field>
 		            </div>
 		          </div>

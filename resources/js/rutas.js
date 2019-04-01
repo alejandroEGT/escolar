@@ -9,6 +9,7 @@ import IndexComponent from './components/inicio.vue';
  import Index from './components/auth/index.vue';
  import CreateDocente from "./components/auth/create_docente.vue"
  import CreateCuenta from "./components/auth/create_cuentas.vue"
+ import ListarDocente from "./components/auth/listar_docente.vue"
 
 
 
@@ -47,7 +48,7 @@ const routes = [
       ] 
   },
  
- {
+ {//CUENTA DE SUPER ADMIN
     path: '/home',
     component: Auth,
     name: 'Administration',
@@ -57,6 +58,7 @@ const routes = [
     children: [
       {path: '/index',name: 'index',component: Index},
       {path: '/creardocente',name: 'creardocente',component: CreateDocente},
+       {path: '/listardocente',name: 'listardocente',component: ListarDocente},
       {path: '/crearcuenta',name: 'crearcuenta',component: CreateCuenta},
     ]
  },

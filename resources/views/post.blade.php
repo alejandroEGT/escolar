@@ -27,7 +27,14 @@
         <meta name="csrf-token" value="{{ csrf_token() }}" />
     </head>
     <body>
-   
+   <style type="text/css">
+       input.sinbordefondo {
+            border: 0;
+        }
+        input.sinbordefondo::placeholder{
+            font-size: 17px;
+        }
+   </style>
 
         <div id="app">
         
