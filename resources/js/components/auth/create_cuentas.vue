@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container">
+  <div class="">
 
     <div class="row justify-content-md-center">
 		    <form novalidate class="md-layout" >
