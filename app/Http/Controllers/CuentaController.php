@@ -100,5 +100,11 @@ class CuentaController extends Controller
     	return User::join('docente as d','d.user_id','users.id')->get();
     	      
     }
+    public function obtener_cuentas()
+    {
+    	return DB::table('cuentas as c')
+    	          ->join('cuentas_users as cu', 'c.id','cu.cuenta_id')
+    	          ->join('users as u', 'u.id','cu.user_id')->get();
+    }
 }
 

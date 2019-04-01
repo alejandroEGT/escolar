@@ -33,6 +33,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::post('auth/sa/crearcuenta','CuentaController@crearCuenta');
   Route::post('auth/sa/creardocente','CuentaController@crearDocente');
   Route::get('auth/sa/obtener_docentes','CuentaController@obtener_docentes');
+  Route::get('auth/sa/obtener_cuentas','CuentaController@obtener_cuentas');
 
 
 

@@ -3420,8 +3420,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3715,6 +3713,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     url_creardocente: function url_creardocente() {
@@ -3725,6 +3724,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     url_listardocente: function url_listardocente() {
       this.$router.push('listardocente');
+    },
+    url_listarcuenta: function url_listarcuenta() {
+      this.$router.push('listarcuenta');
     }
   },
   computed: {
@@ -3737,6 +3739,80 @@ __webpack_require__.r(__webpack_exports__);
         // "border" : "5px solid ",
         "background": 'url(' + bgImg + ')'
       };
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/listar_cuentas.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      listar_cuentas: []
+    };
+  },
+  created: function created() {
+    this.listar();
+  },
+  methods: {
+    listar: function listar() {
+      var _this = this;
+
+      axios.get('api/auth/sa/obtener_cuentas').then(function (res) {
+        _this.listar_cuentas = res.data;
+      });
+    },
+    url_crearcuenta: function url_crearcuenta() {
+      this.$router.push('crearcuenta');
     }
   }
 });
@@ -8811,6 +8887,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, ".md-progress-bar[data-v-086c17ca] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n}\ninput[type=date][data-v-086c17ca]:before {\n  content: attr(placeholder) !important;\n  color: rgba(0, 0, 0, 0.4);\n  margin-right: 0.5em;\n  display: block;\n}\n\n/* Your cool style */\nbody[data-v-086c17ca] {\n  background-color: rgba(0, 0, 0, 0.1);\n}\ninput[type=date][data-v-086c17ca] {\n  padding: 10px 5px 10px 5px;\n  border: 0px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  margin: auto;\n  display: block;\n  background-color: transparent;\n  outline: 0;\n}\n.sinbordefondo[data-v-086c17ca] {\n  background-color: #eee;\n  border: 0;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".md-progress-bar[data-v-7b6c7a87] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n}\ninput[type=date][data-v-7b6c7a87]:before {\n  content: attr(placeholder) !important;\n  color: rgba(0, 0, 0, 0.4);\n  margin-right: 0.5em;\n  display: block;\n}\n\n/* Your cool style */\nbody[data-v-7b6c7a87] {\n  background-color: rgba(0, 0, 0, 0.1);\n}\ninput[type=date][data-v-7b6c7a87] {\n  padding: 10px 5px 10px 5px;\n  border: 0px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  margin: auto;\n  display: block;\n  background-color: transparent;\n  outline: 0;\n}\n.sinbordefondo[data-v-7b6c7a87] {\n  background-color: #eee;\n  border: 0;\n}", ""]);
 
 // exports
 
@@ -59957,6 +60052,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_docente.vue?vue&type=style&index=0&id=69667bee&lang=scss&scoped=true&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/listar_docente.vue?vue&type=style&index=0&id=69667bee&lang=scss&scoped=true& ***!
@@ -61883,24 +62008,6 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "md-field",
-                    [
-                      _c("label", [_vm._v("Fecha nacimiento")]),
-                      _vm._v(" "),
-                      _c("md-datepicker", {
-                        model: {
-                          value: _vm.selectedDate,
-                          callback: function($$v) {
-                            _vm.selectedDate = $$v
-                          },
-                          expression: "selectedDate"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
                     "md-button",
                     {
                       staticClass: "md-raised md-primary",
@@ -62562,9 +62669,18 @@ var render = function() {
                     "md-button",
                     {
                       staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_crearcuenta }
+                      on: { click: _vm.url_listarcuenta }
                     },
                     [_vm._v("Ver")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "md-button",
+                    {
+                      staticClass: "md-raised md-primary",
+                      on: { click: _vm.url_crearcuenta }
+                    },
+                    [_vm._v("Crear")]
                   )
                 ],
                 1
@@ -62581,6 +62697,118 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row justify-content-md-center" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "table-responsive" },
+            [
+              _c(
+                "md-button",
+                {
+                  staticClass: "md-raised md-primary",
+                  on: { click: _vm.url_crearcuenta }
+                },
+                [_vm._v("Crear Cuenta")]
+              ),
+              _vm._v(" "),
+              _c("table", { staticClass: "table" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.listar_cuentas, function(listado) {
+                    return _c("tr", [
+                      _c("td", [_vm._v(_vm._s(listado.establecimiento))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(listado.direccion))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          _vm._s(
+                            listado.nombres +
+                              " " +
+                              listado.apellido_paterno +
+                              " " +
+                              listado.apellido_materno
+                          )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(listado.email))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(listado.contacto))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(listado.activo))])
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ],
+            1
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h5", { staticClass: "card-title" }, [
+      _c("i", { staticClass: "fas fa-school fa-2x" }),
+      _vm._v("\n\t\t\t\t                 Cuentas (Establecimientos)")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticStyle: { background: "#3F8DF7", color: "white" } }, [
+        _c("td", [_vm._v("Establecimiento")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Dirección")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Contacto")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Activo")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -108738,6 +108966,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/auth/listar_cuentas.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/auth/listar_cuentas.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _listar_cuentas_vue_vue_type_template_id_7b6c7a87_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true& */ "./resources/js/components/auth/listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true&");
+/* harmony import */ var _listar_cuentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listar_cuentas.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/listar_cuentas.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true& */ "./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _listar_cuentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _listar_cuentas_vue_vue_type_template_id_7b6c7a87_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _listar_cuentas_vue_vue_type_template_id_7b6c7a87_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "7b6c7a87",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/auth/listar_cuentas.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/listar_cuentas.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/auth/listar_cuentas.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./listar_cuentas.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true& ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=style&index=0&id=7b6c7a87&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_style_index_0_id_7b6c7a87_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/auth/listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_template_id_7b6c7a87_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/listar_cuentas.vue?vue&type=template&id=7b6c7a87&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_template_id_7b6c7a87_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_listar_cuentas_vue_vue_type_template_id_7b6c7a87_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/auth/listar_docente.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/auth/listar_docente.vue ***!
@@ -109173,12 +109488,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_auth_create_docente_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/auth/create_docente.vue */ "./resources/js/components/auth/create_docente.vue");
 /* harmony import */ var _components_auth_create_cuentas_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/auth/create_cuentas.vue */ "./resources/js/components/auth/create_cuentas.vue");
 /* harmony import */ var _components_auth_listar_docente_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/auth/listar_docente.vue */ "./resources/js/components/auth/listar_docente.vue");
-/* harmony import */ var _components_authAdmin_authadmin_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/authAdmin/authadmin.vue */ "./resources/js/components/authAdmin/authadmin.vue");
-/* harmony import */ var _components_authAdmin_indexAdmin_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/authAdmin/indexAdmin.vue */ "./resources/js/components/authAdmin/indexAdmin.vue");
+/* harmony import */ var _components_auth_listar_cuentas_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/auth/listar_cuentas.vue */ "./resources/js/components/auth/listar_cuentas.vue");
+/* harmony import */ var _components_authAdmin_authadmin_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/authAdmin/authadmin.vue */ "./resources/js/components/authAdmin/authadmin.vue");
+/* harmony import */ var _components_authAdmin_indexAdmin_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/authAdmin/indexAdmin.vue */ "./resources/js/components/authAdmin/indexAdmin.vue");
 
 
 
  // import EditComponent from './components/EditComponent.vue';
+
 
 
 
@@ -109235,10 +109552,14 @@ var routes = [{
     path: '/crearcuenta',
     name: 'crearcuenta',
     component: _components_auth_create_cuentas_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }, {
+    path: '/listarcuenta',
+    name: 'listarcuenta',
+    component: _components_auth_listar_cuentas_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   }]
 }, {
   path: '/admin',
-  component: _components_authAdmin_authadmin_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+  component: _components_authAdmin_authadmin_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
   name: 'Administration',
   redirect: 'admin',
   iconCls: 'el-icon-message',
@@ -109248,7 +109569,7 @@ var routes = [{
   children: [{
     path: '/admin',
     name: 'admin',
-    component: _components_authAdmin_indexAdmin_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+    component: _components_authAdmin_indexAdmin_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
   }, {
     path: '/admincreardocente',
     name: 'admincreardocente',

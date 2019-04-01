@@ -12,8 +12,6 @@
 		        </md-card-header>
 				
 
-		       
-
 		         <md-card-content>
 		          <div class="md-layout md-gutter">
 		            <div class="md-layout-item md-small-size-100">
@@ -74,10 +72,10 @@
 		                                        <md-input v-model="form.password" type="password"></md-input>
 		                                      </md-field>
 
-		                                      <md-field>
+		                                      <!-- <md-field>
 		                                        <label>Fecha nacimiento</label>
 		                                        <md-datepicker v-model="selectedDate" />
-		                                      </md-field>
+		                                      </md-field> -->
 
 		                                      <md-button class="md-raised md-primary" @click="register">Crear Establecimiento</md-button>
 

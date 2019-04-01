@@ -10,6 +10,7 @@ import IndexComponent from './components/inicio.vue';
  import CreateDocente from "./components/auth/create_docente.vue"
  import CreateCuenta from "./components/auth/create_cuentas.vue"
  import ListarDocente from "./components/auth/listar_docente.vue"
+ import ListarCuenta from "./components/auth/listar_cuentas.vue"
 
 
 
@@ -58,8 +59,9 @@ const routes = [
     children: [
       {path: '/index',name: 'index',component: Index},
       {path: '/creardocente',name: 'creardocente',component: CreateDocente},
-       {path: '/listardocente',name: 'listardocente',component: ListarDocente},
+      {path: '/listardocente',name: 'listardocente',component: ListarDocente},
       {path: '/crearcuenta',name: 'crearcuenta',component: CreateCuenta},
+      {path: '/listarcuenta',name: 'listarcuenta',component: ListarCuenta},
     ]
  },
  {
