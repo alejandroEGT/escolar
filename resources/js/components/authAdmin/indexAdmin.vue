@@ -2,6 +2,23 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-5">
+      	<md-card :style="img_section_style">
+            <md-card-header>
+              <md-card-header-text>
+                <div class="md-title">Cursos</div>
+                <div class="md-subhead">23 cursos</div>
+              </md-card-header-text>
+
+              <md-card-media>
+                <img src="/img/5c9fa6a68a4fd97597dbd45301ae7ae2.jpg" alt="People">
+              </md-card-media>
+            </md-card-header>
+
+            <md-card-actions>
+              <md-button @click="url_crearcurso" class="md-raised md-primary">Crear</md-button>
+              
+            </md-card-actions>
+          </md-card>
         <!-- <md-card :style="img_section_style">
       <md-card-header>
         <md-card-header-text>
@@ -63,7 +80,7 @@
 
     <div class="row">
       <div class="col-md-4">
-         <md-card :style="img_section_style">
+         <!-- <md-card :style="img_section_style">
             <md-card-header>
               <md-card-header-text>
                 <div class="md-title">Cursos</div>
@@ -79,7 +96,7 @@
               <md-button @click="url_crearcurso" class="md-raised md-primary">Crear</md-button>
               
             </md-card-actions>
-          </md-card>
+          </md-card> -->
       </div>
       <div class="col-md-4">
           <!-- <md-card :style="img_section_style">
@@ -113,17 +130,20 @@
 
      methods:{
        url_creardocente(){
-         this.$router.push('creardocente'); 
+         this.$router.push('admincreardocente'); 
        },
        url_crearcurso(){
-        this.$router.push('crearcurso');
+        this.$router.push('admincrearcurso');
        },
        url_listardocente(){
          this.$router.push('listardocente'); 
        },
        url_listarcuenta(){
          this.$router.push('listarcuenta'); 
-       }
+       },
+       url_listardocente(){
+	         this.$router.push('adminlistardocente'); 
+	   }
      } 
      ,
      computed: {

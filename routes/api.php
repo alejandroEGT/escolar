@@ -41,6 +41,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/sa/logo','CuentaController@logo');
   Route::post('auth/admin/creacurso','AdminCuentaController@crear_curso');
   Route::get('auth/admin/listarcurso','AdminCuentaController@listar_curso');
+  Route::post('auth/admin/creardocente','AdminCuentaController@crearDocente');
+  Route::get('auth/admin/obtener_docentes','AdminCuentaController@obtener_docentes');
 
 });
 

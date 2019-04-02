@@ -41,7 +41,7 @@
 
 		 <div class="card">
 			<div class="card-header">
-  				<h5><i class="fas fa-graduation-cap"></i> Lista Curso / Grado</h5>
+  				<h5><i class="fas fa-clipboard-list"></i> Lista Curso / Grado</h5>
   			</div>
 		  <div class="card-body">
 

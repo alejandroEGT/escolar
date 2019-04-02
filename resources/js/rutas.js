@@ -19,6 +19,8 @@ import IndexComponent from './components/inicio.vue';
  import AuthAdmin from "./components/authAdmin/authadmin.vue"
  import IndexAdmin from "./components/authAdmin/indexAdmin.vue"
  import CreateCurso from "./components/authAdmin/modulo/create_cursos.vue"
+ import CrearDocente2 from "./components/authAdmin/modulo/create_docente.vue"
+ import ListarDocente2 from "./components/authAdmin/modulo/listar_docente.vue"
 
 const routes = [
   {
@@ -74,8 +76,9 @@ const routes = [
     meta: {auth: 2},
     children: [
       {path: '/admin',name: 'admin',component: IndexAdmin},
-      {path: '/admincreardocente',name: 'admincreardocente',component: CreateDocente},
-      {path: '/crearcurso',name: 'crearcurso',component: CreateCurso},
+      {path: '/admincreardocente',name: 'admincreardocente',component: CrearDocente2},
+      {path: '/admincrearcurso',name: 'crearcurso',component: CreateCurso},
+      {path: '/adminlistardocente',name: 'adminlistardocente',component: ListarDocente2},
     ]
  },
   // {
