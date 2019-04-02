@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-5">
-        <md-card :style="img_section_style">
+        <!-- <md-card :style="img_section_style">
       <md-card-header>
         <md-card-header-text>
           <div  class="md-title">Calendario</div>
@@ -18,7 +18,7 @@
         <md-button class="md-raised md-primary">Ver</md-button>
         
       </md-card-actions>
-    </md-card>
+    </md-card> -->
       </div>
       <div class="col-md-4">
           <md-card :style="img_section_style">
@@ -82,7 +82,7 @@
           </md-card>
       </div>
       <div class="col-md-4">
-          <md-card :style="img_section_style">
+          <!-- <md-card :style="img_section_style">
             <md-card-header>
               <md-card-header-text>
                 <div class="md-title">Cuentas</div>
@@ -99,7 +99,7 @@
               <md-button @click="url_crearcuenta" class="md-raised md-primary">Crear</md-button>
               
             </md-card-actions>
-          </md-card>
+          </md-card> -->
       </div>
       <div class="col-4">
         

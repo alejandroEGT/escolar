@@ -63323,55 +63323,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        { staticClass: "col-md-4 col-sm-5" },
-        [
-          _c(
-            "md-card",
-            { style: _vm.img_section_style },
-            [
-              _c(
-                "md-card-header",
-                [
-                  _c("md-card-header-text", [
-                    _c("div", { staticClass: "md-title" }, [
-                      _vm._v("Calendario")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("3 actividades")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-media", [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          "https://banner2.kisspng.com/20171207/18c/creative-calendar-5a28e1b3507c76.7509526315126286593297.jpg",
-                        alt: "People"
-                      }
-                    })
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "md-card-actions",
-                [
-                  _c("md-button", { staticClass: "md-raised md-primary" }, [
-                    _vm._v("Ver")
-                  ])
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
+      _c("div", { staticClass: "col-md-4 col-sm-5" }),
       _vm._v(" "),
       _c(
         "div",
@@ -63539,67 +63491,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-4" },
-        [
-          _c(
-            "md-card",
-            { style: _vm.img_section_style },
-            [
-              _c(
-                "md-card-header",
-                [
-                  _c("md-card-header-text", [
-                    _c("div", { staticClass: "md-title" }, [_vm._v("Cuentas")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("23 cursos")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-media", [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          "https://hyipsoftware.com/wp-content/uploads/2016/02/admin.png",
-                        alt: "People"
-                      }
-                    })
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "md-card-actions",
-                [
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_listarcuenta }
-                    },
-                    [_vm._v("Ver")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_crearcuenta }
-                    },
-                    [_vm._v("Crear")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
+      _c("div", { staticClass: "col-md-4" }),
       _vm._v(" "),
       _c("div", { staticClass: "col-4" })
     ])
@@ -63789,7 +63681,20 @@ var render = function() {
               "tbody",
               _vm._l(_vm.listar_cursos, function(listado) {
                 return _c("tr", [
-                  _c("td", [_vm._v(_vm._s(listado.descripcion))]),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "md-chip",
+                        {
+                          staticClass: "md-primary",
+                          attrs: { "md-clickable": "" }
+                        },
+                        [_vm._v(_vm._s(listado.descripcion))]
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(listado.promocion))]),
                   _vm._v(" "),
@@ -63816,7 +63721,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h4", [
+      _c("h5", [
         _c("i", { staticClass: "fas fa-graduation-cap" }),
         _vm._v(" Crear Curso / Grado")
       ])
@@ -63827,7 +63732,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h4", [
+      _c("h5", [
         _c("i", { staticClass: "fas fa-graduation-cap" }),
         _vm._v(" Lista Curso / Grado")
       ])

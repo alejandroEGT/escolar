@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="card">
 			<div class="card-header">
-  				<h4><i class="fas fa-graduation-cap"></i> Crear Curso / Grado</h4>
+  				<h5><i class="fas fa-graduation-cap"></i> Crear Curso / Grado</h5>
   			</div>
 		  <div class="card-body">
 				<div class="row">
@@ -41,7 +41,7 @@
 
 		 <div class="card">
 			<div class="card-header">
-  				<h4><i class="fas fa-graduation-cap"></i> Lista Curso / Grado</h4>
+  				<h5><i class="fas fa-graduation-cap"></i> Lista Curso / Grado</h5>
   			</div>
 		  <div class="card-body">
 
@@ -61,7 +61,7 @@
 					    </thead>
 					    <tbody>
 					    	<tr v-for="listado in listar_cursos">
-					    		<td>{{listado.descripcion}}</td>
+					    		<td><md-chip class="md-primary" md-clickable>{{listado.descripcion}}</md-chip></td>
 					    		<td>{{listado.promocion}}</td>
 					    		<td v-if="listado.formato_id  == 1">Semestral</td>
 					    		<td v-if="listado.formato_id  == 2">Trimestral</td>
