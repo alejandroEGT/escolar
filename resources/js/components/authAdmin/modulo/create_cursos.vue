@@ -1,15 +1,18 @@
 <template>
 	<div class="container">
 		<div class="card">
-  <div class="card-body">
-		<div class="row">
+			<div class="card-header">
+  				<h4><i class="fas fa-graduation-cap"></i> Crear Curso / Grado</h4>
+  			</div>
+		  <div class="card-body">
+				<div class="row">
 		            <div class="col-md-2">
 		              <input type="text" class="form-control form-control-md" v-model="form.descripcion" placeholder="Descripcion" name="">
 		            </div>
 
 		            <div class="col-md-2">
-		            	<select class="form-control form-control-md" id="inlineFormCustomSelect">
-					        <option selected>Año de promoción</option>
+		            	<select v-model="form.promocion" class="form-control form-control-md" id="inlineFormCustomSelect">
+					        
 					        <option value="2019">2019</option>
 					        <option value="2020">2020</option>
 					        <!-- <option value="3">Three</option> -->
@@ -17,21 +20,60 @@
 		            </div>
 		             <div class="col-md-3">
 		     		
-		            	<multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Asignar Docente (Opcional)" label="name" track-by="name"></multiselect>
+		            	<multiselect v-model="form.docente" :options="options" :custom-label="nameWithLang" placeholder="Asignar Docente (Opcional)" label="name" track-by="name"></multiselect>
 		            
 		            </div>
+		            <div class="col-md-3">
+		            	 <md-radio v-model="form.formato" :value="1"><small>Semestre</small></md-radio>
+    					 <md-radio v-model="form.formato" :value="2"><small>Trimestre</small></md-radio>
+		            </div>
 		            <div class="col-md-2">
-		            	<center><md-button class="md-raised md-primary" @click="register">Crear Curso/grado</md-button></center>
+		            	<md-button class="md-raised md-primary" @click="register">Crear</md-button>
 		            </div>
 
 		             
 		          </div>
 		                                    
-		                                   
-
-		        
+		                                  
 		     </div>
 		 </div>
+
+
+		 <div class="card">
+			<div class="card-header">
+  				<h4><i class="fas fa-graduation-cap"></i> Lista Curso / Grado</h4>
+  			</div>
+		  <div class="card-body">
+
+		  		<div class="table-responsive">
+
+				      	
+					  <table class="table">
+					    <thead>
+					    	<tr style="background:#3F8DF7; color:white">
+					    		<td>Descripción</td>
+					    		<td>Promoción</td>
+					    		<td>Formato</td>
+					    		<!-- <td>Email</td>
+					    		<td>Contacto</td>
+					    		<td>Activo</td> -->
+					    	</tr>
+					    </thead>
+					    <tbody>
+					    	<tr v-for="listado in listar_cursos">
+					    		<td>{{listado.descripcion}}</td>
+					    		<td>{{listado.promocion}}</td>
+					    		<td v-if="listado.formato_id  == 1">Semestral</td>
+					    		<td v-if="listado.formato_id  == 2">Trimestral</td>
+					    		<!-- <td>{{ listado.email }}</td>
+					    		<td>{{ listado.contacto }}</td>
+					    		<td>{{ listado.activo }}</td> -->
+					    	</tr>
+					    </tbody>
+					  </table>
+					</div>
+		  </div>
+		</div>
 	</div>
 </template>
 
@@ -43,7 +85,11 @@ import Multiselect from 'vue-multiselect'
 		},
 		data(){
 			return{
-				form:{},
+				form:{
+					promocion:'2019',
+					
+				},
+				radio: false,
 				value: null,
 				selectedCountry:null,
 				value: '',
@@ -53,12 +99,12 @@ import Multiselect from 'vue-multiselect'
 			        { name: 'Sinatra', language: 'Ruby' },
 			        { name: 'Laravel', language: 'PHP' },
 			        { name: 'Phoenix', language: 'Elixir' }
-			    ]
-				 
-			}
+			    ],
+			    listar_cursos:{}
+			    }
 		},
 		created(){
-
+			this.listar();
 		},
 		methods:{
 
@@ -67,7 +113,19 @@ import Multiselect from 'vue-multiselect'
 		    },
 			
 			register(){
+				axios.post('api/auth/admin/creacurso', this.form).then((res)=>{
+					if (res.data == 'success') {
+						this.form = {};
+						this.form.promocion = '2019';
 
+						this.listar();
+					}
+				});
+			},
+			listar(){
+				axios.get('api/auth/admin/listarcurso').then((res)=>{
+					this.listar_cursos = res.data;
+				});
 			}
 		}
 	}

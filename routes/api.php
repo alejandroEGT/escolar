@@ -39,6 +39,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
 
 //ADMIN DEL COLEGIO///////////////////////////
   Route::get('auth/sa/logo','CuentaController@logo');
+  Route::post('auth/admin/creacurso','AdminCuentaController@crear_curso');
+  Route::get('auth/admin/listarcurso','AdminCuentaController@listar_curso');
 
 });
 
