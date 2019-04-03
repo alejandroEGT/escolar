@@ -21,6 +21,10 @@
 
         <md-list>
           <md-list-item>
+            <md-icon><i class="fas fa-home"></i></md-icon>
+            <span class="md-list-item-text" @click="url_">Inicio</span>
+          </md-list-item>
+          <md-list-item>
             <md-icon>move_to_inbox</md-icon>
             <span class="md-list-item-text" @click="logout">Salir</span>
           </md-list-item>
@@ -98,7 +102,10 @@ export default {
                   this.img_logo = res.data.logo;
                   this.establecimiento = res.data.establecimiento;
           })
-      }
+      },
+      url_(){
+             this.$router.push({path:'/admin'}); 
+      },
   } ,
    computed: {
             img_section_style: function(){

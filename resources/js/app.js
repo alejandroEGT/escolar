@@ -35,11 +35,18 @@ import App from './App.vue';
 Vue.use(VueAxios, axios);
 
 import VueMaterial from 'vue-material'
+
 import 'vue-material/dist/vue-material.min.css'
 
 import VueAuth from '@websanova/vue-auth'
 
 Vue.use(VueMaterial)
+
+import Notifications from 'vue-notification'
+
+
+Vue.use(Notifications)
+
 
 
  import datePicker from 'vue-bootstrap-datetimepicker';

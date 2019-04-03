@@ -84,8 +84,8 @@ import Datepicker from 'vuejs-datepicker';
 		        })
 	  		},
 	  		url_listardocente(){
-	         this.$router.push('adminlistardocente'); 
-	       }
+	          this.$router.push('adminlistardocente'); 
+	        }
 	  	}
 	}
 </script>

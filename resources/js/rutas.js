@@ -21,6 +21,8 @@ import IndexComponent from './components/inicio.vue';
  import CreateCurso from "./components/authAdmin/modulo/create_cursos.vue"
  import CrearDocente2 from "./components/authAdmin/modulo/create_docente.vue"
  import ListarDocente2 from "./components/authAdmin/modulo/listar_docente.vue"
+ import CrearAlumno from "./components/authAdmin/modulo/create_alumno.vue"
+ import Listaralumno from "./components/authAdmin/modulo/listar_alumno.vue"
 
 const routes = [
   {
@@ -79,6 +81,8 @@ const routes = [
       {path: '/admincreardocente',name: 'admincreardocente',component: CrearDocente2},
       {path: '/admincrearcurso',name: 'crearcurso',component: CreateCurso},
       {path: '/adminlistardocente',name: 'adminlistardocente',component: ListarDocente2},
+      {path: '/admincrearalumno',name: 'admincrearalumno',component: CrearAlumno},
+      {path: '/adminlistaralumno',name: 'adminlistaralumno',component: Listaralumno},
     ]
  },
   // {

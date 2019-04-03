@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Alumno;
+use App\Alumno_curso;
 use App\Curso;
 use App\Docente;
 use App\User;
@@ -36,7 +38,10 @@ class AdminCuentaController extends Controller
     {
     	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)->get();
     }
-
+    public function obtener_cursos()
+    {
+    	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)->where('activo','S')->get();
+    }
     public function crearDocente(Request $r)
     {
 
@@ -74,5 +79,41 @@ class AdminCuentaController extends Controller
     	           ->join('docente-establecimiento as de','de.docente_id','d.id')
     	           ->where('de.cuenta_id', $this::_cuenta()->cuenta_id)->get();
     	      
+    }
+
+    public function crearAlumno(Request $r)
+    {
+    	
+    	$a = new Alumno;
+    	$a->run = $r->run;
+    	$a->nombre = $r->nombre;
+    	$a->apellido_paterno = $r->apellido_p;
+    	$a->apellido_materno = $r->apellido_m;
+    	$a->sexo = $r->sexo = $r->sexo;
+    	$a->direccion = $r->direccion;
+    	$a->nacimiento = date("Y-m-d",strtotime($r->nacimiento));
+    	$a->activo = "S";
+
+    	if ($a->save()) {
+    		if (!empty($r->curso)) {
+    			$ac = new Alumno_curso;
+    			$ac->alumno_id = $a->id;
+    			$ac->curso_id = $r->curso;
+    			$ac->activo = 'S';
+	    		$ac->anio_actual = 'S';
+	    		if ($ac->save()) {
+	    			return "success";
+	    		}
+	    		
+    		}
+
+    		return "success";
+    	}
+
+    	
+    }
+    public function obtener_alumnos()
+    {
+    	return Alumno_curso::admin_obtener_alumnos($this::_cuenta()->cuenta_id);
     }
 }

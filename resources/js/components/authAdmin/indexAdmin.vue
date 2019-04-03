@@ -71,7 +71,8 @@
           </md-card-header>
 
           <md-card-actions>
-            <md-button class="md-raised md-primary">Ver</md-button>
+          	<md-button class="md-raised md-primary" @click="url_listaralumno">Ver</md-button>
+            <md-button class="md-raised md-primary" @click="url_crearalumno">Crear</md-button>
             
           </md-card-actions>
         </md-card>
@@ -143,6 +144,12 @@
        },
        url_listardocente(){
 	         this.$router.push('adminlistardocente'); 
+	   },
+	   url_crearalumno(){
+	         this.$router.push('admincrearalumno'); 
+	   },
+	   url_listaralumno(){
+	         this.$router.push('adminlistaralumno'); 
 	   }
      } 
      ,
