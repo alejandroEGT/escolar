@@ -4217,13 +4217,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _methods),
   computed: {
     img_section_style: function img_section_style() {
-      var bgImg = "https://media.istockphoto.com/videos/soft-background-blue-loopable-video-id656234942?s=640x640";
-      /*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLScrhnHLqmeyJOawurq_DxtYyCOmJzsi3OPuwFBWSQnORPWuJA"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeVz1N3HAKFw2bJtxZSnGDHUZZ5M4CHGdJOFckagmT3m-TS_5S"/*"https://rlv.zcache.com/wavy_teal_aqua_blue_spripes_label-r68f3d96569964f51ac304e6859e334e5_v11mb_8byvr_307.jpg?rvtype=content"*/
+      var bgImg = "https://static.rfstat.com/renderforest/images/v2/logo-homepage/bg-bottom-right.svg"; // var bgImg= "https://media.istockphoto.com/videos/soft-background-blue-loopable-video-id656234942?s=640x640"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLScrhnHLqmeyJOawurq_DxtYyCOmJzsi3OPuwFBWSQnORPWuJA"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeVz1N3HAKFw2bJtxZSnGDHUZZ5M4CHGdJOFckagmT3m-TS_5S"/*"https://rlv.zcache.com/wavy_teal_aqua_blue_spripes_label-r68f3d96569964f51ac304e6859e334e5_v11mb_8byvr_307.jpg?rvtype=content"*/
 
       return {
         // "color": "red",
         // "border" : "5px solid ",
-        "background": 'url(' + bgImg + ')'
+        "background": 'url(' + bgImg + ')',
+        "background-size": "100%"
       };
     }
   }
@@ -4712,14 +4712,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      listar_docentes: []
+      listar_docentes: [],
+      cursos: '0',
+      list_cursos: {}
     };
   },
   created: function created() {
     this.listar();
+    this.listar_cursos();
   },
   methods: {
     listar: function listar() {
@@ -4731,6 +4755,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     url_crearalumno: function url_crearalumno() {
       this.$router.push('admincrearalumno');
+    },
+    listar_cursos: function listar_cursos() {
+      var _this2 = this;
+
+      axios.get('api/auth/admin/listarcurso').then(function (res) {
+        _this2.list_cursos = res.data;
+      });
+    },
+    filter_curso: function filter_curso() {
+      var _this3 = this;
+
+      if (this.cursos == '0') {
+        this.listar();
+      } else {
+        axios.get('api/auth/admin/listaralumno_filter/' + this.cursos).then(function (res) {
+          _this3.listar_docentes = res.data;
+        });
+      }
     }
   }
 });
@@ -63946,7 +63988,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", {}, [
     _c("div", { staticClass: "row" }, [
       _c(
         "div",
@@ -65094,20 +65136,67 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row justify-content-md-center" }, [
-          _c(
-            "div",
-            { staticClass: "table-responsive" },
-            [
+        _c(
+          "div",
+          { staticClass: "row justify-content-md-center" },
+          [
+            _c(
+              "md-button",
+              {
+                staticClass: "md-raised md-primary",
+                on: { click: _vm.url_crearalumno }
+              },
+              [_vm._v("Crear Alumno")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticStyle: { "margin-top": "4px" } }, [
               _c(
-                "md-button",
+                "select",
                 {
-                  staticClass: "md-raised md-primary",
-                  on: { click: _vm.url_crearalumno }
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.cursos,
+                      expression: "cursos"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.cursos = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      _vm.filter_curso
+                    ]
+                  }
                 },
-                [_vm._v("Crear Alumno")]
-              ),
-              _vm._v(" "),
+                [
+                  _c("option", { attrs: { value: "0" } }, [
+                    _vm._v("Filtrar Todos")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.list_cursos, function(listar) {
+                    return _c("option", { domProps: { value: listar.id } }, [
+                      _vm._v("\n\t\t\t\t\t    \t" + _vm._s(listar.descripcion))
+                    ])
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "table-responsive" }, [
               _c("table", { staticClass: "table" }, [
                 _vm._m(1),
                 _vm._v(" "),
@@ -65133,15 +65222,25 @@ var render = function() {
                         ],
                         1
                       ),
+                      _vm._v(" "),
                       _c("td", [
                         _vm._v(
-                          _vm._s(
-                            listado.nombre +
-                              " " +
-                              listado.apellido_paterno +
-                              " " +
-                              listado.apellido_materno
-                          )
+                          "\n\t\t\t\t\t\t\t\t\t" +
+                            _vm._s(listado.descripcion) +
+                            "\n\t\t\t\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n\t\t\t\t\t    \t\t" +
+                            _vm._s(
+                              listado.nombre +
+                                " " +
+                                listado.apellido_paterno +
+                                " " +
+                                listado.apellido_materno
+                            )
                         )
                       ]),
                       _vm._v(" "),
@@ -65175,10 +65274,10 @@ var render = function() {
                   0
                 )
               ])
-            ],
-            1
-          )
-        ])
+            ])
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -65202,6 +65301,8 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", { staticStyle: { background: "#3F8DF7", color: "white" } }, [
         _c("td"),
+        _vm._v(" "),
+        _c("td", [_vm._v("\n\t\t\t\t\t    \t\t\tGrado\n\t\t\t\t\t    \t\t")]),
         _vm._v(" "),
         _c("td", [_vm._v("Nombre")]),
         _vm._v(" "),

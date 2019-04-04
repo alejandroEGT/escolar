@@ -5,16 +5,29 @@
 		<div class="card-header">
   				<h5><i class="fas fa-chalkboard-teacher"></i> Lista Alumnos</h5>
   			</div>
+
   		<div class="card-body">
+			
 		    <div class="row justify-content-md-center">
-				 
+				 <md-button class="md-raised md-primary" @click="url_crearalumno">Crear Alumno</md-button>
+				      
+				      	
+				      	<div style="margin-top:4px;">
+				      	<select @change="filter_curso" class="form-control" v-model="cursos">
+					    	<option value="0">Filtrar Todos</option>
+					    	<option v-for="listar in list_cursos" :value="listar.id">
+					    	{{listar.descripcion}}</option>
+					    </select></div>
+				      	
 				      <div class="table-responsive">
 
-				      	<md-button class="md-raised md-primary" @click="url_crearalumno">Crear Alumno</md-button>
 					  <table class="table">
 					    <thead>
 					    	<tr style="background:#3F8DF7; color:white">
 					    		<td></td>
+					    		<td>
+					    			Grado
+					    		</td>
 					    		<td>Nombre</td>
 					    		<td>Run</td>
 					    		<td>Direccion</td>
@@ -23,10 +36,18 @@
 					    </thead>
 					    <tbody>
 					    	<tr v-for="listado in listar_docentes">
-					    		<td> <md-button class="md-icon-button md-raised md-primary">
+					    		<td> 
+					    			<md-button class="md-icon-button md-raised md-primary">
 								        <md-icon><i class="fas fa-eye"></i></md-icon>
 								      </md-button>
-					    		<td>{{ listado.nombre+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+								</td>
+								
+								<td>
+									{{ listado.descripcion }}
+								</td>
+
+					    		<td>
+					    		{{ listado.nombre+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
 					    		<td>
 					    			<label style="color:#99A3A4" v-if="!listado.run">No hay datos</label>
 					    			<label v-if="listado.run">{{ listado.run }}</label>
@@ -54,12 +75,15 @@
   		
 	  	data(){
 	  		return{
-	  			listar_docentes:[]
+	  			listar_docentes:[],
+	  			cursos:'0',
+	  			list_cursos:{}
 	  		}
 	  	},
 	  	
 	  	created(){
 	  		this.listar();
+	  		this.listar_cursos()
 	  	},
 	  	methods:{
 	  		listar(){
@@ -70,6 +94,22 @@
 	  		url_crearalumno(){
 	         this.$router.push('admincrearalumno'); 
 	   		},
+
+	   		listar_cursos(){
+	   			axios.get('api/auth/admin/listarcurso').then((res)=>{
+	   				this.list_cursos = res.data;
+	   			});
+	   		},
+	   		filter_curso(){
+
+	   			if (this.cursos == '0') {
+	   				this.listar()
+	   			}else{
+		   			axios.get('api/auth/admin/listaralumno_filter/'+this.cursos).then((res)=>{
+			            this.listar_docentes = res.data;
+			        })
+	   			}
+	   		}
 	  	}
     }
 </script>

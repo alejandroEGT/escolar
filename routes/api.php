@@ -46,6 +46,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/obtener_curso','AdminCuentaController@obtener_cursos');
   Route::post('auth/admin/crearalumno','AdminCuentaController@crearAlumno');
   Route::get('auth/admin/listaralumno','AdminCuentaController@obtener_alumnos');
+  Route::get('auth/admin/listaralumno_filter/{curso}','AdminCuentaController@obtener_alumnos_filter');
   
 
 });

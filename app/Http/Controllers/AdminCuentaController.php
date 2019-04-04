@@ -116,4 +116,11 @@ class AdminCuentaController extends Controller
     {
     	return Alumno_curso::admin_obtener_alumnos($this::_cuenta()->cuenta_id);
     }
+     public function obtener_alumnos_filter($curso)
+    {
+    	if (empty($curso)) {
+    		return false;
+    	}
+    	return Alumno_curso::admin_obtener_alumnos($this::_cuenta()->cuenta_id, $curso);
+    }
 }
