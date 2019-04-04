@@ -80,6 +80,12 @@ import Datepicker from 'vuejs-datepicker';
 	  			axios.post('api/auth/admin/creardocente', this.form).then((res)=>{
 		            if (res.data == 'success') {
 		            	this.form = {};
+
+		            	this.$notify({
+						  group: 'success',
+						  title: 'Alerta',
+						  text: 'Docente Registrado!',
+						});
 		            }
 		        })
 	  		},

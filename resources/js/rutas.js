@@ -23,6 +23,7 @@ import IndexComponent from './components/inicio.vue';
  import ListarDocente2 from "./components/authAdmin/modulo/listar_docente.vue"
  import CrearAlumno from "./components/authAdmin/modulo/create_alumno.vue"
  import Listaralumno from "./components/authAdmin/modulo/listar_alumno.vue"
+ import AdminCurso from "./components/authAdmin/modulo/curso/curso.vue"
 
 const routes = [
   {
@@ -83,6 +84,7 @@ const routes = [
       {path: '/adminlistardocente',name: 'adminlistardocente',component: ListarDocente2},
       {path: '/admincrearalumno',name: 'admincrearalumno',component: CrearAlumno},
       {path: '/adminlistaralumno',name: 'adminlistaralumno',component: Listaralumno},
+      {path:':id/curso', name: 'curso', component:AdminCurso}
     ]
  },
   // {

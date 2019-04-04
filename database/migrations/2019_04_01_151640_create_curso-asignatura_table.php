@@ -17,7 +17,7 @@ class CreateCursoAsignaturaTable extends Migration
             $table->increments('id');
             $table->integer('curso_id');
             $table->integer('asignatura_id');
-            $table->string('checked');
+            $table->char('jefe_curso', 1);
             $table->integer('docente_id')->nullable();
             $table->char('activo',1);
             $table->timestamps();

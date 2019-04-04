@@ -61,7 +61,11 @@
 					    </thead>
 					    <tbody>
 					    	<tr v-for="listado in listar_cursos">
-					    		<td><md-chip class="md-primary" md-clickable>{{listado.descripcion}}</md-chip></td>
+					    		<td>
+					    			<md-chip class="md-primary" md-clickable @click="url_curso(listado.id)">
+					    				{{listado.descripcion}}
+					    			</md-chip>
+					    		</td>
 					    		<td>{{listado.promocion}}</td>
 					    		<td v-if="listado.formato_id  == 1">Semestral</td>
 					    		<td v-if="listado.formato_id  == 2">Trimestral</td>
@@ -126,6 +130,9 @@ import Multiselect from 'vue-multiselect'
 				axios.get('api/auth/admin/listarcurso').then((res)=>{
 					this.listar_cursos = res.data;
 				});
+			},
+			url_curso($curso){
+				this.$router.push({ name: 'curso', params: { id: $curso }})
 			}
 		}
 	}

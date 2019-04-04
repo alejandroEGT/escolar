@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Alumno;
 use App\Alumno_curso;
+use App\Asignatura;
 use App\Curso;
+use App\Cursoasignatura;
 use App\Docente;
 use App\User;
 use Illuminate\Http\Request;
@@ -41,6 +43,12 @@ class AdminCuentaController extends Controller
     public function obtener_cursos()
     {
     	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)->where('activo','S')->get();
+    }
+    public function perfil_curso($curso)
+    {
+    	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+    		   ->where('id', $curso)
+    	       ->where('activo','S')->first();
     }
     public function crearDocente(Request $r)
     {
@@ -122,5 +130,51 @@ class AdminCuentaController extends Controller
     		return false;
     	}
     	return Alumno_curso::admin_obtener_alumnos($this::_cuenta()->cuenta_id, $curso);
+    }
+
+    public function obtener_asignaturas()
+    {
+    	return Asignatura::all();
+    }
+
+    public function agregarasignatura(Request $r)
+    {
+    	
+    	$verify = Cursoasignatura::where([
+    			'curso_id' => $r->curso,
+    			'asignatura_id' => $r->asignatura,
+    			// 'docente_id' => $r->docente
+    	])->get();
+    	// dd(count($verify) > 0);
+
+    	if (count($verify) > 0) {
+    		return "exists";
+    	}else{
+    		$ca = new Cursoasignatura;
+	    	$ca->curso_id = $r->curso;
+	    	$ca->asignatura_id = $r->asignatura;
+	    	$ca->jefe_curso = ($r->jefe == true)? 'S' : 'N';
+	    	$ca->docente_id = $r->docente;
+	    	$ca->activo = "S";
+	    	$ca->horas_duracion = $r->horas;
+
+	    	if ($ca->save()) {
+	    		return "success";
+	    	}
+	    	return "failed";
+	    }
+    }
+    public function listar_asignatura_en_curso($curso)
+    {
+    	return Cursoasignatura::select([
+    			'u.nombres','u.apellido_materno','u.apellido_paterno',
+    			'a.descripcion','curso-asignatura.jefe_curso','a.id as asignatura_id'
+    	])
+    	                      ->join('curso as c','c.id','curso-asignatura.curso_id')
+    						  ->join('asignatura as a', 'a.id','curso-asignatura.asignatura_id')
+    						  ->join('docente as d','d.id','curso-asignatura.docente_id')
+    						  ->join('users as u','u.id','d.user_id')
+    						  ->where('c.id', $curso)->get();
+
     }
 }

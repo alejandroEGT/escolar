@@ -37,7 +37,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
 
 
 
-//ADMIN DEL COLEGIO///////////////////////////
+//ADMIN DEL COLEGIO//////////////////////////
   Route::get('auth/sa/logo','CuentaController@logo');
   Route::post('auth/admin/creacurso','AdminCuentaController@crear_curso');
   Route::get('auth/admin/listarcurso','AdminCuentaController@listar_curso');
@@ -47,7 +47,11 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::post('auth/admin/crearalumno','AdminCuentaController@crearAlumno');
   Route::get('auth/admin/listaralumno','AdminCuentaController@obtener_alumnos');
   Route::get('auth/admin/listaralumno_filter/{curso}','AdminCuentaController@obtener_alumnos_filter');
-  
+  Route::get('auth/admin/perfil_curso/{curso}','AdminCuentaController@perfil_curso');
+  Route::get('auth/admin/obtener_asignaturas','AdminCuentaController@obtener_asignaturas');
+  Route::post('auth/admin/agregarasignatura','AdminCuentaController@agregarasignatura');
+  Route::get('auth/admin/listar_asignatura_en_curso/{curso}','AdminCuentaController@listar_asignatura_en_curso');
+ 
 
 });
 
