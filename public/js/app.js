@@ -4195,6 +4195,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      isLoading: true
+    };
+  },
   methods: (_methods = {
     url_creardocente: function url_creardocente() {
       this.$router.push('admincreardocente');
@@ -4219,6 +4224,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     img_section_style: function img_section_style() {
       var bgImg = "https://static.rfstat.com/renderforest/images/v2/logo-homepage/bg-bottom-right.svg"; // var bgImg= "https://media.istockphoto.com/videos/soft-background-blue-loopable-video-id656234942?s=640x640"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLScrhnHLqmeyJOawurq_DxtYyCOmJzsi3OPuwFBWSQnORPWuJA"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeVz1N3HAKFw2bJtxZSnGDHUZZ5M4CHGdJOFckagmT3m-TS_5S"/*"https://rlv.zcache.com/wavy_teal_aqua_blue_spripes_label-r68f3d96569964f51ac304e6859e334e5_v11mb_8byvr_307.jpg?rvtype=content"*/
 
+      this.isLoading = false;
       return {
         // "color": "red",
         // "border" : "5px solid ",
@@ -4242,6 +4248,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
 /* harmony import */ var vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datepicker/dist/locale */ "./node_modules/vuejs-datepicker/dist/locale/index.js");
+//
+//
 //
 //
 //
@@ -4497,6 +4505,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -4581,6 +4591,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
 /* harmony import */ var vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datepicker/dist/locale */ "./node_modules/vuejs-datepicker/dist/locale/index.js");
+//
+//
 //
 //
 //
@@ -4780,9 +4792,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import { setConfig } from 'zLoading';
+//       setConfig({
+//         type: 'circle',
+//         size: 100,
+//         timeOut: 3000
+//       });
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isLoading: true,
       curso: this.$route.params.id,
       get_curso: {},
       select_asignaturas_json: {},
@@ -4791,12 +4822,16 @@ __webpack_require__.r(__webpack_exports__);
         jefe: false,
         asignatura: '',
         docente: '',
-        curso: this.$route.params.id
+        curso: this.$route.params.id,
+        horas: ''
       },
-      listar_asignatura: {}
+      listar_asignatura: {},
+      docente_jefe: {},
+      contar_asignatura: ''
     };
   },
   created: function created() {
+    this.traer_inicio();
     this.traer_curso();
     this.select_asignaturas();
     this.select_docentes();
@@ -4805,6 +4840,15 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     register: function register() {
       var _this = this;
+
+      if (this.form.asignatura == '' || this.form.docente == '' || this.form.horas == '') {
+        this.$notify({
+          group: 'error',
+          title: 'Alerta',
+          text: 'LLenar todos los campos!'
+        });
+        return false;
+      }
 
       axios.post('api/auth/admin/agregarasignatura', this.form).then(function (res) {
         if (res.data == "exists") {
@@ -4838,34 +4882,53 @@ __webpack_require__.r(__webpack_exports__);
 
           return false;
         }
+
+        if (res.data == "exist_jefe") {
+          _this.$notify({
+            group: 'error',
+            title: 'Alerta',
+            text: 'Ya hay un jefe en este curso'
+          });
+
+          return false;
+        }
+      });
+    },
+    traer_inicio: function traer_inicio() {
+      var _this2 = this;
+
+      axios.get('api/auth/admin/traer_inicio/' + this.curso).then(function (res) {
+        _this2.docente_jefe = res.data.docentejefe;
+        _this2.isLoading = false;
       });
     },
     traer_curso: function traer_curso() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('api/auth/admin/perfil_curso/' + this.curso).then(function (res) {
-        _this2.get_curso = res.data;
+        _this3.get_curso = res.data;
       });
     },
     select_asignaturas: function select_asignaturas() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get('api/auth/admin/obtener_asignaturas').then(function (res) {
-        _this3.select_asignaturas_json = res.data;
+        _this4.select_asignaturas_json = res.data;
       });
     },
     select_docentes: function select_docentes() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get('api/auth/admin/obtener_docentes').then(function (res) {
-        _this4.select_docente_json = res.data;
+        _this5.select_docente_json = res.data;
       });
     },
     listar_asignaturas: function listar_asignaturas() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get('api/auth/admin/listar_asignatura_en_curso/' + this.curso).then(function (res) {
-        _this5.listar_asignatura = res.data;
+        _this6.listar_asignatura = res.data;
+        _this6.contar_asignatura = res.data.length;
       });
     }
   }
@@ -9973,6 +10036,25 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 // module
 exports.push([module.i, "/*!\n * vue-material v1.0.0-beta-10.2\n * Made with <3 by marcosmoura 2018\n * Released under the MIT License.\n */\n*,:after,:before{box-sizing:inherit}html{height:100%;box-sizing:border-box;transition:background-color .3s cubic-bezier(.25,.8,.25,1)}body{min-height:100%;margin:0;position:relative;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-family:Roboto,Noto Sans,-apple-system,BlinkMacSystemFont,sans-serif}a:not(.md-button){transition:.3s cubic-bezier(.25,.8,.25,1);transition-property:color,background-color,opacity}audio,canvas,embed,iframe,img,object,video{max-width:100%;font-style:italic;vertical-align:middle}audio:not(.md-image),canvas:not(.md-image),embed:not(.md-image),iframe:not(.md-image),img:not(.md-image),object:not(.md-image),video:not(.md-image){height:auto}[tabindex=\"-1\"]:focus{outline:none!important}.md-scrollbar::-webkit-scrollbar{width:8px;height:8px;border-radius:8px}.md-scrollbar::-webkit-scrollbar-thumb{border-radius:8px}.md-scrollbar::-webkit-scrollbar-button{display:none}.md-caption{font-size:12px;font-weight:400;letter-spacing:.02em;line-height:17px}.md-body-1,body{font-weight:400;line-height:20px}.md-body-1,.md-body-2,body{font-size:14px;letter-spacing:.01em}.md-body-2{font-weight:500;line-height:24px}.md-subheading{font-size:16px;font-weight:400;letter-spacing:.01em;line-height:24px}.md-title{font-size:20px;font-weight:500;letter-spacing:.005em;line-height:26px}.md-headline{font-size:24px;line-height:32px}.md-display-1,.md-headline{font-weight:400;letter-spacing:0}.md-display-1{font-size:34px;line-height:40px}.md-display-2{font-size:45px;font-weight:400;letter-spacing:0;line-height:48px}.md-display-3{font-size:56px;font-weight:400;letter-spacing:-.005em;line-height:58px}.md-display-4{font-size:112px;font-weight:300;letter-spacing:-.01em;line-height:112px}a:not(.md-button){text-decoration:none}a:not(.md-button):hover{text-decoration:underline}button:focus{outline:none}.md-app{display:flex;overflow:hidden;position:relative}.md-app.md-fixed .md-app-scroller{overflow:auto}.md-app.md-fixed-last,.md-app.md-flexible,.md-app.md-overlap,.md-app.md-reveal{transform:translateZ(0)}.md-app.md-fixed-last .md-app-toolbar,.md-app.md-flexible .md-app-toolbar,.md-app.md-overlap .md-app-toolbar,.md-app.md-reveal .md-app-toolbar{position:absolute;top:0}.md-app.md-flexible .md-app-toolbar,.md-app.md-overlap .md-app-toolbar{min-height:0}.md-app.md-flexible .md-toolbar-row:first-child{z-index:2}.md-app.md-flexible .md-toolbar-row:last-child{position:fixed;bottom:0;z-index:1}.md-app.md-flexible .md-display-1{position:fixed}.md-app.md-overlap .md-app-toolbar{z-index:1}.md-app.md-overlap .md-app-content{margin:-64px 24px 24px;position:relative;z-index:2}.md-app-content{padding:16px}.md-app-content>p:first-child{margin-top:0}.md-app-content>p:last-child{margin-bottom:0}.md-app-container{display:flex;overflow:auto;transform:translate3D(0,0,0);transition:padding-left .4s cubic-bezier(.4,0,.2,1),padding-right .4s cubic-bezier(.4,0,.2,1);will-change:padding-left,padding-right}.md-app-container,.md-app-scroller{flex:1}@media (max-width:960px){.md-app.md-overlap .md-app-content{margin:-64px 16px 16px}}@media (max-width:600px){.md-app.md-overlap .md-app-content{margin:-64px 8px 8px}}@media (min-width:600px){.md-app-drawer.md-permanent-card+.md-app-scroller .md-content{padding-left:0;padding-right:0;border-left:none;border-right:none}.md-app-content{border-left:1px solid transparent;border-right:1px solid transparent}}.md-app-internal-drawer,.md-app-side-drawer .md-app-container{flex-direction:column}.md-app-internal-drawer .md-app-scroller{overflow:auto}.md-no-elevation{box-shadow:none!important}.md-fixed-last .md-reveal-active,.md-flexible .md-reveal-active,.md-overlap .md-reveal-active,.md-reveal .md-reveal-active{transform:translate3d(0,calc(100% + 10px),0);transition:.3s cubic-bezier(.25,.8,.25,1);transition-property:box-shadow,transform;will-change:height,box-shadow,transform}.md-app-toolbar{min-height:64px}.md-overlap .md-app-toolbar{height:196px}.md-fixed-last-active{transition:.3s cubic-bezier(.25,.8,.25,1);transition-property:box-shadow,transform;will-change:height,box-shadow,transform}.md-overlap-off{z-index:3!important}.md-app-content{height:100%}.md-app-content .md-card{margin-right:16px;margin-left:16px;overflow:visible}.md-badge-content{position:relative;display:inline-block}.md-badge-content .md-position-top{top:-4px}.md-badge-content .md-position-bottom{bottom:-4px}.md-badge{position:absolute;transition:.3s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;right:-4px;font-size:10px;font-style:normal;width:22px;height:22px;border-radius:50%;color:#fff;pointer-events:none;z-index:6}.md-list-item-content .md-badge{position:relative;top:0;bottom:0;right:0}.md-badge.md-dense{width:18px;height:18px;font-size:8px}.md-badge.md-square{width:auto;border-radius:3px;height:18px;padding:0 4px}.md-autocomplete .md-menu{width:100%;display:flex}.md-autocomplete-loading{display:flex;align-items:center;justify-content:center;position:absolute;top:0;right:0;bottom:0;left:0;z-index:10}.md-field.md-inline.md-autocomplete-box{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);padding-top:2px;border-radius:2px}.md-field.md-inline.md-autocomplete-box.md-focused{z-index:13}.md-field.md-inline.md-autocomplete-box:after,.md-field.md-inline.md-autocomplete-box:before{display:none}.md-toolbar .md-field.md-inline.md-autocomplete-box{min-height:40px;height:40px;margin:0;box-shadow:none}.md-field.md-inline.md-autocomplete-box .md-menu{align-items:center}.md-field.md-inline.md-autocomplete-box .md-input{padding-left:16px}.md-field.md-inline.md-autocomplete-box.md-focused label,.md-field.md-inline.md-autocomplete-box .md-input-action,.md-field.md-inline.md-autocomplete-box label{top:50%;transform:translateY(-50%)}.md-field.md-inline.md-autocomplete-box .md-input-action{right:8px}.md-field.md-inline.md-autocomplete-box.md-focused label,.md-field.md-inline.md-autocomplete-box label{margin-top:2px;left:16px}.md-autocomplete-box-content:after{height:6px;position:absolute;top:-6px;right:0;left:0;z-index:13;border-bottom:1px solid;content:\"\"}.md-avatar{width:40px;min-width:40px;height:40px;margin:auto;display:inline-flex;justify-content:center;align-items:center;overflow:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;border-radius:40px;transition:.4s cubic-bezier(.4,0,.2,1);transition-property:color,background-color;will-change:color,background-color;font-size:24px;letter-spacing:-.05em;vertical-align:middle}.md-avatar.md-large{min-width:64px;min-height:64px;border-radius:64px;font-size:32px}.md-avatar.md-large .md-icon{font-size:40px!important}.md-avatar.md-small{width:24px;min-width:24px;height:24px;border-radius:24px;font-size:14px}.md-avatar.md-small .md-icon{font-size:16px!important}.md-avatar .md-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.md-avatar img{width:100%;height:100%;display:block}.md-avatar .md-ripple{cursor:pointer;display:inline-flex;justify-content:center;align-items:center;border-radius:50%}.md-bottom-bar{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);width:100%;transition:background-color .5s cubic-bezier(.4,0,.2,1)}.md-bottom-bar>.md-ripple{display:flex;flex-wrap:wrap}.md-bottom-bar.md-type-fixed{justify-content:center}.md-bottom-bar.md-type-fixed .md-bottom-bar-item{min-width:80px;max-width:168px;transition:.4s cubic-bezier(.4,0,.2,1);transition-property:color;will-change:color}.md-bottom-bar.md-type-fixed .md-bottom-bar-item .md-bottom-bar-label{transform:scale(.8571) translate3D(0,4px,0)}.md-bottom-bar.md-type-fixed .md-bottom-bar-item.md-active .md-ripple{padding-top:6px}.md-bottom-bar.md-type-fixed .md-bottom-bar-item.md-active .md-bottom-bar-icon{transform:translate3d(0,-2px,0)}.md-bottom-bar.md-type-fixed .md-bottom-bar-item.md-active .md-bottom-bar-label{transform:translate3D(0,3px,0)}.md-bottom-bar.md-type-shift{justify-content:center}.md-bottom-bar.md-type-shift>.md-ripple .md-ripple-enter-active{transition-duration:1.1s!important}.md-bottom-bar.md-type-shift>.md-ripple .md-ripple-enter{opacity:1}.md-bottom-bar.md-type-shift .md-bottom-bar-item{min-width:56px;max-width:96px;flex:1 1 32px;transition:.3s cubic-bezier(.4,0,.2,1);transition-property:padding,min-width,max-width,flex,color;will-change:padding,min-width,max-width,flex,color}.md-bottom-bar.md-type-shift .md-bottom-bar-item .md-ripple{padding:16px}.md-bottom-bar.md-type-shift .md-bottom-bar-item .md-bottom-bar-icon{transform:translate3d(0,8px,0)}.md-bottom-bar.md-type-shift .md-bottom-bar-item .md-bottom-bar-label{opacity:0;transform:scale(.7) translate3d(0,6px,0)}.md-bottom-bar.md-type-shift .md-bottom-bar-item.md-active{min-width:96px;max-width:168px;flex:1 1 72px}.md-bottom-bar.md-type-shift .md-bottom-bar-item.md-active .md-ripple{padding:6px 0 10px}.md-bottom-bar.md-type-shift .md-bottom-bar-item.md-active .md-bottom-bar-icon{transform:translateZ(0)}.md-bottom-bar.md-type-shift .md-bottom-bar-item.md-active .md-bottom-bar-label{opacity:1;transform:translate3d(0,3px,0)}.md-bottom-bar .md-bottom-bar-item{height:56px;margin:0;flex:1;cursor:pointer;border-radius:0;font-size:14px;font-weight:400;line-height:1em;text-transform:none}.md-bottom-bar .md-bottom-bar-item .md-ripple{padding:8px 12px 10px;transition:padding .3s cubic-bezier(.25,.8,.25,1);will-change:padding}.md-bottom-bar .md-bottom-bar-item .md-button-content{position:static;display:flex;flex-direction:column;align-items:center}.md-bottom-bar .md-bottom-bar-item .md-bottom-bar-icon,.md-bottom-bar .md-bottom-bar-item .md-bottom-bar-label{transition:.3s cubic-bezier(.4,0,.2,1);transition-property:transform,opacity;will-change:transform,opacity}.md-ripple{width:100%;height:100%;position:relative;z-index:5;overflow:hidden;-webkit-mask-image:radial-gradient(circle,#fff 100%,#000 0)}.md-ripple-wave{position:absolute;z-index:1;pointer-events:none;background:currentColor;border-radius:50%;opacity:0;transform:scale(2) translateZ(0)}.md-ripple-wave.md-centered{animation-duration:1.2s;top:50%;left:50%}.md-ripple-wave~:not(.md-ripple-wave){position:relative;z-index:2}.md-ripple-enter-active{transition:.8s cubic-bezier(.25,.8,.25,1);transition-property:opacity,transform;will-change:opacity,transform}.md-ripple-enter-active.md-centered{transition-duration:1.2s}.md-ripple-enter{opacity:.26;transform:scale(.26) translateZ(0)}.md-button,.md-button-clean{margin:0;padding:0;display:inline-block;position:relative;overflow:hidden;outline:none;background:transparent;border:0;border-radius:0;transition:.4s cubic-bezier(.4,0,.2,1);font-family:inherit;line-height:normal;text-decoration:none;vertical-align:top;white-space:nowrap}.md-button{min-width:88px;height:36px;margin:6px 8px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;border-radius:2px;font-size:14px;font-weight:500;text-transform:uppercase}.md-button:active{outline:none}.md-button[disabled]{pointer-events:none}.md-button:not([disabled]){cursor:pointer}.md-button:not([disabled]).md-focused:before,.md-button:not([disabled]):active:before,.md-button:not([disabled]):hover:before{background-color:currentColor;opacity:.12}.md-button:not([disabled]).md-focused.md-accent:before,.md-button:not([disabled]).md-focused.md-primary:before,.md-button:not([disabled]):active:before{opacity:.2}.md-button:not([disabled]).md-ripple-off:active:before{opacity:.26}.md-button.md-plain.md-button.md-raised:not([disabled]){color:rgba(0,0,0,.87);background-color:#fff}.md-button.md-plain.md-button.md-raised:not([disabled]) .md-icon-font{color:rgba(0,0,0,.87)}.md-button.md-plain.md-button.md-raised:not([disabled]) .md-icon-image{fill:rgba(0,0,0,.87)}.md-button::-moz-focus-inner{padding:0;border:0}.md-button:before{position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;opacity:0;transition:.4s cubic-bezier(.4,0,.2,1);will-change:background-color,opacity;content:\" \"}.md-button.md-dense{height:32px;font-size:13px}.md-button.md-raised:not([disabled]){box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.md-button.md-raised:not([disabled]):active{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.md-button.md-raised:not([disabled]).md-ripple-off:active:before{opacity:.2}.md-button+.md-button{margin-left:0}.md-button .md-ripple{padding:0 8px;display:flex;justify-content:center;align-items:center}.md-button-spaced .md-ripple{padding:0 16px}.md-fab,.md-icon-button{border-radius:50%;z-index:5}.md-fab .md-ripple,.md-fab:before,.md-icon-button .md-ripple,.md-icon-button:before{border-radius:50%}.md-fab.md-dense .md-ripple-wave,.md-fab.md-mini .md-ripple-wave,.md-icon-button .md-ripple-wave{top:0!important;right:0!important;bottom:0!important;left:0!important}.md-icon-button{width:40px;min-width:40px;height:40px;margin:0 6px}.md-icon-button.md-dense{width:32px;min-width:32px;height:32px}.md-icon-button .md-ripple-enter-active{transition-duration:1.2s}.md-fab{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);width:56px;height:56px;min-width:0;overflow:hidden}.md-fab:active{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 12px 17px 2px rgba(0,0,0,.14),0 5px 22px 4px rgba(0,0,0,.12)}.md-fab.md-dense,.md-fab.md-mini{width:40px;height:40px}.md-fab.md-fab-top-left,.md-fab.md-fab-top-right{position:absolute;top:24px}.md-fab.md-fab-bottom-left,.md-fab.md-fab-bottom-right{position:absolute;bottom:24px}.md-fab.md-fab-bottom-center,.md-fab.md-fab-top-center{position:absolute;left:50%;transform:translateX(-50%)}.md-fab.md-fab-top-center{top:24px}.md-fab.md-fab-bottom-center{bottom:24px}.md-fab.md-fab-bottom-right,.md-fab.md-fab-top-right{right:24px}.md-fab.md-fab-bottom-left,.md-fab.md-fab-top-left{left:24px}.md-fab.md-fixed{position:fixed}.md-fab .md-ripple{padding:0}.md-button-content{position:relative;z-index:2}.md-card{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);position:relative;z-index:1;border-radius:2px;transition:.3s cubic-bezier(.4,0,.2,1);transition-property:color,background-color;will-change:color,background-color}.md-card.md-with-hover{cursor:pointer;transition:background-color .3s cubic-bezier(.4,0,.2,1),box-shadow .4s cubic-bezier(.25,.8,.25,1);will-change:background-color,box-shadow}.md-card.md-with-hover:hover{z-index:2;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.md-card.md-expand-active .md-card-expand-trigger.md-icon-button{transform:rotate(180deg)}.md-card .md-subhead,.md-card .md-subheading,.md-card .md-title{margin:0;font-weight:400}.md-card .md-subhead{opacity:.54;font-size:14px;letter-spacing:.01em;line-height:20px}.md-card .md-subhead+.md-title{margin-top:4px}.md-card .md-title{font-size:24px;letter-spacing:0;line-height:32px}.md-card-area,.md-card>.md-card-area:not(:last-child){position:relative}.md-card>.md-card-area:not(:last-child):after{height:1px;position:absolute;bottom:0;content:\" \"}.md-card>.md-card-area:not(:last-child):not(.md-inset):after{right:0;left:0}.md-card>.md-card-area:not(:last-child).md-inset:after{right:16px;left:16px}.md-card-header{padding:16px}.md-card-header:first-child>.md-card-header-text>.md-title:first-child,.md-card-header:first-child>.md-title:first-child{margin-top:8px}.md-card-header:last-child{margin-bottom:8px}.md-card-header.md-card-header-flex{display:flex;justify-content:space-between}.md-card-header+.md-card-content{padding-top:0}.md-card-header+.md-card-actions:not(:last-child){padding:0 8px}.md-card-header>img{border-radius:50%}.md-card-header .md-avatar,.md-card-header>img{margin-right:16px;float:left}.md-card-header .md-avatar~.md-title,.md-card-header>img~.md-title{font-size:14px}.md-card-header .md-avatar~.md-subhead,.md-card-header .md-avatar~.md-title,.md-card-header>img~.md-subhead,.md-card-header>img~.md-title{font-weight:500;line-height:20px}.md-card-header .md-button{margin:0}.md-card-header .md-button:last-child{margin-right:-4px}.md-card-header .md-button+.md-button{margin-left:8px}.md-card-header .md-card-header-text{flex:1}.md-card-header .md-card-media{width:80px;height:80px;margin-left:16px;flex:0 0 80px}.md-card-header .md-card-media.md-medium{width:120px;height:120px;flex:0 0 120px}.md-card-header .md-card-media.md-big{width:160px;height:160px;flex:0 0 160px}.md-card-media{position:relative}.md-card-media.md-ratio-16-9{overflow:hidden}.md-card-media.md-ratio-16-9:before{width:100%;padding-top:56.25%;display:block;content:\" \"}.md-card-media.md-ratio-16-9 img{position:absolute;top:50%;right:0;left:0;transform:translateY(-50%)}.md-card-media.md-ratio-4-3{overflow:hidden}.md-card-media.md-ratio-4-3:before{width:100%;padding-top:75%;display:block;content:\" \"}.md-card-media.md-ratio-4-3 img{position:absolute;top:50%;right:0;left:0;transform:translateY(-50%)}.md-card-media.md-ratio-1-1{overflow:hidden}.md-card-media.md-ratio-1-1:before{width:100%;padding-top:100%;display:block;content:\" \"}.md-card-media.md-ratio-1-1 img{position:absolute;top:50%;right:0;left:0;transform:translateY(-50%)}.md-card-media+.md-card-header{padding-top:24px}.md-card-media+.md-card-content:last-child{padding-bottom:16px}.md-card-media img{width:100%}.md-card-media-actions{padding:16px;display:flex;justify-content:space-between}.md-card-media-actions .md-card-media{max-width:240px;max-height:240px;flex:1}.md-card-media-actions .md-card-actions{margin-left:16px;flex-direction:column;justify-content:flex-start;align-items:center}.md-card-media-actions .md-card-actions .md-button+.md-button{margin:8px 0 0}.md-card-media-cover{position:relative;color:#fff}.md-card-media-cover.md-solid .md-card-area{background-color:rgba(0,0,0,.54)}.md-card-media-cover.md-text-scrim .md-card-backdrop{position:absolute;top:0;right:0;bottom:0;left:0;z-index:1}.md-card-media-cover .md-card-area{position:absolute;right:0;bottom:0;left:0;z-index:2}.md-card-media-cover .md-card-area,.md-card-media-cover .md-card-header{display:flex;flex-direction:column}.md-card-media-cover .md-card-header+.md-card-actions{padding-top:0}.md-card-media-cover .md-subhead{opacity:1}.md-card-media-cover .md-card-actions .md-button:not(.md-primary):not(.md-accent),.md-card-media-cover .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,.md-card-media-cover .md-card-header .md-button:not(.md-primary):not(.md-accent),.md-card-media-cover .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon{color:#fff!important}.md-card-content{padding:16px;font-size:14px;line-height:22px}.md-card-content:last-of-type{padding-bottom:24px}.md-card-expand{overflow:hidden}.md-card-expand .md-card-actions{position:relative;z-index:2}.md-card-expand .md-card-expand-content{position:relative;z-index:1}.md-card-expand-trigger.md-icon-button{transition:transform .4s cubic-bezier(.25,.8,.25,1);will-change:transform}.md-card-expand-content{overflow:hidden;transform:translate3D(0,0,0);transition:.4s cubic-bezier(.4,0,.2,1);transition-property:opacity,margin-top;will-change:opacity,margin-top}.md-card-actions{padding:8px;display:flex;align-items:center}.md-card-actions.md-alignment-right{justify-content:flex-end}.md-card-actions.md-alignment-left{justify-content:flex-start}.md-card-actions.md-alignment-space-between{justify-content:space-between}.md-card-actions .md-button{margin:0}.md-card-actions .md-button:first-child{margin-left:0}.md-card-actions .md-button:last-child{margin-right:0}.md-card-actions .md-button+.md-button{margin-left:4px}.md-checkbox{width:auto;margin:16px 16px 16px 0;display:inline-flex;position:relative}.md-checkbox:not(.md-disabled),.md-checkbox:not(.md-disabled) .md-checkbox-label{cursor:pointer}.md-checkbox .md-checkbox-container{width:20px;min-width:20px;height:20px;position:relative;border-radius:2px;border:2px solid transparent;transition:.4s cubic-bezier(.25,.8,.25,1)}.md-checkbox .md-checkbox-container:focus{outline:none}.md-checkbox .md-checkbox-container:after,.md-checkbox .md-checkbox-container:before{position:absolute;transition:.4s cubic-bezier(.55,0,.55,.2);content:\" \"}.md-checkbox .md-checkbox-container:before{width:48px;height:48px;top:50%;left:50%;z-index:6;border-radius:50%;transform:translate(-50%,-50%)}.md-checkbox .md-checkbox-container:after{width:6px;height:13px;top:0;left:5px;z-index:7;border:2px solid transparent;border-top:0;border-left:0;opacity:0;transform:rotate(45deg) scale3D(.15,.15,1)}.md-checkbox .md-checkbox-container .md-ripple{width:48px!important;height:48px!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%);border-radius:50%}.md-checkbox .md-checkbox-container input{position:absolute;left:-999em}.md-checkbox .md-checkbox-label{height:20px;padding-left:16px;position:relative;line-height:20px}.md-checkbox.md-indeterminate .md-checkbox-container:after{width:12px;height:2px;top:50%;left:50%;z-index:4;border-style:solid;border-width:0 0 2px;opacity:0;transform:translate(-50%,-50%)!important}.md-checkbox.md-checked .md-checkbox-container:after{opacity:1;transform:rotate(45deg) scale3D(1,1,1);transition:.4s cubic-bezier(.25,.8,.25,1)}.md-checkbox.md-disabled.md-checked .md-checkbox-container{border-color:transparent!important}.md-checkbox.md-required label:after{position:absolute;top:2px;right:0;transform:translateX(calc(100% + 2px));content:\"*\";line-height:1em;vertical-align:top}.md-chips.md-field{padding-top:12px;flex-wrap:wrap}.md-chips.md-field.md-has-value label{top:-6px}.md-chips.md-field .md-chip{margin-bottom:4px}.md-chips.md-field .md-chip:last-of-type{margin-right:8px}.md-chips.md-field .md-input{min-width:128px}.md-field{width:100%;min-height:48px;margin:4px 0 24px;padding-top:16px;display:flex;position:relative;font-family:inherit}.md-field:after,.md-field:before{position:absolute;bottom:0;right:0;left:0;z-index:1;transition:border .3s cubic-bezier(.4,0,.2,1),opacity .3s cubic-bezier(.4,0,.2,1),transform 0s cubic-bezier(.4,0,.2,1) .3s;will-change:border,opacity,transform;content:\" \"}.md-field:after{height:1px}.md-field:before{height:2px;z-index:2;opacity:0;transform:scaleX(.12)}.md-field label{position:absolute;top:23px;left:0;pointer-events:none;transition:.4s cubic-bezier(.25,.8,.25,1);transition-duration:.3s;font-size:16px;line-height:20px}.md-field .md-prefix,.md-field .md-suffix{font-size:16px;line-height:32px;align-self:center;justify-self:center}.md-field .md-prefix{display:none;padding-right:4px}.md-field.md-focused .md-prefix,.md-field.md-has-value .md-prefix{display:block}.md-field .md-input,.md-field .md-textarea{height:32px;padding:0;display:block;flex:1;border:none;background:none;transition:.4s cubic-bezier(.25,.8,.25,1);transition-property:font-size,padding-top,color;font-family:inherit;font-size:16px;line-height:32px}.md-field .md-input[type=date],.md-field .md-textarea[type=date]{font-size:16px}.md-field .md-input[disabled],.md-field .md-textarea[disabled]{cursor:default}.md-field .md-input:focus,.md-field .md-textarea:focus{outline:none}.md-field .md-input::-webkit-input-placeholder,.md-field .md-textarea::-webkit-input-placeholder{font-size:16px;text-shadow:none;-webkit-text-fill-color:initial;transition:.4s cubic-bezier(.25,.8,.25,1);transition-property:font-size,color}.md-field .md-textarea{min-height:32px;max-height:230px;padding:5px 0;resize:none;line-height:1.3em}.md-field .md-count,.md-field .md-error,.md-field .md-helper-text{height:20px;position:absolute;bottom:-22px;font-size:12px;transition:.3s cubic-bezier(.4,0,.2,1)}.md-field .md-error{display:block!important;left:0;opacity:0;transform:translate3d(0,-8px,0)}.md-field .md-count{right:0}.md-field .md-input-action{width:32px;min-width:32px;height:32px;margin:0;position:absolute;top:16px;right:0;transition:.4s cubic-bezier(.4,0,.2,1)}.md-field .md-input-action.md-input-action-enter-active,.md-field .md-input-action.md-input-action-leave-active{opacity:0}.md-field .md-input-action.md-input-action-enter-to{opacity:1}.md-field>.md-icon{margin:4px auto;position:relative;z-index:3;transition:.4s cubic-bezier(.25,.8,.25,1)}.md-field>.md-icon:last-of-type:not(:first-child):after{display:none}.md-field>.md-icon:after{width:37px;height:4px;position:absolute;left:-1px;bottom:-5px;transition:.3s cubic-bezier(.4,0,.2,1);content:\"\"}.md-field>.md-icon~label{left:36px}.md-field>.md-icon~.md-file,.md-field>.md-icon~.md-input,.md-field>.md-icon~.md-textarea{margin-left:12px}.md-field+.md-has-textarea:not(.md-autogrow){margin-top:36px}.md-field.md-has-placeholder label{pointer-events:auto;top:10px;opacity:0;font-size:12px}.md-field.md-has-placeholder .md-input,.md-field.md-has-placeholder .md-textarea{font-size:16px}.md-field.md-has-textarea:not(.md-autogrow):after,.md-field.md-has-textarea:not(.md-autogrow):before{height:auto;pointer-events:none;top:0;bottom:0;transform:none;background:none!important;border:1px solid transparent;border-radius:3px}.md-field.md-has-textarea:not(.md-autogrow):before{border-width:2px}.md-field.md-has-textarea:not(.md-autogrow) label{top:16px;left:16px}.md-field.md-has-textarea:not(.md-autogrow) .md-textarea{min-height:100px;padding:0 16px;resize:vertical}.md-field.md-has-textarea:not(.md-autogrow)>.md-icon{position:absolute;top:6px;right:6px;z-index:3}.md-field.md-has-textarea:not(.md-autogrow) .md-count{right:6px;bottom:2px}.md-field.md-has-textarea:not(.md-autogrow) .md-clear{top:6px;right:6px}.md-field.md-has-textarea:not(.md-autogrow).md-focused label,.md-field.md-has-textarea:not(.md-autogrow).md-has-value label{top:6px}.md-field.md-has-textarea:not(.md-autogrow).md-focused .md-textarea,.md-field.md-has-textarea:not(.md-autogrow).md-has-value .md-textarea{padding-top:10px}.md-field.md-has-file:after,.md-field.md-has-file:before,.md-field.md-has-file label{left:36px}.md-field.md-has-file .md-input{margin-left:12px}.md-field.md-focused:before,.md-field.md-highlight:before{opacity:1;transform:scaleX(1);transition:.3s cubic-bezier(.4,0,.2,1);transition-property:border,opacity,transform}.md-field.md-focused label,.md-field.md-has-value label{pointer-events:auto;top:0;opacity:1;font-size:12px}.md-field.md-focused .md-input,.md-field.md-focused .md-textarea,.md-field.md-has-value .md-input,.md-field.md-has-value .md-textarea{font-size:16px}.md-field.md-inline label{pointer-events:none}.md-field.md-inline.md-focused label{top:23px;font-size:16px}.md-field.md-inline.md-has-value label{opacity:0}.md-field.md-disabled:after{background:0 100% repeat-x;background-size:4px 1px}.md-field.md-has-password .md-toggle-password{margin:0;position:absolute;right:0;bottom:-2px}.md-field.md-has-password .md-toggle-password svg{width:22px;height:22px}.md-field.md-clearable .md-input{padding-right:30px}@keyframes a{10%,90%{transform:translate3d(-1px,0,0)}30%,70%{transform:translate3d(-4px,0,0)}40%,60%{transform:translate3d(4px,0,0)}}.md-field.md-invalid.md-has-value label:not(:focus){animation:a .4s cubic-bezier(.4,0,.2,1) both;-webkit-backface-visibility:hidden;backface-visibility:hidden;perspective:1000px}.md-field.md-invalid.md-has-textarea:not(.md-autogrow):before{border-width:2px}.md-field.md-invalid .md-error{opacity:1;transform:translateZ(0)}.md-field.md-invalid .md-helper-text{opacity:0;transform:translate3d(0,-8px,0)}.md-field.md-required label:after{position:absolute;top:2px;right:0;transform:translateX(calc(100% + 2px));content:\"*\";line-height:1em;vertical-align:top}.md-icon{width:24px;min-width:24px;height:24px;font-size:24px!important;margin:auto;display:inline-flex;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;align-items:center;justify-content:center;vertical-align:middle}.md-icon.md-size-2x{width:48px;min-width:48px;height:48px;font-size:48px!important}.md-icon.md-size-3x{width:72px;min-width:72px;height:72px;font-size:72px!important}.md-icon.md-size-4x{width:96px;min-width:96px;height:96px;font-size:96px!important}.md-icon.md-size-5x{width:120px;min-width:120px;height:120px;font-size:120px!important}.md-icon-image svg{height:100%;flex:1;transition:fill .4s cubic-bezier(.4,0,.2,1)}.md-icon{transition:color .4s cubic-bezier(.4,0,.2,1);direction:ltr;font-family:Material Icons;-webkit-font-feature-settings:\"liga\";font-feature-settings:\"liga\";font-style:normal;letter-spacing:normal;line-height:1;text-rendering:optimizeLegibility;text-transform:none;word-wrap:normal;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.md-svg-loader{display:block}.md-svg-loader svg{width:100%}.md-chip{height:32px;padding:0 12px;display:inline-block;cursor:default;border-radius:32px;transition:.3s cubic-bezier(.25,.8,.25,1);transition-property:background-color,color,opacity,transform,box-shadow;will-change:background-color,color,opacity,transform,box-shadow;font-size:13px;line-height:32px;vertical-align:middle;white-space:nowrap}.md-chip:focus{outline:none}.md-chip.md-chip-enter-active,.md-chip.md-chip-leave-active{opacity:0;transform:transformZ(0) scale(.8)}.md-chip.md-chip-enter-to{opacity:1;transform:transformZ(0) scale(1)}.md-chip.md-clickable:not(.md-disabled):active,.md-chip.md-deletable:not(.md-disabled):active,.md-chip.md-focused{box-shadow:0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12)}.md-chip.md-clickable{padding:0;cursor:pointer}.md-chip.md-clickable>.md-ripple{padding:0 12px}.md-chip.md-deletable{padding-right:32px;position:relative}.md-chip.md-deletable.md-clickable{padding-right:0}.md-chip.md-deletable.md-clickable>.md-ripple{padding-right:32px}.md-chip.md-disabled{cursor:default}.md-chip+.md-chip{margin-left:4px}.md-chip .md-button.md-input-action{width:18px;min-width:18px;height:18px;margin:0;position:absolute;top:50%;right:7px;z-index:6;transform:translate3D(0,-50%,0);transition-duration:.3s;transition-timing-function:cubic-bezier(.25,.8,.25,1);font-size:18px}.md-chip .md-button.md-input-action .md-ripple{padding:0}.md-chip .md-button.md-input-action .md-button-content{height:14px}.md-chip .md-button.md-input-action .md-icon{width:14px;min-width:14px;height:14px;font-size:14px!important;vertical-align:top}.md-chip .md-button.md-input-action .md-icon svg{transition-duration:.3s;transition-timing-function:cubic-bezier(.25,.8,.25,1)}.md-datepicker-overlay{opacity:0}.md-datepicker.md-native label{top:0!important}.md-datepicker .md-date-icon{cursor:pointer}.md-datepicker input[type=date]::-webkit-calendar-picker-indicator,.md-datepicker input[type=date]::-webkit-clear-button,.md-datepicker input[type=date]::-webkit-inner-spin-button{display:none}@media (max-width:600px){.md-datepicker-overlay{opacity:1}}.md-overlay{position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;overflow:hidden;background:rgba(0,0,0,.6);transition:.35s cubic-bezier(.4,0,.2,1);transition-property:opacity;will-change:opacity}.md-overlay.md-fixed,body>.md-overlay{position:fixed}.md-overlay-enter,.md-overlay-leave-active{opacity:0}.md-datepicker-dialog{box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12);display:flex;overflow:hidden;z-index:11;border-radius:2px;-webkit-backface-visibility:hidden;backface-visibility:hidden;pointer-events:auto;transform-origin:top left;transition:opacity .2s cubic-bezier(.25,.8,.25,1),transform .35s cubic-bezier(.25,.8,.25,1);will-change:opacity,transform,left,top}.md-datepicker-dialog-leave-active{opacity:0}.md-datepicker-dialog-enter{opacity:0;transform:scale(.9)}.md-datepicker-dialog-enter .md-datepicker-body .md-datepicker-calendar{opacity:0;transform:translate3D(0,10%,0)}.md-datepicker-header{min-width:150px;padding:16px}.md-datepicker-header .md-datepicker-year-select{cursor:pointer;opacity:.54;transition:opacity .3s cubic-bezier(.4,0,.2,1);font-size:16px;font-weight:700;letter-spacing:.01em;line-height:24px}.md-datepicker-header .md-datepicker-date-select{cursor:pointer;opacity:.54;transition:opacity .3s cubic-bezier(.4,0,.2,1);font-size:32px;font-weight:900;letter-spacing:0;line-height:1.2em}.md-datepicker-header .md-datepicker-dayname{display:block}.md-datepicker-header .md-selected{opacity:1}.md-datepicker-body{width:320px;position:relative;overflow:hidden;transition:width .3s cubic-bezier(.25,.8,.25,1);will-change:width}.md-datepicker-body .md-button{margin:0}.md-datepicker-body-header{padding:8px;display:flex;align-items:center;justify-content:space-between;position:absolute;top:0;right:0;left:0;pointer-events:none}.md-datepicker-body-header:after,.md-datepicker-body-header:before{width:48px;height:48px;position:absolute;top:0;z-index:2;pointer-events:none;content:\" \"}.md-datepicker-body-header:after{left:0}.md-datepicker-body-header:before{right:0}.md-datepicker-body-header .md-button{pointer-events:auto;z-index:3}.md-datepicker-body-header-enter .md-button:first-child,.md-datepicker-body-header-leave-active .md-button:first-child{transform:translate3d(-150%,0,0)}.md-datepicker-body-header-enter .md-button:last-child,.md-datepicker-body-header-leave-active .md-button:last-child{transform:translate3d(150%,0,0)}.md-datepicker-body-content{overflow:hidden;transition:height .35s cubic-bezier(.4,0,.2,1);will-change:height}.md-datepicker-panel{display:flex;position:absolute;top:0;right:0;bottom:0;left:0;transition:.35s cubic-bezier(.4,0,.2,1);transition-property:transform,opacity;will-change:transform,opacity}.md-datepicker-calendar.md-datepicker-view-enter,.md-datepicker-calendar.md-datepicker-view-leave-active{transform:translate3d(0,100%,0)}.md-datepicker-calendar.md-previous .md-datepicker-month-enter{transform:translate3D(-100%,0,0)}.md-datepicker-calendar.md-previous .md-datepicker-month-enter .md-datepicker-month-trigger{transform:translate3D(-30%,0,0)}.md-datepicker-calendar.md-next .md-datepicker-month-enter,.md-datepicker-calendar.md-previous .md-datepicker-month-leave-active{transform:translate3D(100%,0,0)}.md-datepicker-calendar.md-next .md-datepicker-month-enter .md-datepicker-month-trigger{transform:translate3D(30%,0,0)}.md-datepicker-calendar.md-next .md-datepicker-month-leave-active{transform:translate3D(-100%,0,0)}.md-datepicker-month{top:8px;bottom:auto;flex-direction:column;transition:.35s cubic-bezier(.4,0,.2,1);transition-property:transform,opacity;will-change:transform,opacity}.md-datepicker-month .md-datepicker-month-trigger{min-height:32px;margin:0 46px 10px;flex:1;border-radius:0;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}.md-datepicker-week{display:flex;align-items:center}.md-datepicker-week span{flex:1;font-size:12px;text-align:center}.md-datepicker-days{display:flex;flex-wrap:wrap}.md-datepicker-days .md-datepicker-day,.md-datepicker-days .md-datepicker-empty{margin:1px 0;display:flex;align-items:center;justify-content:center;flex:0 1 14.28571%}.md-datepicker-days .md-datepicker-day-button{width:30px;min-width:30px;height:30px;cursor:pointer;border-radius:30px;transition:.3s cubic-bezier(.4,0,.2,1);line-height:30px;text-align:center}.md-datepicker-days .md-datepicker-selected,.md-datepicker-days .md-datepicker-today{font-weight:700}.md-datepicker-days .md-datepicker-disabled{pointer-events:none}.md-datepicker-month-selector{padding:6px 8px 10px;flex-wrap:wrap;bottom:auto;transition:.35s cubic-bezier(.4,0,.2,1);transition-property:transform,opacity;will-change:transform,opacity}.md-datepicker-month-selector.md-datepicker-view-enter,.md-datepicker-month-selector.md-datepicker-view-leave-active{transform:translate3d(0,-100%,0)}.md-datepicker-month-selector .md-datepicker-year-trigger{width:100%;margin:0 0 8px;flex:1 1 100%}.md-datepicker-month-button,.md-datepicker-year-button{height:36px;margin:3px 0;cursor:pointer;transition:.3s cubic-bezier(.4,0,.2,1);line-height:36px;font-weight:500;text-align:center;text-transform:uppercase}.md-datepicker-month-button{flex:1 1 33.3333%;border-radius:2px;font-size:13px}.md-datepicker-year-selector{flex-direction:column;overflow:auto;bottom:52px;border-bottom:1px solid}.md-datepicker-year-selector.md-datepicker-view-enter,.md-datepicker-year-selector.md-datepicker-view-leave-active{transform:translate3d(0,-100%,0)}.md-datepicker-year-selector .md-button{min-height:36px}.md-datepicker-year-button{font-size:16px}.md-datepicker-year-button.md-datepicker-selected{font-size:24px}@media (max-width:600px){.md-datepicker-dialog{flex-direction:column;top:50%!important;left:50%!important;transform:translate3D(-50%,-50%,0);transform-origin:center center;position:fixed!important}.md-datepicker-dialog-enter{transform:translate3D(-50%,-50%,0) scale(.9)}.md-datepicker-header{min-width:auto;padding:16px 20px}.md-datepicker-header .md-datepicker-dayname{display:inline-block}.md-datepicker-body{width:296px}.md-datepicker-month{padding:0 6px}}.md-popover.md-rendering{opacity:0;transition:none!important}.md-dialog{box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12);min-width:280px;max-width:80%;max-height:80%;margin:auto;display:flex;flex-flow:column;flex-direction:row;overflow:hidden;position:fixed;top:50%;left:50%;z-index:11;border-radius:2px;-webkit-backface-visibility:hidden;backface-visibility:hidden;pointer-events:auto;transform:translate(-50%,-50%);transform-origin:center center;transition:opacity .15s cubic-bezier(.25,.8,.25,1),transform .2s cubic-bezier(.25,.8,.25,1);will-change:opacity,transform,left,top}.md-dialog>.md-dialog-actions,.md-dialog>.md-dialog-content,.md-dialog>.md-dialog-tabs,.md-dialog>.md-dialog-title{transition:opacity .3s cubic-bezier(.4,0,.2,1),transform .25s cubic-bezier(.4,0,.2,1);will-change:opacity,transform}.md-dialog-enter-active,.md-dialog-leave-active{opacity:0;transform:translate(-50%,-50%) scale(.9)}.md-dialog-enter-active>.md-dialog-actions,.md-dialog-enter-active>.md-dialog-content,.md-dialog-enter-active>.md-dialog-tabs,.md-dialog-enter-active>.md-dialog-title,.md-dialog-leave-active>.md-dialog-actions,.md-dialog-leave-active>.md-dialog-content,.md-dialog-leave-active>.md-dialog-tabs,.md-dialog-leave-active>.md-dialog-title{opacity:0;transform:scale(.95) translate3D(0,10%,0)}.md-dialog-container{display:flex;flex-flow:column}.md-dialog-container,.md-dialog-container .md-tabs{flex:1}.md-dialog-container .md-tabs-navigation{padding:0 12px}@media (max-width:600px){.md-dialog-container .md-tab{padding:12px}.md-dialog-fullscreen{max-width:100%;max-height:100%;position:fixed;top:0;right:0;bottom:0;left:0;border-radius:0;transform:none}.md-dialog-fullscreen.md-dialog-enter{opacity:0;transform:translate3D(0,30%,0)}.md-dialog-fullscreen.md-dialog-leave-active{opacity:0;transform:translate3D(0,0,0)}}.md-dialog-title{margin-bottom:20px;padding:24px 24px 0}.md-dialog-content{padding:0 24px 24px;flex:1;flex-basis:auto;overflow:auto;position:relative}.md-dialog-content:first-child{padding-top:24px}.md-dialog-content p:first-child:not(:only-child){margin-top:0}.md-dialog-content p:last-child:not(:only-child){margin-bottom:0}.md-dialog-actions{min-height:52px;padding:8px 8px 8px 24px;display:flex;align-items:center;justify-content:flex-end;position:relative}.md-dialog-actions:before{height:1px;position:absolute;top:-1px;right:0;left:0;content:\" \"}.md-dialog-actions .md-button{min-width:64px;margin:0}.md-dialog-actions .md-button+.md-button{margin-left:8px}.md-divider{height:1px;margin:0;padding:0;display:block;border:0;transition:margin-left .3s cubic-bezier(.4,0,.2,1);will-change:margin-left}.md-divider.md-inset{margin-left:72px}.md-drawer{position:absolute;top:0;bottom:0;left:0;z-index:8;transform:translate3D(-100%,0,0);transition:transform .4s cubic-bezier(.25,.8,.25,1);will-change:transform,box-shadow;width:400px;max-width:calc(100vw - 56px);overflow-x:hidden;overflow-y:auto}.md-drawer.md-right{right:0;left:auto;transform:translate3D(100%,0,0)}.md-drawer.md-fixed{position:fixed}.md-drawer.md-active{transform:translate3D(0,0,0);transition-timing-function:cubic-bezier(.4,0,.2,1)}.md-drawer.md-temporary.md-left+.md-app-container .md-content{border-left:none}.md-drawer.md-temporary.md-right-previous+.md-app-container .md-content{border-right:none}.md-drawer.md-temporary.md-active{box-shadow:0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)}.md-drawer.md-persistent:not(.md-active).md-left+.md-app-container .md-content{border-left:none}.md-drawer.md-persistent:not(.md-active).md-right-previous+.md-app-container .md-content{border-right:none}.md-drawer.md-persistent-mini{transform:translate3D(0,64px,0);transition:.3s cubic-bezier(.25,.8,.25,1);transition-property:transform,width;will-change:transform,box-shadow}.md-drawer.md-persistent-mini.md-left{border-right:1px solid}.md-drawer.md-persistent-mini.md-right{border-left:1px solid}.md-drawer.md-persistent-mini.md-active.md-left+.md-app-container .md-content{border-left:none}.md-drawer.md-persistent-mini.md-active.md-right-previous+.md-app-container .md-content{border-right:none}.md-drawer.md-persistent-mini:not(.md-active){width:70px!important;z-index:1;white-space:nowrap}.md-drawer.md-persistent-mini:not(.md-active) .md-toolbar{display:none}.md-drawer.md-persistent-mini:not(.md-active) .md-list-item-content{padding:0 23px}.md-drawer.md-persistent-mini.md-active{position:relative;transform:translate3D(0,0,0);white-space:normal}.md-drawer .md-list-item-container{font-size:14px;text-transform:none}@media (max-width:600px){.md-drawer{width:320px}.md-drawer.md-active{box-shadow:0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)}}@media (min-width:600px){.md-drawer:not(.md-temporary)~.md-overlay{background:none;pointer-events:none}.md-drawer.md-permanent{position:relative;transform:translate3D(0,0,0)}.md-drawer.md-permanent-full{z-index:3}.md-drawer.md-permanent-full .md-list{padding-top:0}.md-drawer.md-permanent-card,.md-drawer.md-permanent-clipped{z-index:1}.md-drawer.md-permanent-card{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);position:relative;border-radius:2px;transition:.3s cubic-bezier(.4,0,.2,1);transition-property:color,background-color;will-change:color,background-color;margin:8px;z-index:1}}@media (min-width:960px){.md-drawer.md-permanent-card{margin:16px}}@media (min-width:1280px){.md-drawer.md-permanent-card{margin:24px}}.md-elevation-0{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)}.md-elevation-1{box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)}.md-elevation-2{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.md-elevation-3{box-shadow:0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12)}.md-elevation-4{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.md-elevation-5{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12)}.md-elevation-6{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12)}.md-elevation-7{box-shadow:0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12)}.md-elevation-8{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.md-elevation-9{box-shadow:0 5px 6px -3px rgba(0,0,0,.2),0 9px 12px 1px rgba(0,0,0,.14),0 3px 16px 2px rgba(0,0,0,.12)}.md-elevation-10{box-shadow:0 6px 6px -3px rgba(0,0,0,.2),0 10px 14px 1px rgba(0,0,0,.14),0 4px 18px 3px rgba(0,0,0,.12)}.md-elevation-11{box-shadow:0 6px 7px -4px rgba(0,0,0,.2),0 11px 15px 1px rgba(0,0,0,.14),0 4px 20px 3px rgba(0,0,0,.12)}.md-elevation-12{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 12px 17px 2px rgba(0,0,0,.14),0 5px 22px 4px rgba(0,0,0,.12)}.md-elevation-13{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 13px 19px 2px rgba(0,0,0,.14),0 5px 24px 4px rgba(0,0,0,.12)}.md-elevation-14{box-shadow:0 7px 9px -4px rgba(0,0,0,.2),0 14px 21px 2px rgba(0,0,0,.14),0 5px 26px 4px rgba(0,0,0,.12)}.md-elevation-15{box-shadow:0 8px 9px -5px rgba(0,0,0,.2),0 15px 22px 2px rgba(0,0,0,.14),0 6px 28px 5px rgba(0,0,0,.12)}.md-elevation-16{box-shadow:0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)}.md-elevation-17{box-shadow:0 8px 11px -5px rgba(0,0,0,.2),0 17px 26px 2px rgba(0,0,0,.14),0 6px 32px 5px rgba(0,0,0,.12)}.md-elevation-18{box-shadow:0 9px 11px -5px rgba(0,0,0,.2),0 18px 28px 2px rgba(0,0,0,.14),0 7px 34px 6px rgba(0,0,0,.12)}.md-elevation-19{box-shadow:0 9px 12px -6px rgba(0,0,0,.2),0 19px 29px 2px rgba(0,0,0,.14),0 7px 36px 6px rgba(0,0,0,.12)}.md-elevation-20{box-shadow:0 10px 13px -6px rgba(0,0,0,.2),0 20px 31px 3px rgba(0,0,0,.14),0 8px 38px 7px rgba(0,0,0,.12)}.md-elevation-21{box-shadow:0 10px 13px -6px rgba(0,0,0,.2),0 21px 33px 3px rgba(0,0,0,.14),0 8px 40px 7px rgba(0,0,0,.12)}.md-elevation-22{box-shadow:0 10px 14px -6px rgba(0,0,0,.2),0 22px 35px 3px rgba(0,0,0,.14),0 8px 42px 7px rgba(0,0,0,.12)}.md-elevation-23{box-shadow:0 11px 14px -7px rgba(0,0,0,.2),0 23px 36px 3px rgba(0,0,0,.14),0 9px 44px 8px rgba(0,0,0,.12)}.md-elevation-24{box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)}.md-empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;max-width:420px;padding:36px;margin:0 auto;position:relative;transition:opacity .15s cubic-bezier(0,0,.2,1),transform .3s cubic-bezier(0,0,.2,1);will-change:transform,opacity}.md-empty-state.md-rounded{max-width:auto;border-radius:50%}.md-empty-state.md-rounded .md-empty-state-container{padding:40px;position:absolute;top:0;right:0;bottom:0;left:0}.md-empty-state .md-button{margin:.5em 0 0}.md-empty-state-enter{opacity:0;transform:scale(.87)}.md-empty-state-enter .md-empty-state-container{opacity:0}.md-empty-state-container{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:opacity .4s cubic-bezier(.4,0,.2,1);will-change:opacity}.md-empty-state-icon{width:160px;min-width:160px;height:160px;font-size:160px!important;margin:0}.md-empty-state-label{font-size:26px;font-weight:500;line-height:40px}.md-empty-state-description{margin:1em 0;font-size:16px;line-height:24px}.md-menu.md-select{display:flex;flex:1;overflow:auto}.md-menu.md-select:not(.md-disabled) .md-icon,.md-menu.md-select:not(.md-disabled) .md-input{cursor:pointer;outline:none}.md-menu.md-select .md-input{flex:1;min-width:0}.md-menu.md-select .md-input-fake,.md-menu.md-select select{width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;position:absolute;clip:rect(0 0 0 0);border:0}.md-menu-content.md-select-menu{z-index:12;width:100%}.md-menu-content.md-select-menu.md-menu-content-enter{transform:translate3d(0,-8px,0) scaleY(.3)}.md-menu-content.md-select-menu .md-list{transition:opacity .3s cubic-bezier(.55,0,.55,.2)}.md-menu{display:inline-block}.md-menu>.md-button{margin:0}.md-menu-content{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);min-width:112px;max-width:280px;max-height:35vh;display:flex;flex-direction:row;position:absolute;z-index:9;border-radius:2px;transition:transform .2s cubic-bezier(.25,.8,.25,1),opacity .3s cubic-bezier(.25,.8,.25,1);will-change:opacity,transform,top,left!important}.md-menu-content.md-shallow{position:fixed!important;top:-9999em!important;left:-9999em!important;pointer-events:none}.md-menu-content.md-menu-content-enter-active{opacity:1;transform:translateZ(0)}.md-menu-content.md-menu-content-leave-active{transition:opacity .4s cubic-bezier(.4,0,.2,1);opacity:0}.md-menu-content.md-menu-content-enter.md-menu-content-top-start{transform-origin:bottom left;transform:translate3d(0,8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-top-end{transform-origin:bottom right;transform:translate3d(0,8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-right-start{transform-origin:left top;transform:translate3d(0,-8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-right-end{transform-origin:left bottom;transform:translate3d(0,8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-bottom-start{transform-origin:top left;transform:translate3d(0,-8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-bottom-end{transform-origin:top right;transform:translate3d(0,-8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-left-start{transform-origin:right top;transform:translate3d(0,-8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter.md-menu-content-left-end{transform-origin:right bottom;transform:translate3d(0,8px,0) scaleY(.95)}.md-menu-content.md-menu-content-enter .md-list{opacity:0}.md-menu-content.md-menu-content-medium{min-width:168px}.md-menu-content.md-menu-content-big{min-width:224px}.md-menu-content.md-menu-content-huge{min-width:280px}.md-menu-content-container{flex:1;overflow:auto}.md-menu-content-container .md-list{transition:opacity .3s cubic-bezier(.25,.8,.25,1);will-change:opacity;font-family:Roboto,sans-serif;text-transform:none;white-space:nowrap}.md-menu-content-container .md-list .md-list-item-container{height:100%}@media (max-width:960px){.md-menu-content-container .md-list{font-size:14px}}.md-list{margin:0;padding:8px 0;display:flex;flex-flow:column nowrap;position:relative;list-style:none}.md-list.md-dense{padding:4px 0}.md-list .md-divider{margin-top:-1px}.md-list .md-subheader.md-inset{padding-left:72px}.md-list>.md-subheader:first-of-type{margin-top:-8px}.md-optgroup .md-subheader{text-transform:uppercase}.md-optgroup .md-ripple.md-list-item-content{padding-left:24px}.md-file{display:flex;flex:1}.md-file input[type=file]{width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;position:absolute;clip:rect(0 0 0 0);border:0}.md-file .md-icon{cursor:pointer}.md-highlight-text{flex:1}.md-highlight-text-match{font-weight:500}.md-image{display:flex;justify-content:center;align-items:center}.md-layout{display:flex;flex-wrap:wrap}.md-layout .md-layout{flex:1}.md-layout .md-layout-nowrap{flex-wrap:nowrap}.md-layout.md-centered{width:100%;max-width:1200px;margin:0 auto}.md-layout.md-gutter{margin-right:-20px;margin-left:-20px}.md-layout.md-gutter>.md-layout-item{padding-right:20px;padding-left:20px}@media (max-width:1903px){.md-layout.md-gutter{margin-right:-20px;margin-left:-20px}.md-layout.md-gutter>.md-layout-item{padding-right:20px;padding-left:20px}}@media (max-width:1280px){.md-layout.md-gutter{margin-right:-12px;margin-left:-12px}.md-layout.md-gutter>.md-layout-item{padding-right:12px;padding-left:12px}}@media (max-width:960px){.md-layout.md-gutter{margin-right:-8px;margin-left:-8px}.md-layout.md-gutter>.md-layout-item{padding-right:8px;padding-left:8px}}@media (max-width:600px){.md-layout.md-gutter{margin-right:-4px;margin-left:-4px}.md-layout.md-gutter>.md-layout-item{padding-right:4px;padding-left:4px}}.md-layout.md-alignment-top-left{justify-content:flex-start;align-items:flex-start}.md-layout.md-alignment-top-center{justify-content:center;align-items:flex-start}.md-layout.md-alignment-top-right{justify-content:flex-end;align-items:flex-start}.md-layout.md-alignment-top-space-around{justify-content:space-around;align-items:flex-start}.md-layout.md-alignment-top-space-between{justify-content:space-between;align-items:flex-start}.md-layout.md-alignment-center-left{justify-content:flex-start;align-items:center}.md-layout.md-alignment-center,.md-layout.md-alignment-center-center{justify-content:center;align-items:center}.md-layout.md-alignment-center-right{justify-content:flex-end;align-items:center}.md-layout.md-alignment-center-space-around{justify-content:space-around;align-items:center}.md-layout.md-alignment-center-space-between{justify-content:space-between;align-items:center}.md-layout.md-alignment-bottom-left{justify-content:flex-start;align-items:flex-end}.md-layout.md-alignment-bottom-center{justify-content:center;align-items:flex-end}.md-layout.md-alignment-bottom-right{justify-content:flex-end;align-items:flex-end}.md-layout.md-alignment-bottom-space-around{justify-content:space-around;align-items:flex-end}.md-layout.md-alignment-bottom-space-between{justify-content:space-between;align-items:flex-end}.md-layout.md-alignment-space-around-left{justify-content:flex-start;align-items:space-around}.md-layout.md-alignment-space-around-center{justify-content:center;align-items:space-around}.md-layout.md-alignment-space-around-right{justify-content:flex-end;align-items:space-around}.md-layout.md-alignment-space-around-space-around{justify-content:space-around;align-items:space-around}.md-layout.md-alignment-space-around-space-between{justify-content:space-between;align-items:space-around}.md-layout.md-alignment-space-between-left{justify-content:flex-start;align-items:space-between}.md-layout.md-alignment-space-between-center{justify-content:center;align-items:space-between}.md-layout.md-alignment-space-between-right{justify-content:flex-end;align-items:space-between}.md-layout.md-alignment-space-between-space-around{justify-content:space-around;align-items:space-between}.md-layout.md-alignment-space-between-space-between{justify-content:space-between;align-items:space-between}.md-layout-item{flex:1 1}.md-layout-item.md-layout{margin:0}.md-layout-item.md-size{flex:1 1}.md-layout-item.md-size-5{min-width:5%;max-width:5%;flex:0 1 5%}.md-layout-item.md-size-10{min-width:10%;max-width:10%;flex:0 1 10%}.md-layout-item.md-size-15{min-width:15%;max-width:15%;flex:0 1 15%}.md-layout-item.md-size-20{min-width:20%;max-width:20%;flex:0 1 20%}.md-layout-item.md-size-25{min-width:25%;max-width:25%;flex:0 1 25%}.md-layout-item.md-size-30{min-width:30%;max-width:30%;flex:0 1 30%}.md-layout-item.md-size-35{min-width:35%;max-width:35%;flex:0 1 35%}.md-layout-item.md-size-40{min-width:40%;max-width:40%;flex:0 1 40%}.md-layout-item.md-size-45{min-width:45%;max-width:45%;flex:0 1 45%}.md-layout-item.md-size-50{min-width:50%;max-width:50%;flex:0 1 50%}.md-layout-item.md-size-55{min-width:55%;max-width:55%;flex:0 1 55%}.md-layout-item.md-size-60{min-width:60%;max-width:60%;flex:0 1 60%}.md-layout-item.md-size-65{min-width:65%;max-width:65%;flex:0 1 65%}.md-layout-item.md-size-70{min-width:70%;max-width:70%;flex:0 1 70%}.md-layout-item.md-size-75{min-width:75%;max-width:75%;flex:0 1 75%}.md-layout-item.md-size-80{min-width:80%;max-width:80%;flex:0 1 80%}.md-layout-item.md-size-85{min-width:85%;max-width:85%;flex:0 1 85%}.md-layout-item.md-size-90{min-width:90%;max-width:90%;flex:0 1 90%}.md-layout-item.md-size-95{min-width:95%;max-width:95%;flex:0 1 95%}.md-layout-item.md-size-33{min-width:33.3333%;max-width:33.3333%;flex:0 1 33.3333%}.md-layout-item.md-size-66{min-width:66.6666%;max-width:66.6666%;flex:0 1 66.6666%}.md-layout-item.md-size-100{min-width:100%;max-width:100%;margin-left:0!important;flex:1 1 100%}@media (min-width:1904px){.md-layout-item.md-xlarge-size{flex:1 1}.md-layout-item.md-xlarge-size-5{min-width:5%;max-width:5%;flex:0 1 5%}.md-layout-item.md-xlarge-size-10{min-width:10%;max-width:10%;flex:0 1 10%}.md-layout-item.md-xlarge-size-15{min-width:15%;max-width:15%;flex:0 1 15%}.md-layout-item.md-xlarge-size-20{min-width:20%;max-width:20%;flex:0 1 20%}.md-layout-item.md-xlarge-size-25{min-width:25%;max-width:25%;flex:0 1 25%}.md-layout-item.md-xlarge-size-30{min-width:30%;max-width:30%;flex:0 1 30%}.md-layout-item.md-xlarge-size-35{min-width:35%;max-width:35%;flex:0 1 35%}.md-layout-item.md-xlarge-size-40{min-width:40%;max-width:40%;flex:0 1 40%}.md-layout-item.md-xlarge-size-45{min-width:45%;max-width:45%;flex:0 1 45%}.md-layout-item.md-xlarge-size-50{min-width:50%;max-width:50%;flex:0 1 50%}.md-layout-item.md-xlarge-size-55{min-width:55%;max-width:55%;flex:0 1 55%}.md-layout-item.md-xlarge-size-60{min-width:60%;max-width:60%;flex:0 1 60%}.md-layout-item.md-xlarge-size-65{min-width:65%;max-width:65%;flex:0 1 65%}.md-layout-item.md-xlarge-size-70{min-width:70%;max-width:70%;flex:0 1 70%}.md-layout-item.md-xlarge-size-75{min-width:75%;max-width:75%;flex:0 1 75%}.md-layout-item.md-xlarge-size-80{min-width:80%;max-width:80%;flex:0 1 80%}.md-layout-item.md-xlarge-size-85{min-width:85%;max-width:85%;flex:0 1 85%}.md-layout-item.md-xlarge-size-90{min-width:90%;max-width:90%;flex:0 1 90%}.md-layout-item.md-xlarge-size-95{min-width:95%;max-width:95%;flex:0 1 95%}.md-layout-item.md-xlarge-size-33{min-width:33.3333%;max-width:33.3333%;flex:0 1 33.3333%}.md-layout-item.md-xlarge-size-66{min-width:66.6666%;max-width:66.6666%;flex:0 1 66.6666%}.md-layout-item.md-xlarge-size-100{min-width:100%;max-width:100%;margin-left:0!important;flex:1 1 100%}}@media (max-width:1903px){.md-layout-item.md-large-size{flex:1 1}.md-layout-item.md-large-size-5{min-width:5%;max-width:5%;flex:0 1 5%}.md-layout-item.md-large-size-10{min-width:10%;max-width:10%;flex:0 1 10%}.md-layout-item.md-large-size-15{min-width:15%;max-width:15%;flex:0 1 15%}.md-layout-item.md-large-size-20{min-width:20%;max-width:20%;flex:0 1 20%}.md-layout-item.md-large-size-25{min-width:25%;max-width:25%;flex:0 1 25%}.md-layout-item.md-large-size-30{min-width:30%;max-width:30%;flex:0 1 30%}.md-layout-item.md-large-size-35{min-width:35%;max-width:35%;flex:0 1 35%}.md-layout-item.md-large-size-40{min-width:40%;max-width:40%;flex:0 1 40%}.md-layout-item.md-large-size-45{min-width:45%;max-width:45%;flex:0 1 45%}.md-layout-item.md-large-size-50{min-width:50%;max-width:50%;flex:0 1 50%}.md-layout-item.md-large-size-55{min-width:55%;max-width:55%;flex:0 1 55%}.md-layout-item.md-large-size-60{min-width:60%;max-width:60%;flex:0 1 60%}.md-layout-item.md-large-size-65{min-width:65%;max-width:65%;flex:0 1 65%}.md-layout-item.md-large-size-70{min-width:70%;max-width:70%;flex:0 1 70%}.md-layout-item.md-large-size-75{min-width:75%;max-width:75%;flex:0 1 75%}.md-layout-item.md-large-size-80{min-width:80%;max-width:80%;flex:0 1 80%}.md-layout-item.md-large-size-85{min-width:85%;max-width:85%;flex:0 1 85%}.md-layout-item.md-large-size-90{min-width:90%;max-width:90%;flex:0 1 90%}.md-layout-item.md-large-size-95{min-width:95%;max-width:95%;flex:0 1 95%}.md-layout-item.md-large-size-33{min-width:33.3333%;max-width:33.3333%;flex:0 1 33.3333%}.md-layout-item.md-large-size-66{min-width:66.6666%;max-width:66.6666%;flex:0 1 66.6666%}.md-layout-item.md-large-size-100{min-width:100%;max-width:100%;margin-left:0!important;flex:1 1 100%}}@media (max-width:1280px){.md-layout-item.md-medium-size{flex:1 1}.md-layout-item.md-medium-size-5{min-width:5%;max-width:5%;flex:0 1 5%}.md-layout-item.md-medium-size-10{min-width:10%;max-width:10%;flex:0 1 10%}.md-layout-item.md-medium-size-15{min-width:15%;max-width:15%;flex:0 1 15%}.md-layout-item.md-medium-size-20{min-width:20%;max-width:20%;flex:0 1 20%}.md-layout-item.md-medium-size-25{min-width:25%;max-width:25%;flex:0 1 25%}.md-layout-item.md-medium-size-30{min-width:30%;max-width:30%;flex:0 1 30%}.md-layout-item.md-medium-size-35{min-width:35%;max-width:35%;flex:0 1 35%}.md-layout-item.md-medium-size-40{min-width:40%;max-width:40%;flex:0 1 40%}.md-layout-item.md-medium-size-45{min-width:45%;max-width:45%;flex:0 1 45%}.md-layout-item.md-medium-size-50{min-width:50%;max-width:50%;flex:0 1 50%}.md-layout-item.md-medium-size-55{min-width:55%;max-width:55%;flex:0 1 55%}.md-layout-item.md-medium-size-60{min-width:60%;max-width:60%;flex:0 1 60%}.md-layout-item.md-medium-size-65{min-width:65%;max-width:65%;flex:0 1 65%}.md-layout-item.md-medium-size-70{min-width:70%;max-width:70%;flex:0 1 70%}.md-layout-item.md-medium-size-75{min-width:75%;max-width:75%;flex:0 1 75%}.md-layout-item.md-medium-size-80{min-width:80%;max-width:80%;flex:0 1 80%}.md-layout-item.md-medium-size-85{min-width:85%;max-width:85%;flex:0 1 85%}.md-layout-item.md-medium-size-90{min-width:90%;max-width:90%;flex:0 1 90%}.md-layout-item.md-medium-size-95{min-width:95%;max-width:95%;flex:0 1 95%}.md-layout-item.md-medium-size-33{min-width:33.3333%;max-width:33.3333%;flex:0 1 33.3333%}.md-layout-item.md-medium-size-66{min-width:66.6666%;max-width:66.6666%;flex:0 1 66.6666%}.md-layout-item.md-medium-size-100{min-width:100%;max-width:100%;margin-left:0!important;flex:1 1 100%}}@media (max-width:960px){.md-layout-item.md-small-size{flex:1 1}.md-layout-item.md-small-size-5{min-width:5%;max-width:5%;flex:0 1 5%}.md-layout-item.md-small-size-10{min-width:10%;max-width:10%;flex:0 1 10%}.md-layout-item.md-small-size-15{min-width:15%;max-width:15%;flex:0 1 15%}.md-layout-item.md-small-size-20{min-width:20%;max-width:20%;flex:0 1 20%}.md-layout-item.md-small-size-25{min-width:25%;max-width:25%;flex:0 1 25%}.md-layout-item.md-small-size-30{min-width:30%;max-width:30%;flex:0 1 30%}.md-layout-item.md-small-size-35{min-width:35%;max-width:35%;flex:0 1 35%}.md-layout-item.md-small-size-40{min-width:40%;max-width:40%;flex:0 1 40%}.md-layout-item.md-small-size-45{min-width:45%;max-width:45%;flex:0 1 45%}.md-layout-item.md-small-size-50{min-width:50%;max-width:50%;flex:0 1 50%}.md-layout-item.md-small-size-55{min-width:55%;max-width:55%;flex:0 1 55%}.md-layout-item.md-small-size-60{min-width:60%;max-width:60%;flex:0 1 60%}.md-layout-item.md-small-size-65{min-width:65%;max-width:65%;flex:0 1 65%}.md-layout-item.md-small-size-70{min-width:70%;max-width:70%;flex:0 1 70%}.md-layout-item.md-small-size-75{min-width:75%;max-width:75%;flex:0 1 75%}.md-layout-item.md-small-size-80{min-width:80%;max-width:80%;flex:0 1 80%}.md-layout-item.md-small-size-85{min-width:85%;max-width:85%;flex:0 1 85%}.md-layout-item.md-small-size-90{min-width:90%;max-width:90%;flex:0 1 90%}.md-layout-item.md-small-size-95{min-width:95%;max-width:95%;flex:0 1 95%}.md-layout-item.md-small-size-33{min-width:33.3333%;max-width:33.3333%;flex:0 1 33.3333%}.md-layout-item.md-small-size-66{min-width:66.6666%;max-width:66.6666%;flex:0 1 66.6666%}.md-layout-item.md-small-size-100{min-width:100%;max-width:100%;margin-left:0!important;flex:1 1 100%}}@media (max-width:600px){.md-layout-item.md-xsmall-size{flex:1 1}.md-layout-item.md-xsmall-size-5{min-width:5%;max-width:5%;flex:0 1 5%}.md-layout-item.md-xsmall-size-10{min-width:10%;max-width:10%;flex:0 1 10%}.md-layout-item.md-xsmall-size-15{min-width:15%;max-width:15%;flex:0 1 15%}.md-layout-item.md-xsmall-size-20{min-width:20%;max-width:20%;flex:0 1 20%}.md-layout-item.md-xsmall-size-25{min-width:25%;max-width:25%;flex:0 1 25%}.md-layout-item.md-xsmall-size-30{min-width:30%;max-width:30%;flex:0 1 30%}.md-layout-item.md-xsmall-size-35{min-width:35%;max-width:35%;flex:0 1 35%}.md-layout-item.md-xsmall-size-40{min-width:40%;max-width:40%;flex:0 1 40%}.md-layout-item.md-xsmall-size-45{min-width:45%;max-width:45%;flex:0 1 45%}.md-layout-item.md-xsmall-size-50{min-width:50%;max-width:50%;flex:0 1 50%}.md-layout-item.md-xsmall-size-55{min-width:55%;max-width:55%;flex:0 1 55%}.md-layout-item.md-xsmall-size-60{min-width:60%;max-width:60%;flex:0 1 60%}.md-layout-item.md-xsmall-size-65{min-width:65%;max-width:65%;flex:0 1 65%}.md-layout-item.md-xsmall-size-70{min-width:70%;max-width:70%;flex:0 1 70%}.md-layout-item.md-xsmall-size-75{min-width:75%;max-width:75%;flex:0 1 75%}.md-layout-item.md-xsmall-size-80{min-width:80%;max-width:80%;flex:0 1 80%}.md-layout-item.md-xsmall-size-85{min-width:85%;max-width:85%;flex:0 1 85%}.md-layout-item.md-xsmall-size-90{min-width:90%;max-width:90%;flex:0 1 90%}.md-layout-item.md-xsmall-size-95{min-width:95%;max-width:95%;flex:0 1 95%}.md-layout-item.md-xsmall-size-33{min-width:33.3333%;max-width:33.3333%;flex:0 1 33.3333%}.md-layout-item.md-xsmall-size-66{min-width:66.6666%;max-width:66.6666%;flex:0 1 66.6666%}.md-layout-item.md-xsmall-size-100{min-width:100%;max-width:100%;margin-left:0!important;flex:1 1 100%}}.md-hide{display:none}@media (min-width:1904px){.md-xlarge-hide{display:none}}@media (max-width:1903px){.md-large-hide{display:none}}@media (max-width:1280px){.md-medium-hide{display:none}}@media (max-width:960px){.md-small-hide{display:none}}@media (max-width:600px){.md-xsmall-hide{display:none}}.md-list-item{height:auto;position:relative;z-index:2}.md-list-item.md-inset .md-list-item-content{padding-left:72px}.md-list-item .md-icon{margin:0;transition-property:color,margin-right}.md-list-item-container{width:100%;font-size:16px;font-weight:400;text-align:left;text-transform:none}.md-list-item-container:not(.md-list-item-default):not([disabled]){-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:pointer}.md-list-item-container.md-button-clean:hover{opacity:1;text-decoration:none}.md-list-item-content{min-height:48px;padding:4px 16px;display:flex;align-items:center;justify-content:space-between;transition:padding .4s cubic-bezier(.25,.8,.25,1);will-change:padding}.md-list.md-dense .md-list-item-content{min-height:40px;font-size:13px}.md-list.md-dense .md-list-item-content>.md-avatar{margin-top:0;margin-bottom:0}.md-list.md-dense .md-list-item-content>.md-avatar:not(.md-small){width:36px;min-width:36px;height:36px}.md-list.md-dense .md-list-item-content>.md-avatar:first-child{margin-right:20px}.md-list.md-double-line .md-list-item-content{min-height:72px}.md-list.md-double-line.md-dense .md-list-item-content{min-height:60px}.md-list.md-triple-line .md-list-item-content{min-height:88px}.md-list.md-triple-line.md-dense .md-list-item-content{min-height:76px}.md-list-item-content .md-list-action{margin:0 -10px 0 0}.md-list-item-content .md-list-action:last-of-type{margin:0 -10px 0 16px}.md-list.md-triple-line .md-list-item-content .md-list-action:last-of-type{align-self:flex-start}.md-list-item-content>.md-icon:first-child{margin-right:32px}.md-list-item-content>.md-icon:last-child{margin-left:16px}.md-list-item-content>.md-checkbox,.md-list-item-content>.md-radio{margin:0}.md-list-item-content>.md-checkbox:first-child,.md-list-item-content>.md-radio:first-child{margin-right:36px}.md-list-item-content>.md-switch{margin:0}.md-list-item-content>.md-switch:first-child{margin-right:22px}.md-list-item-content>.md-avatar{margin:4px 0}.md-list-item-content>.md-avatar:first-child{margin-right:16px}.md-list-item-text{flex:1;display:flex;flex-direction:column;align-items:flex-start;overflow:hidden;line-height:1.25em;white-space:nowrap}.md-list.md-dense .md-list-item-text{font-size:13px}.md-list-item-text *{width:100%;margin:0;overflow:hidden;line-height:1.25em;text-overflow:ellipsis}.md-list-item-text :nth-child(2),.md-list-item-text :nth-child(3){font-size:14px}.md-list.md-dense .md-list-item-text *{font-size:13px}.md-list-item-expand{border-top:1px solid transparent;border-bottom:1px solid transparent;transition:border .4s cubic-bezier(.25,.8,.25,1);will-change:border}.md-list-item-expand.md-active .md-list-expand-icon{perspective:1000px;perspective-origin:50% 50%;transform:rotateX(180deg)}.md-list-item-expand.md-active .md-list-expand{opacity:1;transform:translate3D(0,0,0)}.md-list-item-expand .md-list-expand{height:0;opacity:0;overflow:hidden;transform:translate3D(0,-24px,0);transition:.4s cubic-bezier(.25,.8,.25,1);transition-property:transform,opacity;will-change:transform,opacity}.md-list-item-expand .md-list-expand-icon{transition:transform .4s cubic-bezier(.25,.8,.25,1);will-change:transform}@keyframes b{0%{transform:translateX(0)}20%{animation-timing-function:cubic-bezier(.5,0,.7,.5);transform:translateX(0)}60%{animation-timing-function:cubic-bezier(.3,.38,.55,.96);transform:translateX(83.67%)}to{transform:translateX(200.61%)}}@keyframes c{0%{transform:scaleX(.08)}35%{animation-timing-function:cubic-bezier(.33,.12,.79,1);transform:scaleX(.08)}70%{animation-timing-function:cubic-bezier(.06,.11,.6,1);transform:scaleX(.66)}to{transform:scaleX(.08)}}@keyframes d{0%{animation-timing-function:cubic-bezier(.15,0,.52,.41);transform:translateX(0)}25%{animation-timing-function:cubic-bezier(.31,.28,.8,.73);transform:translateX(37.65%)}50%{animation-timing-function:cubic-bezier(.4,.63,.6,.9);transform:translateX(84.39%)}to{transform:translateX(160.28%)}}@keyframes e{0%{animation-timing-function:cubic-bezier(.15,0,.52,.41);transform:scaleX(.08)}20%{animation-timing-function:cubic-bezier(.31,.28,.8,.73);transform:scaleX(.46)}45%{animation-timing-function:cubic-bezier(.4,.63,.6,.9);transform:scaleX(.73)}to{transform:scaleX(.08)}}@keyframes f{to{transform:translate3D(-8px,0,0)}}.md-progress-bar{height:5px;overflow:hidden;position:relative;transform:translateZ(0) scaleY(1);transform-origin:center center;transition:opacity .3s cubic-bezier(.4,0,.2,1),transform .4s cubic-bezier(.4,0,.2,1);will-change:opacity,transform}.md-progress-bar.md-indeterminate .md-progress-bar-track,.md-progress-bar.md-query .md-progress-bar-track{left:-150%;animation:b 2s infinite linear}.md-progress-bar.md-indeterminate .md-progress-bar-track:after,.md-progress-bar.md-query .md-progress-bar-track:after{animation:c 2s infinite linear}.md-progress-bar.md-indeterminate .md-progress-bar-fill,.md-progress-bar.md-query .md-progress-bar-fill{left:-55%;animation:d 2s infinite linear}.md-progress-bar.md-indeterminate .md-progress-bar-fill:after,.md-progress-bar.md-query .md-progress-bar-fill:after{animation:e 2s infinite linear}.md-progress-bar.md-buffer .md-progress-bar-buffer,.md-progress-bar.md-buffer .md-progress-bar-fill,.md-progress-bar.md-buffer .md-progress-bar-track,.md-progress-bar.md-determinate .md-progress-bar-buffer,.md-progress-bar.md-determinate .md-progress-bar-fill,.md-progress-bar.md-determinate .md-progress-bar-track{transition:.25s cubic-bezier(.25,.8,.25,1)}.md-progress-bar.md-determinate .md-progress-bar-track{display:none}.md-progress-bar.md-buffer .md-progress-bar-buffer{border-top:4px dotted;animation:f .25s infinite linear}.md-progress-bar.md-query{transform:rotate(180deg)}.md-progress-bar-enter,.md-progress-bar-leave-active{opacity:.5;transform:translateZ(0) scaleY(0)}.md-progress-bar-buffer,.md-progress-bar-fill,.md-progress-bar-track{transform-origin:top left}.md-progress-bar-buffer,.md-progress-bar-buffer:after,.md-progress-bar-fill,.md-progress-bar-fill:after,.md-progress-bar-track,.md-progress-bar-track:after{width:100%;height:100%;position:absolute;will-change:transform}.md-progress-bar-buffer:after,.md-progress-bar-fill:after,.md-progress-bar-track:after{display:inline-block;left:0;content:\" \"}@keyframes g{0%{transform:rotate(0)}to{transform:rotate(1turn)}}@keyframes h{0%{opacity:0;transform:rotate(-90deg) translateZ(0)}20%{opacity:1}to{transform:rotate(270deg) translateZ(0)}}.md-progress-spinner{display:inline-flex;position:relative}.md-progress-spinner.md-indeterminate{animation:g 2s linear infinite}.md-progress-spinner.md-indeterminate.md-progress-spinner-enter,.md-progress-spinner.md-indeterminate.md-progress-spinner-leave-active{transition-duration:.4s}.md-progress-spinner.md-indeterminate.md-progress-spinner-enter .md-progress-spinner-draw,.md-progress-spinner.md-indeterminate.md-progress-spinner-leave-active .md-progress-spinner-draw{opacity:0;transform:scale(.1)}.md-progress-spinner.md-indeterminate .md-progress-spinner-circle{animation:4s infinite cubic-bezier(.25,.8,.25,1)}.md-progress-spinner.md-determinate.md-progress-spinner-enter-active,.md-progress-spinner.md-determinate.md-progress-spinner-leave-active{transition-duration:2s}.md-progress-spinner.md-determinate.md-progress-spinner-enter-active .md-progress-spinner-draw,.md-progress-spinner.md-determinate.md-progress-spinner-leave-active .md-progress-spinner-draw{animation:h 1.98s cubic-bezier(.25,.8,.25,1) forwards}.md-progress-spinner.md-determinate .md-progress-spinner-draw{transition:none}.md-progress-spinner-draw{overflow:visible;transform:scale(1) rotate(-90deg);transform-origin:center;transition:.4s cubic-bezier(.25,.8,.25,1);will-change:opacity,transform}.md-progress-spinner-circle{fill:none;transform-origin:center;transition:stroke-dashoffset .25s cubic-bezier(.25,.8,.25,1);will-change:stroke-dashoffset,stroke-dasharray,stroke-width,animation-name,r}.md-radio{width:auto;margin:16px 16px 16px 0;display:inline-flex;position:relative}.md-radio:not(.md-disabled),.md-radio:not(.md-disabled) .md-radio-label{cursor:pointer}.md-radio .md-radio-container{width:20px;min-width:20px;height:20px;position:relative;border:2px solid transparent;border-radius:50%;transition:.4s cubic-bezier(.25,.8,.25,1)}.md-radio .md-radio-container:focus{outline:none}.md-radio .md-radio-container:after,.md-radio .md-radio-container:before{position:absolute;transition:.4s cubic-bezier(.55,0,.55,.2);content:\" \"}.md-radio .md-radio-container:before{width:48px;height:48px;top:50%;left:50%;z-index:6;border-radius:50%;transform:translate(-50%,-50%)}.md-radio .md-radio-container:after{position:absolute;top:3px;right:3px;bottom:3px;left:3px;border-radius:50%;opacity:0;transform:scale3D(.38,.38,1);content:\" \"}.md-radio .md-radio-container .md-ripple{width:48px!important;height:48px!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%);border-radius:50%}.md-radio .md-radio-container input{position:absolute;left:-999em}.md-radio .md-radio-label{height:20px;padding-left:16px;position:relative;line-height:20px}.md-radio.md-checked .md-radio-container:after{opacity:1;transform:scale3D(1,1,1);transition:.4s cubic-bezier(.25,.8,.25,1)}.md-radio.md-required label:after{position:absolute;top:2px;right:0;transform:translateX(calc(100% + 2px));content:\"*\";line-height:1em;vertical-align:top}.md-snackbar{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);min-width:288px;max-width:568px;min-height:48px;max-height:80px;padding:14px 24px;display:flex;align-items:center;position:fixed;z-index:14;border-radius:2px;transition:.4s cubic-bezier(.4,0,.2,1);will-change:background-color,color,opacity,transform}.md-snackbar.md-position-center{margin:0 auto;right:0;bottom:0;left:0}.md-snackbar.md-position-center.md-snackbar-enter,.md-snackbar.md-position-center.md-snackbar-leave-active{transform:translate3D(0,calc(100% + 8px),0)}.md-snackbar.md-position-left{bottom:24px;left:24px}.md-snackbar.md-position-left.md-snackbar-enter,.md-snackbar.md-position-left.md-snackbar-leave-active{transform:translate3D(0,calc(100% + 32px),0)}.md-snackbar-enter,.md-snackbar-enter .md-snackbar-content,.md-snackbar-leave-active,.md-snackbar-leave-active .md-snackbar-content{opacity:0}.md-snackbar-content{flex:1;display:flex;align-items:center;justify-content:space-between;transition:opacity .38s cubic-bezier(.55,0,.55,.2)}.md-snackbar-content .md-button{min-width:0;margin:-8px -8px -8px 36px}.md-snackbar-content .md-button+.md-button{margin-left:16px}@media (max-width:600px){.md-snackbar{left:0;transform:none;border-radius:0}.md-snackbar-content .md-button{margin-left:12px}}.md-speed-dial{display:inline-flex;flex-direction:column}.md-speed-dial.md-top-left,.md-speed-dial.md-top-right{position:absolute;top:24px}.md-speed-dial.md-bottom-left,.md-speed-dial.md-bottom-right{position:absolute;bottom:24px}.md-speed-dial.md-bottom-center,.md-speed-dial.md-top-center{position:absolute;left:50%;transform:translateX(-50%)}.md-speed-dial.md-top-center{top:24px}.md-speed-dial.md-bottom-center{bottom:24px}.md-speed-dial.md-bottom-right,.md-speed-dial.md-top-right{right:24px}.md-speed-dial.md-bottom-left,.md-speed-dial.md-top-left{left:24px}.md-speed-dial.md-fixed{position:fixed}.md-speed-dial.md-direction-top.md-effect-fling .md-speed-dial-content .md-button{transform:translate3d(0,50%,0) scale(.8)}.md-speed-dial.md-direction-top .md-speed-dial-target{order:2;margin-bottom:0!important}.md-speed-dial.md-direction-top .md-speed-dial-content{order:1}.md-speed-dial.md-direction-top .md-speed-dial-content .md-button:first-child{margin-top:0}.md-speed-dial.md-direction-bottom.md-effect-fling .md-speed-dial-content .md-button{transform:translate3d(0,-50%,0) scale(.8)}.md-speed-dial.md-direction-bottom .md-speed-dial-target{order:1;margin-top:0!important}.md-speed-dial.md-direction-bottom .md-speed-dial-content{order:2}.md-speed-dial.md-direction-bottom .md-speed-dial-content .md-button:last-child{margin-bottom:0}.md-speed-dial.md-effect-scale .md-speed-dial-content .md-button{transform:scale(.3)}.md-speed-dial.md-active .md-morph-initial,.md-speed-dial.md-with-hover:hover .md-morph-initial{opacity:0;transform:translate3D(-50%,-50%,0) rotate(90deg) scale(.7)}.md-speed-dial.md-active .md-morph-final,.md-speed-dial.md-with-hover:hover .md-morph-final{opacity:1;transform:translate3D(-50%,-50%,0) rotate(0deg) scale(1)}.md-speed-dial.md-active .md-speed-dial-content .md-button,.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button{pointer-events:auto;opacity:1;transform:translateZ(0) scale(1)!important;transition:opacity .2s cubic-bezier(.4,0,.2,1),transform .3s cubic-bezier(.25,.8,.25,1)}.md-speed-dial.md-active .md-speed-dial-content .md-button[md-button-index=\"0\"],.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button[md-button-index=\"0\"]{transition-delay:0s}.md-speed-dial.md-active .md-speed-dial-content .md-button[md-button-index=\"1\"],.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button[md-button-index=\"1\"]{transition-delay:.1s}.md-speed-dial.md-active .md-speed-dial-content .md-button[md-button-index=\"2\"],.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button[md-button-index=\"2\"]{transition-delay:.2s}.md-speed-dial.md-active .md-speed-dial-content .md-button[md-button-index=\"3\"],.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button[md-button-index=\"3\"]{transition-delay:.3s}.md-speed-dial.md-active .md-speed-dial-content .md-button[md-button-index=\"4\"],.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button[md-button-index=\"4\"]{transition-delay:.4s}.md-speed-dial.md-active .md-speed-dial-content .md-button[md-button-index=\"5\"],.md-speed-dial.md-with-hover:hover .md-speed-dial-content .md-button[md-button-index=\"5\"]{transition-delay:.5s}.md-speed-dial .md-button{margin:6px 0}.md-speed-dial .md-speed-dial-content .md-button{pointer-events:none;opacity:0;transition:opacity .3s cubic-bezier(.4,0,.2,1),transform 0s cubic-bezier(.4,0,.2,1) .3s;will-change:opacity,transform}.md-speed-dial .md-morph-final,.md-speed-dial .md-morph-initial{position:absolute;top:50%;left:50%;transform:translate3D(-50%,-50%,0);transition:.3s cubic-bezier(.25,.8,.25,1);transition-property:opacity,transform;will-change:opacity,transform}.md-speed-dial .md-morph-final{opacity:0;transform:translate3D(-50%,-50%,0) scale(.7) rotate(-90deg)}.md-speed-dial-target{z-index:1}.md-speed-dial-content{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2}.md-speed-dial-content,.md-steppers{transition:.3s cubic-bezier(.4,0,.2,1)}.md-steppers{transition-property:color,background-color;will-change:color,background-color}.md-steppers.md-no-transition *{transition:none!important}.md-steppers.md-dynamic-height .md-steppers-wrapper{transition:height .3s cubic-bezier(.4,0,.2,1);will-change:height}.md-steppers.md-horizontal.md-alternative .md-stepper-header{height:104px}.md-steppers.md-horizontal.md-alternative .md-stepper-header:first-of-type .md-stepper-icon:before,.md-steppers.md-horizontal.md-alternative .md-stepper-header:first-of-type .md-stepper-number:before,.md-steppers.md-horizontal.md-alternative .md-stepper-header:last-of-type .md-stepper-icon:after,.md-steppers.md-horizontal.md-alternative .md-stepper-header:last-of-type .md-stepper-number:after{content:none}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-ripple{justify-content:center}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-button-content{padding-top:16px;flex-direction:column}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-button-content:after,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-button-content:before{content:none}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-text{height:32px;justify-content:flex-start;text-align:center}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-icon,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-number{margin:0 8px 8px;position:relative}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-icon:after,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-icon:before,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-number:after,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-number:before{width:9999%;height:1px;position:absolute;top:50%;z-index:2;transition:background-color .3s cubic-bezier(.4,0,.2,1);will-change:background-color;content:\" \"}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-icon:after,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-number:after{left:calc(100% + 8px)}.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-icon:before,.md-steppers.md-horizontal.md-alternative .md-stepper-header .md-stepper-number:before{right:32px}.md-steppers.md-vertical .md-stepper-header{height:56px}.md-steppers.md-vertical .md-stepper-header .md-ripple{padding:0 24px 0 16px}.md-steppers.md-vertical .md-steppers-container{display:block}.md-steppers.md-vertical .md-button-content:after,.md-steppers.md-vertical .md-button-content:before{content:none}.md-steppers.md-vertical .md-stepper-icon,.md-steppers.md-vertical .md-stepper-number{margin-right:12px}.md-steppers.md-vertical .md-stepper{flex:none;padding:0;position:relative}.md-steppers.md-vertical .md-stepper:last-of-type:after{content:none}.md-steppers.md-vertical .md-stepper:after{width:1px;position:absolute;top:48px;bottom:-8px;left:36px;z-index:2;transition:background-color .3s cubic-bezier(.4,0,.2,1);will-change:background-color;content:\" \"}.md-steppers-navigation{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);display:flex}.md-steppers-navigation .md-stepper-header{width:auto}.md-stepper-header{width:100%;height:72px;margin:0;flex:1;border-radius:0;font-weight:400;text-align:left;text-transform:none}.md-stepper-header:first-of-type .md-button-content:before,.md-stepper-header:last-of-type .md-button-content:after{content:none}.md-stepper-header.md-active,.md-stepper-header.md-error{font-weight:500}.md-stepper-header .md-ripple{padding:0 16px;justify-content:flex-start}.md-stepper-header .md-button-content{padding:0 8px;display:flex;align-items:center;transition:color .3s cubic-bezier(.4,0,.2,1);will-change:color}.md-stepper-header .md-button-content:after,.md-stepper-header .md-button-content:before{height:1px;position:absolute;top:50%;transition:background-color .3s cubic-bezier(.4,0,.2,1);will-change:background-color;content:\" \"}.md-stepper-header .md-button-content:after{width:9999%;left:100%}.md-stepper-header .md-button-content:before{width:16px;left:-16px}.md-stepper-header .md-button-content svg{transition:.3s cubic-bezier(.4,0,.2,1);transition-property:color,fill;will-change:color,fill}.md-stepper-text{display:flex;flex-direction:column;justify-content:center;line-height:16px;white-space:nowrap}.md-stepper-icon,.md-stepper-number{margin-right:8px;transition:color .3s cubic-bezier(.4,0,.2,1);will-change:color}.md-stepper-number{width:24px;height:24px;border-radius:24px;transition:.3s cubic-bezier(.4,0,.2,1);transition-property:color,background-color;will-change:color,background-color;font-size:12px;line-height:24px;text-align:center}.md-stepper-done{width:20px;height:20px}.md-stepper-done,.md-stepper-editable{transform:translateY(-1px)}.md-stepper-editable{width:14px;height:14px}.md-stepper-description,.md-stepper-error{font-size:12px;font-weight:400;line-height:16px}.md-stepper-description{opacity:.54}.md-steppers-wrapper{overflow:hidden;transition:none;will-change:height}.md-steppers-container{display:flex;align-items:flex-start;flex-wrap:nowrap;transform:translateZ(0);transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform}.md-stepper{width:100%;flex:1 0 100%;padding:16px 24px}@media (max-width:960px){.md-stepper{padding:8px 16px}}.md-steppers.md-vertical .md-stepper-content{padding:0 24px 0 60px;height:0;overflow:hidden;opacity:0;transform:translate3D(0,-20px,0);transition:.35s cubic-bezier(.25,.8,.25,1);transition-property:opacity,transform,height,padding-bottom;will-change:opacity,transform,height,padding-bottom}.md-steppers.md-vertical .md-stepper-content.md-active{height:auto;padding-bottom:40px;opacity:1;transform:translate3D(0,0,0)}.md-subheader{min-height:48px;padding:0 16px;display:flex;align-items:center;flex-flow:row wrap;font-size:14px;font-weight:500}.md-switch{width:auto;margin:16px 16px 16px 0;display:inline-flex;position:relative}.md-switch:not(.md-disabled),.md-switch:not(.md-disabled) .md-switch-label{cursor:pointer}.md-switch .md-switch-container{width:34px;min-width:34px;height:14px;margin:3px 0;display:flex;align-items:center;position:relative;border-radius:14px;transition:.4s cubic-bezier(.25,.8,.25,1)}.md-switch .md-switch-thumb{box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);width:20px;height:20px;position:relative;border-radius:50%;transition:.4s cubic-bezier(.25,.8,.25,1)}.md-switch .md-switch-thumb:before{width:48px;height:48px;top:50%;left:50%;z-index:6;content:\" \"}.md-switch .md-switch-thumb .md-ripple,.md-switch .md-switch-thumb:before{position:absolute;transform:translate(-50%,-50%)}.md-switch .md-switch-thumb .md-ripple{width:48px!important;height:48px!important;top:50%!important;left:50%!important;border-radius:50%}.md-switch .md-switch-thumb input{position:absolute;left:-999em}.md-switch .md-switch-label{height:20px;padding-left:16px;position:relative;line-height:20px}.md-switch.md-checked .md-switch-thumb{transform:translate3d(15px,0,0)}.md-switch.md-required label:after{position:absolute;top:2px;right:0;transform:translateX(calc(100% + 2px));content:\"*\";line-height:1em;vertical-align:top}.md-table{display:flex;flex-flow:column wrap;overflow-x:auto}.md-table .md-table-fixed-header{position:relative}.md-table .md-table-fixed-header .md-table-fixed-header-container{flex:1;overflow-x:auto}.md-table .md-table-fixed-header .md-table-fixed-header-container::-webkit-scrollbar,.md-table .md-table-fixed-header .md-table-fixed-header-container::-webkit-scrollbar-button,.md-table .md-table-fixed-header .md-table-fixed-header-container::-webkit-scrollbar-thumb{display:none}.md-table .md-table-fixed-header-active{border-bottom:1px solid}.md-table .md-table-content{flex:1;overflow-x:auto;transition:height .3s cubic-bezier(.4,0,.2,1)}.md-table .md-table-empty{display:flex;align-items:center;justify-content:center}.md-table table{width:100%;border-spacing:0;border-collapse:collapse;overflow:hidden}.md-table-head{padding:0;position:relative;font-size:12px;line-height:16px;text-align:left}.md-table-head:last-child .md-table-head-label{padding-right:24px}.md-table-head.md-numeric{text-align:right}.md-table-head.md-sortable:first-of-type .md-table-sortable-icon,.md-table-head.md-table-cell-selection+.md-sortable .md-table-sortable-icon{right:8px;left:auto}.md-table-head .md-icon{width:16px;height:16px;font-size:16px}.md-table-head .md-icon:not(.md-sortable-icon){margin:0 4px}.md-table-head .md-icon:first-child{margin-left:0}.md-table-head .md-icon:last-child{margin-right:0}.md-sortable{cursor:pointer}.md-sortable.md-sorted .md-table-sortable-icon,.md-sortable:hover .md-table-sortable-icon{opacity:1}.md-sortable.md-sorted-desc .md-table-sortable-icon{transform:translateY(-50%) rotate(180deg)}.md-table-head-container{height:56px;padding:14px 0}.md-table-head-container,.md-table-head-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.md-table-head-label{height:28px;padding-right:32px;padding-left:24px;display:inline-block;position:relative;line-height:28px}.md-table-sortable-icon{position:absolute;top:50%;left:0;transition:.3s cubic-bezier(.4,0,.2,1);transform:translateY(-50%);opacity:0;color:rgba(0,0,0,.38)}.md-table-alternate-header{position:absolute;top:0;right:0;left:0;z-index:2;will-change:opacity,transform}.md-table-alternate-header-enter,.md-table-alternate-header-leave-active{opacity:0;transform:translate3d(0,-100%,0)}.md-table-alternate-header-enter-active{transition:.3s cubic-bezier(.4,0,.2,1)}.md-table-alternate-header-leave-active{transition:.2s cubic-bezier(.4,0,1,1)}.md-table-row{transition:.3s cubic-bezier(.4,0,.2,1);transition-property:background-color,font-weight;will-change:background-color,font-weight}.md-table-row.md-has-selection{cursor:pointer}.md-table-row.md-selected-single{font-weight:500}tbody .md-table-row td{border-top:1px solid}.md-table-cell-selection{width:66px}.md-table-cell-selection+td .md-table-cell-container,.md-table-cell-selection+th .md-table-head-label{padding-left:0}.md-table-cell-selection .md-table-cell-container,.md-table-cell-selection .md-table-cell-label,.md-table-cell-selection .md-table-head-container,.md-table-cell-selection .md-table-head-label{padding:0;display:flex;align-items:center;justify-content:center;overflow:visible}.md-table-cell-selection .md-checkbox{margin:0}.md-table-cell-selection .md-checkbox .md-checkbox-container{width:18px;min-width:18px;height:18px}.md-table-cell-selection .md-checkbox .md-checkbox-container:after{top:-1px;left:4px}.md-table-toolbar{padding-left:24px}.md-table-toolbar .md-title{flex:1;font-size:20px}.md-toolbar,.md-toolbar-row{width:100%;min-height:64px;display:flex;align-items:center;align-content:center;transition:.3s cubic-bezier(.4,0,.2,1);transition-property:opacity,background-color,box-shadow,transform,color,min-height;will-change:opacity,background-color,box-shadow,transform,color,min-height}.md-toolbar{padding:0 16px;flex-flow:row wrap;position:relative;z-index:2}.md-toolbar.md-dense{min-height:48px}.md-toolbar.md-large .md-toolbar-row,.md-toolbar.md-medium .md-toolbar-row{min-height:64px}.md-toolbar.md-medium{min-height:88px}.md-toolbar.md-large{min-height:128px;align-content:inherit}.md-toolbar.md-large.md-dense{min-height:96px}.md-toolbar.md-large.md-dense .md-toolbar-row+.md-toolbar-row{min-height:32px}.md-toolbar .md-toolbar-offset{margin-left:56px}.md-toolbar .md-button,.md-toolbar .md-icon{z-index:1}.md-toolbar .md-button~.md-title,.md-toolbar .md-icon~.md-title{margin-left:24px}.md-toolbar .md-button+.md-button,.md-toolbar .md-button:last-child{margin-right:0}.md-toolbar .md-button:first-child{margin-left:0}.md-toolbar .md-display-1,.md-toolbar .md-display-2,.md-toolbar .md-title{margin:0;margin-left:8px;overflow:hidden;font-weight:400;letter-spacing:.02em;text-overflow:ellipsis;white-space:nowrap;vertical-align:top}.md-toolbar .md-display-1{padding:12px 0}.md-toolbar .md-field{margin-top:2px;margin-bottom:14px;padding-top:16px}.md-toolbar-row{align-self:flex-start}.md-toolbar-section-end,.md-toolbar-section-start{display:flex;align-items:center;flex:1}.md-toolbar-section-start{justify-content:flex-start;order:0}.md-toolbar-section-end{justify-content:flex-end;order:10}@media (max-width:960px){.md-toolbar,.md-toolbar-row{min-height:48px}.md-toolbar{padding:0 8px}.md-toolbar .md-toolbar-offset{margin-left:48px}.md-toolbar .md-button~.md-title,.md-toolbar .md-icon~.md-title{margin-left:16px}}@media (max-width:600px){.md-toolbar,.md-toolbar-row{min-height:56px}}.md-table-empty-state{padding-left:24px}.md-table-cell{height:48px;position:relative;transition:.3s cubic-bezier(.4,0,.2,1);font-size:13px;line-height:18px}.md-table-cell.md-numeric{text-align:right}.md-table-cell:last-child .md-table-cell-container{padding-right:24px}.md-table-cell-container{padding:6px 32px 6px 24px}.md-table-pagination{height:56px;display:flex;flex:1;align-items:center;justify-content:flex-end;border-top:1px solid;font-size:12px}.md-table-pagination .md-table-pagination-previous{margin-right:2px;margin-left:18px}.md-table-pagination .md-field{width:48px;min-width:36px;margin:-16px 24px 0 32px}.md-table-pagination .md-field:after,.md-table-pagination .md-field:before{display:none}.md-table-pagination .md-field .md-select-value{font-size:13px}.md-menu-content.md-pagination-select{max-width:82px;min-width:56px;margin-top:5px}.md-tabs{display:flex;flex-direction:column}.md-tabs.md-no-transition *{transition:none!important}.md-tabs.md-dynamic-height .md-tabs-content{transition:height .3s cubic-bezier(.4,0,.2,1);will-change:height}.md-tabs.md-transparent .md-tabs-content,.md-tabs.md-transparent .md-tabs-navigation{background-color:transparent!important}.md-tabs.md-dynamic-height .md-tabs-content{transition:height .35s cubic-bezier(.25,.8,.25,1)}.md-tabs.md-alignment-left .md-tabs-navigation{justify-content:flex-start}.md-tabs.md-alignment-right .md-tabs-navigation{justify-content:flex-end}.md-tabs.md-alignment-centered .md-tabs-navigation,.md-tabs.md-alignment-fixed .md-tabs-navigation{justify-content:center}.md-tabs.md-alignment-fixed .md-tabs-navigation .md-button{max-width:264px;min-width:160px;flex:1}.md-toolbar .md-tabs{padding-left:48px}.md-tabs-navigation{display:flex;position:relative}.md-tabs-navigation .md-button{max-width:264px;min-width:72px;height:48px;margin:0;cursor:pointer;border-radius:0;font-size:13px}.md-tabs-navigation .md-button-content{position:static}.md-tabs-navigation .md-icon-label{height:72px}.md-tabs-navigation .md-icon-label .md-button-content{display:flex;flex-direction:column;justify-content:center}.md-tabs-navigation .md-icon-label .md-tab-icon+.md-tab-label{margin-top:10px}.md-tabs-navigation .md-ripple{padding:0 24px}.md-tabs-indicator{height:2px;position:absolute;bottom:0;left:0;transform:translateZ(0);will-change:left,right}.md-tabs-indicator.md-tabs-indicator-left{transition:left .3s cubic-bezier(.4,0,.2,1),right .35s cubic-bezier(.4,0,.2,1)}.md-tabs-indicator.md-tabs-indicator-right{transition:right .3s cubic-bezier(.4,0,.2,1),left .35s cubic-bezier(.4,0,.2,1)}.md-tabs-content{overflow:hidden;transition:none;will-change:height}.md-tabs-container{display:flex;align-items:flex-start;flex-wrap:nowrap;transform:translateZ(0);transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform}.md-tab{width:100%;flex:1 0 100%;padding:16px}@media (max-width:960px){.md-tabs.md-alignment-fixed .md-tabs-navigation .md-button{min-width:72px}.md-toolbar .md-tabs{margin:0 -8px;padding-left:0}.md-tabs-navigation .md-ripple{padding:0 12px}.md-tab{padding:8px}}.md-tooltip{height:22px;padding:0 8px;position:fixed;z-index:12;pointer-events:none;border-radius:2px;transition:.15s cubic-bezier(0,0,.2,1);transition-property:opacity,transform;will-change:opacity,transform,top,left!important;font-size:10px;line-height:22px;text-transform:none;white-space:nowrap}.md-tooltip.md-tooltip-leave-active{transition-timing-function:cubic-bezier(.4,0,1,1)}.md-tooltip.md-tooltip-enter,.md-tooltip.md-tooltip-leave-active{opacity:0}.md-tooltip.md-tooltip-enter.md-tooltip-top,.md-tooltip.md-tooltip-leave-active.md-tooltip-top{transform:translate3d(0,4px,0) scale(.95)}.md-tooltip.md-tooltip-enter.md-tooltip-right,.md-tooltip.md-tooltip-leave-active.md-tooltip-right{transform:translate3d(-4px,0,0) scale(.95)}.md-tooltip.md-tooltip-enter.md-tooltip-bottom,.md-tooltip.md-tooltip-leave-active.md-tooltip-bottom{transform:translate3d(0,-4px,0) scale(.95)}.md-tooltip.md-tooltip-enter.md-tooltip-left,.md-tooltip.md-tooltip-leave-active.md-tooltip-left{transform:translate3d(4px,0,0) scale(.95)}@media (max-width:960px){.md-tooltip{height:32px;font-size:14px;line-height:32px}}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/z-loading/dist/z-loading.css":
+/*!***********************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/z-loading/dist/z-loading.css ***!
+  \***********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spinner-loader:before{content:\"\";display:block;padding-top:100%}.spinner-circular{-webkit-animation:rotate 2s linear infinite;animation:rotate 2s linear infinite;height:100%;-webkit-transform-origin:center center;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto}\n.spinner-path{\n\tstroke:rgb(11, 51, 51);\n\tstroke-dasharray:1,200;\n\tstroke-dashoffset:0;\n\t-webkit-animation:dash 1.5s \n\tease-in-out infinite;animation:dash 1.5s \n\tease-in-out infinite;stroke-linecap:round\n\n\t}@-webkit-keyframes rotate{to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes rotate{to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@-webkit-keyframes dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px}to{stroke-dasharray:89,200;stroke-dashoffset:-124px}}@keyframes dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px}to{stroke-dasharray:89,200;stroke-dashoffset:-124px}}.double-bounce-spinner{position:relative;display:inline-block}.double-bounce-spinner .double-bounce1,.double-bounce-spinner .double-bounce2{line-height:0;box-sizing:border-box;width:100%;height:100%;border-radius:50%;opacity:.6;position:absolute;top:0;left:0;-webkit-animation:double-bounce 2s ease-in-out infinite;animation:double-bounce 2s ease-in-out infinite}.double-bounce-spinner .double-bounce2{-webkit-animation-delay:-1s;animation-delay:-1s}@-webkit-keyframes double-bounce{0%,to{-webkit-transform:scale(0);transform:scale(0)}50%{-webkit-transform:scale(1);transform:scale(1)}}@keyframes double-bounce{0%,to{-webkit-transform:scale(0);transform:scale(0)}50%{-webkit-transform:scale(1);transform:scale(1)}}.stretch-spinner{display:inline-block;text-align:center;font-size:10px}.stretch-spinner .rect{-webkit-animation:sk-stretchdelay 1.2s ease-in-out infinite;animation:sk-stretchdelay 1.2s ease-in-out infinite;height:100%;width:10%;display:inline-block;line-height:0;box-sizing:border-box}.stretch-spinner .rect-2{-webkit-animation-delay:-1.1s;animation-delay:-1.1s}.stretch-spinner .rect-3{-webkit-animation-delay:-1s;animation-delay:-1s}.stretch-spinner .rect-4{-webkit-animation-delay:-.9s;animation-delay:-.9s}.stretch-spinner .rect-5{-webkit-animation-delay:-.8s;animation-delay:-.8s}@-webkit-keyframes sk-stretchdelay{0%,40%,to{-webkit-transform:scaleY(.4);transform:scaleY(.4)}20%{-webkit-transform:scaleY(1);transform:scaleY(1)}}@keyframes sk-stretchdelay{0%,40%,to{-webkit-transform:scaleY(.4);transform:scaleY(.4)}20%{-webkit-transform:scaleY(1);transform:scaleY(1)}}.z-loading-enter,.z-loading-leave-active{opacity:0;-webkit-transform:translateY(-1px);transform:translateY(-1px)}.zloading-parent--relative{position:relative}.z-loading-box{position:absolute;left:0;width:100%;z-index:555;transition:all .3s}.z-loading-box \n\t.z-loading-spinner{\n\t\theight:100%;width:100%;position:relative; background-color:#566573; opacity: 0.8;\n\t}.z-loading-box .spinner-content{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.z-loading-box .spinner-close{font-size:20px;position:absolute;z-index:1001;right:30px;top:30px;cursor:pointer;transition:ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.z-loading-box.z-loading-type--spinner{height:100%;background:rgba(0,0,0,.7)}.z-loading-box.z-loading--fixed{position:fixed}.z-loading-box.z-loading-type--youtube{height:auto}.z-loading-box.z-loading-type--youtube .z-loading-bar{height:2px;background:#9e1118;position:relative;width:20%;transition:width .3s ease-out;border-top-right-radius:1px;border-bottom-right-radius:1px}.z-loading-box.z-loading-type--youtube .z-loading-head{box-shadow:0 0 10px rgba(158,17,24,.5),0 0 5px rgba(158,17,24,.5);position:absolute;width:70px;right:0;top:0;height:100%;opacity:.45}", ""]);
 
 // exports
 
@@ -62656,16 +62738,6 @@ var render = function() {
                             on: { click: _vm.login }
                           },
                           [_vm._v("Ingresar")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "md-button",
-                          {
-                            staticClass: "md-primary",
-                            attrs: { type: "submit" },
-                            on: { click: _vm.redirect_create_user }
-                          },
-                          [_vm._v("Create user")]
                         )
                       ],
                       1
@@ -64207,189 +64279,209 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        { staticClass: "col-md-4 col-sm-5" },
-        [
-          _c(
-            "md-card",
-            { style: _vm.img_section_style },
-            [
-              _c(
-                "md-card-header",
-                [
-                  _c("md-card-header-text", [
-                    _c("div", { staticClass: "md-title" }, [_vm._v("Cursos")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("23 cursos")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-media", [
-                    _c("img", {
-                      attrs: {
-                        src: "/img/5c9fa6a68a4fd97597dbd45301ae7ae2.jpg",
-                        alt: "People"
-                      }
-                    })
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "md-card-actions",
-                [
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_crearcurso }
-                    },
-                    [_vm._v("Crear")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-4" },
-        [
-          _c(
-            "md-card",
-            { style: _vm.img_section_style },
-            [
-              _c(
-                "md-card-header",
-                [
-                  _c("md-card-header-text", [
-                    _c("div", { staticClass: "md-title" }, [
-                      _vm._v("Docentes")
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "zLoading",
+          rawName: "v-zLoading:circle.fullscreen",
+          value: _vm.isLoading,
+          expression: "isLoading",
+          arg: "circle",
+          modifiers: { fullscreen: true }
+        }
+      ],
+      staticClass: "animated fadeIn"
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-4 col-sm-5" },
+          [
+            _c(
+              "md-card",
+              { style: _vm.img_section_style },
+              [
+                _c(
+                  "md-card-header",
+                  [
+                    _c("md-card-header-text", [
+                      _c("div", { staticClass: "md-title" }, [
+                        _vm._v("Cursos")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v("23 cursos")
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("12 docentes")
+                    _c("md-card-media", [
+                      _c("img", {
+                        attrs: {
+                          src: "/img/5c9fa6a68a4fd97597dbd45301ae7ae2.jpg",
+                          alt: "People"
+                        }
+                      })
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-media", [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          "https://vignette.wikia.nocookie.net/central/images/6/64/Docentes.png/revision/latest?cb=20180523012406",
-                        alt: "People"
-                      }
-                    })
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "md-card-actions",
-                [
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_listardocente }
-                    },
-                    [_vm._v("Ver")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_creardocente }
-                    },
-                    [_vm._v("Crear")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-4" },
-        [
-          _c(
-            "md-card",
-            { style: _vm.img_section_style },
-            [
-              _c(
-                "md-card-header",
-                [
-                  _c("md-card-header-text", [
-                    _c("div", { staticClass: "md-title" }, [_vm._v("Alumnos")]),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-card-actions",
+                  [
+                    _c(
+                      "md-button",
+                      {
+                        staticClass: "md-raised md-primary",
+                        on: { click: _vm.url_crearcurso }
+                      },
+                      [_vm._v("Crear")]
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-4" },
+          [
+            _c(
+              "md-card",
+              { style: _vm.img_section_style },
+              [
+                _c(
+                  "md-card-header",
+                  [
+                    _c("md-card-header-text", [
+                      _c("div", { staticClass: "md-title" }, [
+                        _vm._v("Docentes")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v("12 docentes")
+                      ])
+                    ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("120 alumnos")
+                    _c("md-card-media", [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            "https://vignette.wikia.nocookie.net/central/images/6/64/Docentes.png/revision/latest?cb=20180523012406",
+                          alt: "People"
+                        }
+                      })
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-media", [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqk2WM9qtSs1phshNVV_GSWMTHAegEUSDlvI7woYVM9Jpf-aIo",
-                        alt: "People"
-                      }
-                    })
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "md-card-actions",
-                [
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_listaralumno }
-                    },
-                    [_vm._v("Ver")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "md-button",
-                    {
-                      staticClass: "md-raised md-primary",
-                      on: { click: _vm.url_crearalumno }
-                    },
-                    [_vm._v("Crear")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _vm._m(0)
-  ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-card-actions",
+                  [
+                    _c(
+                      "md-button",
+                      {
+                        staticClass: "md-raised md-primary",
+                        on: { click: _vm.url_listardocente }
+                      },
+                      [_vm._v("Ver")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "md-button",
+                      {
+                        staticClass: "md-raised md-primary",
+                        on: { click: _vm.url_creardocente }
+                      },
+                      [_vm._v("Crear")]
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-4" },
+          [
+            _c(
+              "md-card",
+              { style: _vm.img_section_style },
+              [
+                _c(
+                  "md-card-header",
+                  [
+                    _c("md-card-header-text", [
+                      _c("div", { staticClass: "md-title" }, [
+                        _vm._v("Alumnos")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v("120 alumnos")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("md-card-media", [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqk2WM9qtSs1phshNVV_GSWMTHAegEUSDlvI7woYVM9Jpf-aIo",
+                          alt: "People"
+                        }
+                      })
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-card-actions",
+                  [
+                    _c(
+                      "md-button",
+                      {
+                        staticClass: "md-raised md-primary",
+                        on: { click: _vm.url_listaralumno }
+                      },
+                      [_vm._v("Ver")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "md-button",
+                      {
+                        staticClass: "md-raised md-primary",
+                        on: { click: _vm.url_crearalumno }
+                      },
+                      [_vm._v("Crear")]
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0)
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -64426,304 +64518,313 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        [
-          _c("div", { staticClass: "row " }),
-          _vm._v(" "),
-          _c("h6", [_vm._v("(Obligatorio)")]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.nombre,
-                    expression: "form.nombre"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", placeholder: "Nombres", name: "" },
-                domProps: { value: _vm.form.nombre },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "nombre", $event.target.value)
-                  }
-                }
-              })
-            ]),
+  return _c("div", { staticClass: "animated fadeIn" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "card" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("div", { staticClass: "row " }),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.apellido_p,
-                    expression: "form.apellido_p"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: "Apellido paterno",
-                  name: ""
-                },
-                domProps: { value: _vm.form.apellido_p },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "apellido_p", $event.target.value)
-                  }
-                }
-              })
-            ]),
+            _c("h6", [_vm._v("(Obligatorio)")]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.apellido_m,
-                    expression: "form.apellido_m"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: "Apellido materno",
-                  name: ""
-                },
-                domProps: { value: _vm.form.apellido_m },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "apellido_m", $event.target.value)
-                  }
-                }
-              })
-            ]),
+            _c("hr"),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c(
-                "select",
-                {
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.form.sexo,
-                      expression: "form.sexo"
+                      value: _vm.form.nombre,
+                      expression: "form.nombre"
                     }
                   ],
-                  staticClass: "form-control form-control-md",
-                  attrs: { id: "inlineFormCustomSelect" },
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Nombres", name: "" },
+                  domProps: { value: _vm.form.nombre },
                   on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.form,
-                        "sexo",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "nombre", $event.target.value)
                     }
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [_vm._v("Sexo")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "M" } }, [
-                    _vm._v("Masculino")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "F" } }, [_vm._v("Femenino")])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.curso,
-                      expression: "form.curso"
-                    }
-                  ],
-                  staticClass: "form-control form-control-md",
-                  attrs: { id: "inlineFormCustomSelect" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.form,
-                        "curso",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [_vm._v("Curso...")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.cursos, function(c) {
-                    return _c("option", { domProps: { value: c.id } }, [
-                      _vm._v(_vm._s(c.descripcion))
-                    ])
-                  })
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("h6", [_vm._v("(Opcional)")]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.run,
-                    expression: "form.run"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { placeholder: "Run", type: "text" },
-                domProps: { value: _vm.form.run },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "run", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-2" },
-              [
-                _c("datepicker", {
-                  attrs: {
-                    language: _vm.es,
-                    "bootstrap-styling": true,
-                    placeholder: "Fecha nacimiento",
-                    format: "dd/MM/yyyy"
-                  },
-                  model: {
-                    value: _vm.form.nacimiento,
-                    callback: function($$v) {
-                      _vm.$set(_vm.form, "nacimiento", $$v)
-                    },
-                    expression: "form.nacimiento"
                   }
                 })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.direccion,
-                    expression: "form.direccion"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", placeholder: "Dirección", name: "" },
-                domProps: { value: _vm.form.direccion },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.apellido_p,
+                      expression: "form.apellido_p"
                     }
-                    _vm.$set(_vm.form, "direccion", $event.target.value)
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    placeholder: "Apellido paterno",
+                    name: ""
+                  },
+                  domProps: { value: _vm.form.apellido_p },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "apellido_p", $event.target.value)
+                    }
                   }
-                }
-              })
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.apellido_m,
+                      expression: "form.apellido_m"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    placeholder: "Apellido materno",
+                    name: ""
+                  },
+                  domProps: { value: _vm.form.apellido_m },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "apellido_m", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.sexo,
+                        expression: "form.sexo"
+                      }
+                    ],
+                    staticClass: "form-control form-control-md",
+                    attrs: { id: "inlineFormCustomSelect" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.form,
+                          "sexo",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [_vm._v("Sexo")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "M" } }, [
+                      _vm._v("Masculino")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "F" } }, [
+                      _vm._v("Femenino")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.curso,
+                        expression: "form.curso"
+                      }
+                    ],
+                    staticClass: "form-control form-control-md",
+                    attrs: { id: "inlineFormCustomSelect" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.form,
+                          "curso",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("Curso...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.cursos, function(c) {
+                      return _c("option", { domProps: { value: c.id } }, [
+                        _vm._v(_vm._s(c.descripcion))
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" })
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c(
-            "md-button",
-            {
-              staticClass: "md-raised md-primary",
-              style: "float:left",
-              on: { click: _vm.register }
-            },
-            [_vm._v("Crear")]
-          ),
-          _vm._v(" "),
-          _c(
-            "md-button",
-            { staticClass: "md-raised ", on: { click: _vm.url_listaralumno } },
-            [_vm._v("Listar")]
-          ),
-          _vm._v(" "),
-          _c("br"),
-          _c("br"),
-          _c("br"),
-          _vm._v(" "),
-          _c("br"),
-          _c("br"),
-          _c("br")
-        ],
-        1
-      )
+            _c("br"),
+            _vm._v(" "),
+            _c("h6", [_vm._v("(Opcional)")]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.run,
+                      expression: "form.run"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { placeholder: "Run", type: "text" },
+                  domProps: { value: _vm.form.run },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "run", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-2" },
+                [
+                  _c("datepicker", {
+                    attrs: {
+                      language: _vm.es,
+                      "bootstrap-styling": true,
+                      placeholder: "Fecha nacimiento",
+                      format: "dd/MM/yyyy"
+                    },
+                    model: {
+                      value: _vm.form.nacimiento,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "nacimiento", $$v)
+                      },
+                      expression: "form.nacimiento"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.direccion,
+                      expression: "form.direccion"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Dirección", name: "" },
+                  domProps: { value: _vm.form.direccion },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "direccion", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" })
+            ]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "md-button",
+              {
+                staticClass: "md-raised md-primary",
+                style: "float:left",
+                on: { click: _vm.register }
+              },
+              [_vm._v("Crear")]
+            ),
+            _vm._v(" "),
+            _c(
+              "md-button",
+              {
+                staticClass: "md-raised ",
+                on: { click: _vm.url_listaralumno }
+              },
+              [_vm._v("Listar")]
+            ),
+            _vm._v(" "),
+            _c("br"),
+            _c("br"),
+            _c("br"),
+            _vm._v(" "),
+            _c("br"),
+            _c("br"),
+            _c("br")
+          ],
+          1
+        )
+      ])
     ])
   ])
 }
@@ -64761,207 +64862,211 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-2" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.descripcion,
-                  expression: "form.descripcion"
-                }
-              ],
-              staticClass: "form-control form-control-md",
-              attrs: { type: "text", placeholder: "Descripcion", name: "" },
-              domProps: { value: _vm.form.descripcion },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.form, "descripcion", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-2" }, [
-            _c(
-              "select",
-              {
+  return _c("div", { staticClass: "animated fadeIn" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "card" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-2" }, [
+              _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.form.promocion,
-                    expression: "form.promocion"
+                    value: _vm.form.descripcion,
+                    expression: "form.descripcion"
                   }
                 ],
                 staticClass: "form-control form-control-md",
-                attrs: { id: "inlineFormCustomSelect" },
+                attrs: { type: "text", placeholder: "Descripcion", name: "" },
+                domProps: { value: _vm.form.descripcion },
                 on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.form,
-                      "promocion",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "descripcion", $event.target.value)
                   }
-                }
-              },
-              [
-                _c("option", { attrs: { value: "2019" } }, [_vm._v("2019")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "2020" } }, [_vm._v("2020")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-3" },
-            [
-              _c("multiselect", {
-                attrs: {
-                  options: _vm.options,
-                  "custom-label": _vm.nameWithLang,
-                  placeholder: "Asignar Docente (Opcional)",
-                  label: "name",
-                  "track-by": "name"
-                },
-                model: {
-                  value: _vm.form.docente,
-                  callback: function($$v) {
-                    _vm.$set(_vm.form, "docente", $$v)
-                  },
-                  expression: "form.docente"
                 }
               })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-3" },
-            [
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-2" }, [
               _c(
-                "md-radio",
+                "select",
                 {
-                  attrs: { value: 1 },
-                  model: {
-                    value: _vm.form.formato,
-                    callback: function($$v) {
-                      _vm.$set(_vm.form, "formato", $$v)
-                    },
-                    expression: "form.formato"
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.promocion,
+                      expression: "form.promocion"
+                    }
+                  ],
+                  staticClass: "form-control form-control-md",
+                  attrs: { id: "inlineFormCustomSelect" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "promocion",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
                   }
                 },
-                [_c("small", [_vm._v("Semestre")])]
-              ),
-              _vm._v(" "),
-              _c(
-                "md-radio",
-                {
-                  attrs: { value: 2 },
-                  model: {
-                    value: _vm.form.formato,
-                    callback: function($$v) {
-                      _vm.$set(_vm.form, "formato", $$v)
-                    },
-                    expression: "form.formato"
-                  }
-                },
-                [_c("small", [_vm._v("Trimestre")])]
+                [
+                  _c("option", { attrs: { value: "2019" } }, [_vm._v("2019")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "2020" } }, [_vm._v("2020")])
+                ]
               )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-2" },
-            [
-              _c(
-                "md-button",
-                {
-                  staticClass: "md-raised md-primary",
-                  on: { click: _vm.register }
-                },
-                [_vm._v("Crear")]
-              )
-            ],
-            1
-          )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table" }, [
-            _vm._m(2),
+            ]),
             _vm._v(" "),
             _c(
-              "tbody",
-              _vm._l(_vm.listar_cursos, function(listado) {
-                return _c("tr", [
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "md-chip",
-                        {
-                          staticClass: "md-primary",
-                          attrs: { "md-clickable": "" },
-                          on: {
-                            click: function($event) {
-                              return _vm.url_curso(listado.id)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n\t\t\t\t\t    \t\t\t\t" +
-                              _vm._s(listado.descripcion) +
-                              "\n\t\t\t\t\t    \t\t\t"
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(listado.promocion))]),
-                  _vm._v(" "),
-                  listado.formato_id == 1
-                    ? _c("td", [_vm._v("Semestral")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  listado.formato_id == 2
-                    ? _c("td", [_vm._v("Trimestral")])
-                    : _vm._e()
-                ])
-              }),
-              0
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c("multiselect", {
+                  attrs: {
+                    options: _vm.options,
+                    "custom-label": _vm.nameWithLang,
+                    placeholder: "Asignar Docente (Opcional)",
+                    label: "name",
+                    "track-by": "name"
+                  },
+                  model: {
+                    value: _vm.form.docente,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "docente", $$v)
+                    },
+                    expression: "form.docente"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c(
+                  "md-radio",
+                  {
+                    attrs: { value: 1 },
+                    model: {
+                      value: _vm.form.formato,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "formato", $$v)
+                      },
+                      expression: "form.formato"
+                    }
+                  },
+                  [_c("small", [_vm._v("Semestre")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-radio",
+                  {
+                    attrs: { value: 2 },
+                    model: {
+                      value: _vm.form.formato,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "formato", $$v)
+                      },
+                      expression: "form.formato"
+                    }
+                  },
+                  [_c("small", [_vm._v("Trimestre")])]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-2" },
+              [
+                _c(
+                  "md-button",
+                  {
+                    staticClass: "md-raised md-primary",
+                    on: { click: _vm.register }
+                  },
+                  [_vm._v("Crear")]
+                )
+              ],
+              1
             )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.listar_cursos, function(listado) {
+                  return _c("tr", [
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "md-chip",
+                          {
+                            staticClass: "md-primary",
+                            attrs: { "md-clickable": "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.url_curso(listado.id)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t    \t\t\t\t" +
+                                _vm._s(listado.descripcion) +
+                                "\n\t\t\t\t\t    \t\t\t"
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(listado.promocion))]),
+                    _vm._v(" "),
+                    listado.formato_id == 1
+                      ? _c("td", [_vm._v("Semestral")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    listado.formato_id == 2
+                      ? _c("td", [_vm._v("Trimestral")])
+                      : _vm._e()
+                  ])
+                }),
+                0
+              )
+            ])
           ])
         ])
       ])
@@ -65027,315 +65132,326 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        [
-          _c("div", { staticClass: "row " }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.run,
-                    expression: "form.run"
-                  }
-                ],
-                staticClass: "form-control",
-                staticStyle: {
-                  width: "102px",
-                  float: "left",
-                  "margin-right": "5px"
-                },
-                attrs: { placeholder: "Run", type: "text" },
-                domProps: { value: _vm.form.run },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "run", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.dv,
-                    expression: "form.dv"
-                  }
-                ],
-                staticClass: "form-control",
-                staticStyle: { width: "40px" },
-                attrs: { placeholder: "D", type: "", name: "" },
-                domProps: { value: _vm.form.dv },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "dv", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c(
-                "select",
-                {
+  return _c("div", { staticClass: "animated fadeIn" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "card" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("div", { staticClass: "row " }, [
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.form.sexo,
-                      expression: "form.sexo"
+                      value: _vm.form.run,
+                      expression: "form.run"
                     }
                   ],
-                  staticClass: "form-control form-control-md",
-                  attrs: { id: "inlineFormCustomSelect" },
+                  staticClass: "form-control",
+                  staticStyle: {
+                    width: "102px",
+                    float: "left",
+                    "margin-right": "5px"
+                  },
+                  attrs: { placeholder: "Run", type: "text" },
+                  domProps: { value: _vm.form.run },
                   on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.form,
-                        "sexo",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "run", $event.target.value)
                     }
                   }
-                },
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.dv,
+                      expression: "form.dv"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  staticStyle: { width: "40px" },
+                  attrs: { placeholder: "D", type: "", name: "" },
+                  domProps: { value: _vm.form.dv },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "dv", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.sexo,
+                        expression: "form.sexo"
+                      }
+                    ],
+                    staticClass: "form-control form-control-md",
+                    attrs: { id: "inlineFormCustomSelect" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.form,
+                          "sexo",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "M" } }, [
+                      _vm._v("Masculino")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "F" } }, [
+                      _vm._v("Femenino")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-2" },
                 [
-                  _c("option", { attrs: { value: "M" } }, [
-                    _vm._v("Masculino")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "F" } }, [_vm._v("Femenino")])
-                ]
+                  _c("datepicker", {
+                    attrs: {
+                      language: _vm.es,
+                      "bootstrap-styling": true,
+                      placeholder: "Fecha nacimiento",
+                      format: "dd/MM/yyyy"
+                    },
+                    model: {
+                      value: _vm.form.nacimiento,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "nacimiento", $$v)
+                      },
+                      expression: "form.nacimiento"
+                    }
+                  })
+                ],
+                1
               )
             ]),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-2" },
-              [
-                _c("datepicker", {
-                  attrs: {
-                    language: _vm.es,
-                    "bootstrap-styling": true,
-                    placeholder: "Fecha nacimiento",
-                    format: "dd/MM/yyyy"
-                  },
-                  model: {
-                    value: _vm.form.nacimiento,
-                    callback: function($$v) {
-                      _vm.$set(_vm.form, "nacimiento", $$v)
-                    },
-                    expression: "form.nacimiento"
+            _c("br"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.nombre,
+                      expression: "form.nombre"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Nombres", name: "" },
+                  domProps: { value: _vm.form.nombre },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "nombre", $event.target.value)
+                    }
                   }
                 })
-              ],
-              1
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.apellido_p,
+                      expression: "form.apellido_p"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    placeholder: "Apellido paterno",
+                    name: ""
+                  },
+                  domProps: { value: _vm.form.apellido_p },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "apellido_p", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.apellido_m,
+                      expression: "form.apellido_m"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    placeholder: "Apellido materno",
+                    name: ""
+                  },
+                  domProps: { value: _vm.form.apellido_m },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "apellido_m", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.contacto,
+                      expression: "form.contacto"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Contacto", name: "" },
+                  domProps: { value: _vm.form.contacto },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "contacto", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.email,
+                      expression: "form.email"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Email", name: "" },
+                  domProps: { value: _vm.form.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "email", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.password,
+                      expression: "form.password"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "password",
+                    placeholder: "Password",
+                    name: ""
+                  },
+                  domProps: { value: _vm.form.password },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "password", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "md-button",
+              {
+                staticClass: "md-raised md-primary",
+                style: "float:left",
+                on: { click: _vm.register }
+              },
+              [_vm._v("Crear")]
+            ),
+            _vm._v(" "),
+            _c(
+              "md-button",
+              {
+                staticClass: "md-raised ",
+                on: { click: _vm.url_listardocente }
+              },
+              [_vm._v("Listar")]
             )
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.nombre,
-                    expression: "form.nombre"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", placeholder: "Nombres", name: "" },
-                domProps: { value: _vm.form.nombre },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "nombre", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.apellido_p,
-                    expression: "form.apellido_p"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: "Apellido paterno",
-                  name: ""
-                },
-                domProps: { value: _vm.form.apellido_p },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "apellido_p", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.apellido_m,
-                    expression: "form.apellido_m"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: "Apellido materno",
-                  name: ""
-                },
-                domProps: { value: _vm.form.apellido_m },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "apellido_m", $event.target.value)
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.contacto,
-                    expression: "form.contacto"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", placeholder: "Contacto", name: "" },
-                domProps: { value: _vm.form.contacto },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "contacto", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.email,
-                    expression: "form.email"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", placeholder: "Email", name: "" },
-                domProps: { value: _vm.form.email },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "email", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.password,
-                    expression: "form.password"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "password", placeholder: "Password", name: "" },
-                domProps: { value: _vm.form.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "password", $event.target.value)
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c(
-            "md-button",
-            {
-              staticClass: "md-raised md-primary",
-              style: "float:left",
-              on: { click: _vm.register }
-            },
-            [_vm._v("Crear")]
-          ),
-          _vm._v(" "),
-          _c(
-            "md-button",
-            { staticClass: "md-raised ", on: { click: _vm.url_listardocente } },
-            [_vm._v("Listar")]
-          )
-        ],
-        1
-      )
+          ],
+          1
+        )
+      ])
     ])
   ])
 }
@@ -65375,6 +65491,18 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    {
+      directives: [
+        {
+          name: "zLoading",
+          rawName: "v-zLoading:circle",
+          value: _vm.isLoading,
+          expression: "isLoading",
+          arg: "circle"
+        }
+      ],
+      staticClass: "animated fadeIn"
+    },
     [
       _c("div", { staticClass: "container table-responsive" }, [
         _c("div", { staticClass: "row" }, [
@@ -65386,13 +65514,27 @@ var render = function() {
               _vm._v(" "),
               _c("md-chip", [
                 _c("label", { staticStyle: { "font-size": "20px" } }, [
-                  _c("strong", [
-                    _vm._v(
-                      _vm._s("Curso/" + _vm.get_curso.descripcion) +
-                        "\n\t\t\t\t\t \t\t"
-                    ),
-                    _c("small", [_vm._v(_vm._s(_vm.get_curso.promocion))])
-                  ])
+                  _c(
+                    "strong",
+                    {
+                      directives: [
+                        {
+                          name: "zLoading",
+                          rawName: "v-zLoading:circle",
+                          value: _vm.isLoading,
+                          expression: "isLoading",
+                          arg: "circle"
+                        }
+                      ]
+                    },
+                    [
+                      _vm._v(
+                        _vm._s("Curso/" + _vm.get_curso.descripcion) +
+                          "\n\t\t\t\t\t \t\t"
+                      ),
+                      _c("small", [_vm._v(_vm._s(_vm.get_curso.promocion))])
+                    ]
+                  )
                 ])
               ])
             ],
@@ -65407,9 +65549,52 @@ var render = function() {
         "md-tabs",
         [
           _c("md-tab", { attrs: { id: "tab-home", "md-label": "Inicio" } }, [
-            _vm._v(
-              "\n      \tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n      \ttempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n      \tquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n      \tconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n      \tcillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n      \tproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n      "
-            )
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "col-md-3",
+                  staticStyle: { "margin-top": "2px" }
+                },
+                [
+                  _c("md-chip", { staticClass: "md-primary" }, [
+                    _c("i", { staticClass: "far fa-address-book fa-1x" }),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v("Docente jefe:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(
+                          _vm.docente_jefe.nombres +
+                            " " +
+                            _vm.docente_jefe.apellido_paterno +
+                            " " +
+                            _vm.docente_jefe.apellido_materno
+                        )
+                    )
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "col-md-3",
+                  staticStyle: { "margin-top": "2px" }
+                },
+                [
+                  _c("md-chip", { staticClass: "md-accent" }, [
+                    _c("i", { staticClass: "far fa-address-book fa-1x" }),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v("Asignaturas:")]),
+                    _vm._v(" " + _vm._s(_vm.contar_asignatura + " activas"))
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" })
+            ])
           ]),
           _vm._v(" "),
           _c(
@@ -65630,17 +65815,25 @@ var render = function() {
                         return _c("tr", [
                           _c("td", [_vm._v(_vm._s(listado.descripcion))]),
                           _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                listado.nombres +
-                                  " " +
-                                  listado.apellido_paterno +
-                                  " " +
-                                  listado.apellido_materno
-                              )
-                            )
-                          ]),
+                          listado.nombres != null
+                            ? _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    listado.nombres +
+                                      " " +
+                                      listado.apellido_paterno +
+                                      " " +
+                                      listado.apellido_materno
+                                  )
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          listado.nombres == null
+                            ? _c("td", [
+                                _c("label", {}, [_vm._v("Sin Docente")])
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(listado.jefe_curso))])
                         ])
@@ -65687,7 +65880,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", { staticClass: "animated fadeIn" }, [
     _c("div", { staticClass: "card" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -65892,7 +66085,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", { staticClass: "animated fadeIn" }, [
     _c("div", { staticClass: "card" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -112060,6 +112253,62 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./node_modules/z-loading/dist/z-loading.css":
+/*!***************************************************!*\
+  !*** ./node_modules/z-loading/dist/z-loading.css ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./z-loading.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/z-loading/dist/z-loading.css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/z-loading/dist/z-loading.js":
+/*!**************************************************!*\
+  !*** ./node_modules/z-loading/dist/z-loading.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){if(true)module.exports=e();else { var r, n; }}(window,function(){return function(n){var r={};function o(t){if(r[t])return r[t].exports;var e=r[t]={i:t,l:!1,exports:{}};return n[t].call(e.exports,e,e.exports,o),e.l=!0,e.exports}return o.m=n,o.c=r,o.d=function(t,e,n){o.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:n})},o.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},o.t=function(e,t){if(1&t&&(e=o(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(o.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var r in e)o.d(n,r,function(t){return e[t]}.bind(null,r));return n},o.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return o.d(e,"a",e),e},o.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},o.p="/",o(o.s=0)}({0:function(t,e,n){t.exports=n("tjUo")},"41pa":function(t,e,n){"use strict";var r=n("lTJf");n.n(r).a},"9tPo":function(t,e){t.exports=function(t){var e="undefined"!=typeof window&&window.location;if(!e)throw new Error("fixUrls requires window.location");if(!t||"string"!=typeof t)return t;var o=e.protocol+"//"+e.host,i=o+e.pathname.replace(/\/[^\/]*$/,"/");return t.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi,function(t,e){var n,r=e.trim().replace(/^"(.*)"$/,function(t,e){return e}).replace(/^'(.*)'$/,function(t,e){return e});return/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(r)?t:(n=0===r.indexOf("//")?r:0===r.indexOf("/")?o+r:i+r.replace(/^\.\//,""),"url("+JSON.stringify(n)+")")})}},DNSQ:function(t,e,n){"use strict";var r=n("XaJ2");n.n(r).a},E2jh:function(t,e,n){"use strict";var r=n("cWAC");n.n(r).a},EToE:function(t,e,n){"use strict";var r=n("x2y0");n.n(r).a},JPst:function(t,e,n){"use strict";t.exports=function(n){var s=[];return s.toString=function(){return this.map(function(t){var e=function(t,e){var n=t[1]||"",r=t[3];if(!r)return n;if(e&&"function"==typeof btoa){var o=(s=r,"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(s))))+" */"),i=r.sources.map(function(t){return"/*# sourceURL="+r.sourceRoot+t+" */"});return[n].concat(i).concat([o]).join("\n")}var s;return[n].join("\n")}(t,n);return t[2]?"@media "+t[2]+"{"+e+"}":e}).join("")},s.i=function(t,e){"string"==typeof t&&(t=[[null,t,""]]);for(var n={},r=0;r<this.length;r++){var o=this[r][0];null!=o&&(n[o]=!0)}for(r=0;r<t.length;r++){var i=t[r];null!=i[0]&&n[i[0]]||(e&&!i[2]?i[2]=e:e&&(i[2]="("+i[2]+") and ("+e+")"),s.push(i))}},s}},XaJ2:function(t,e,n){var r=n("jGdh");"string"==typeof r&&(r=[[t.i,r,""]]);var o={hmr:!0,transform:void 0,insertInto:void 0};n("aET+")(r,o);r.locals&&(t.exports=r.locals)},"aET+":function(t,e,r){var n,o,i,l={},c=(n=function(){return window&&document&&document.all&&!window.atob},function(){return void 0===o&&(o=n.apply(this,arguments)),o}),s=(i={},function(t,e){if("function"==typeof t)return t();if(void 0===i[t]){var n=function(t,e){return e?e.querySelector(t):document.querySelector(t)}.call(this,t,e);if(window.HTMLIFrameElement&&n instanceof window.HTMLIFrameElement)try{n=n.contentDocument.head}catch(t){n=null}i[t]=n}return i[t]}),u=null,f=0,a=[],d=r("9tPo");function p(t,e){for(var n=0;n<t.length;n++){var r=t[n],o=l[r.id];if(o){o.refs++;for(var i=0;i<o.parts.length;i++)o.parts[i](r.parts[i]);for(;i<r.parts.length;i++)o.parts.push(g(r.parts[i],e))}else{var s=[];for(i=0;i<r.parts.length;i++)s.push(g(r.parts[i],e));l[r.id]={id:r.id,refs:1,parts:s}}}}function h(t,e){for(var n=[],r={},o=0;o<t.length;o++){var i=t[o],s=e.base?i[0]+e.base:i[0],a={css:i[1],media:i[2],sourceMap:i[3]};r[s]?r[s].parts.push(a):n.push(r[s]={id:s,parts:[a]})}return n}function v(t,e){var n=s(t.insertInto);if(!n)throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");var r=a[a.length-1];if("top"===t.insertAt)r?r.nextSibling?n.insertBefore(e,r.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),a.push(e);else if("bottom"===t.insertAt)n.appendChild(e);else{if("object"!=typeof t.insertAt||!t.insertAt.before)throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");var o=s(t.insertAt.before,n);n.insertBefore(e,o)}}function m(t){if(null===t.parentNode)return!1;t.parentNode.removeChild(t);var e=a.indexOf(t);0<=e&&a.splice(e,1)}function y(t){var e=document.createElement("style");if(void 0===t.attrs.type&&(t.attrs.type="text/css"),void 0===t.attrs.nonce){var n=function(){0;return r.nc}();n&&(t.attrs.nonce=n)}return b(e,t.attrs),v(t,e),e}function b(e,n){Object.keys(n).forEach(function(t){e.setAttribute(t,n[t])})}function g(e,t){var n,r,o,i,s,a;if(t.transform&&e.css){if(!(i="function"==typeof t.transform?t.transform(e.css):t.transform.default(e.css)))return function(){};e.css=i}if(t.singleton){var l=f++;n=u||(u=y(t)),r=x.bind(null,n,l,!1),o=x.bind(null,n,l,!0)}else o=e.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(s=t,a=document.createElement("link"),void 0===s.attrs.type&&(s.attrs.type="text/css"),s.attrs.rel="stylesheet",b(a,s.attrs),v(s,a),r=function(t,e,n){var r=n.css,o=n.sourceMap,i=void 0===e.convertToAbsoluteUrls&&o;(e.convertToAbsoluteUrls||i)&&(r=d(r));o&&(r+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */");var s=new Blob([r],{type:"text/css"}),a=t.href;t.href=URL.createObjectURL(s),a&&URL.revokeObjectURL(a)}.bind(null,n=a,t),function(){m(n),n.href&&URL.revokeObjectURL(n.href)}):(n=y(t),r=function(t,e){var n=e.css,r=e.media;r&&t.setAttribute("media",r);if(t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}.bind(null,n),function(){m(n)});return r(e),function(t){if(t){if(t.css===e.css&&t.media===e.media&&t.sourceMap===e.sourceMap)return;r(e=t)}else o()}}t.exports=function(t,s){if("undefined"!=typeof DEBUG&&DEBUG&&"object"!=typeof document)throw new Error("The style-loader cannot be used in a non-browser environment");(s=s||{}).attrs="object"==typeof s.attrs?s.attrs:{},s.singleton||"boolean"==typeof s.singleton||(s.singleton=c()),s.insertInto||(s.insertInto="head"),s.insertAt||(s.insertAt="bottom");var a=h(t,s);return p(a,s),function(t){for(var e=[],n=0;n<a.length;n++){var r=a[n];(o=l[r.id]).refs--,e.push(o)}t&&p(h(t,s),s);for(n=0;n<e.length;n++){var o;if(0===(o=e[n]).refs){for(var i=0;i<o.parts.length;i++)o.parts[i]();delete l[o.id]}}}};var _,C=(_=[],function(t,e){return _[t]=e,_.filter(Boolean).join("\n")});function x(t,e,n,r){var o=n?"":r.css;if(t.styleSheet)t.styleSheet.cssText=C(e,o);else{var i=document.createTextNode(o),s=t.childNodes;s[e]&&t.removeChild(s[e]),s.length?t.insertBefore(i,s[e]):t.appendChild(i)}}},cWAC:function(t,e,n){var r=n("ouc9");"string"==typeof r&&(r=[[t.i,r,""]]);var o={hmr:!0,transform:void 0,insertInto:void 0};n("aET+")(r,o);r.locals&&(t.exports=r.locals)},d7vd:function(t,e,n){(t.exports=n("JPst")(!1)).push([t.i,"",""])},jGdh:function(t,e,n){(t.exports=n("JPst")(!1)).push([t.i,"",""])},lTJf:function(t,e,n){var r=n("mSmJ");"string"==typeof r&&(r=[[t.i,r,""]]);var o={hmr:!0,transform:void 0,insertInto:void 0};n("aET+")(r,o);r.locals&&(t.exports=r.locals)},mSmJ:function(t,e,n){(t.exports=n("JPst")(!1)).push([t.i,"",""])},ouc9:function(t,e,n){(t.exports=n("JPst")(!1)).push([t.i,"",""])},tjUo:function(t,e,n){"use strict";n.r(e);var r=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("transition",{attrs:{name:"z-loading"},on:{"after-leave":t.afterLeaveHandler}},[t.visible?n("div",{staticClass:"z-loading-box z-loading--fixed",class:t.loadingClass,style:[t.zLoadingPosition,t.boxStyle]},["youtubeBar"===t.type?n("div",{ref:"bar",staticClass:"z-loading-bar",style:t.barStyle},[n("div",{staticClass:"z-loading-head"})]):n("div",{staticClass:"z-loading-spinner"},[t.showCloseBtn&&t.closeBtnVisible?n("div",{staticClass:"spinner-close",style:t.closeStyle,on:{click:t.closeHandler}},[n("svg",{staticClass:"icon",staticStyle:{width:"1em",height:"1em","vertical-align":"middle",fill:"currentColor",overflow:"hidden"},attrs:{viewBox:"0 0 1024 1024",version:"1.1",xmlns:"http://www.w3.org/2000/svg","p-id":"1400"}},[n("path",{attrs:{d:"M621.714286 512 1002.057143 131.657143c29.257143-29.257143 29.257143-80.457143 0-109.714286-29.257143-29.257143-80.457143-29.257143-109.714286 0L512 402.285714 131.657143 21.942857c-29.257143-29.257143-80.457143-29.257143-109.714286 0-29.257143 29.257143-29.257143 80.457143 0 109.714286L402.285714 512 21.942857 892.342857c-29.257143 29.257143-29.257143 80.457143 0 109.714286 29.257143 29.257143 80.457143 29.257143 109.714286 0L512 621.714286l380.342857 380.342857c29.257143 29.257143 80.457143 29.257143 109.714286 0 29.257143-29.257143 29.257143-80.457143 0-109.714286L621.714286 512z","p-id":"1401"}})])]):t._e(),t._v(" "),n("div",{staticClass:"spinner-content"},[n(t.loader,{tag:"component",attrs:{size:t.size,"theme-color":t.themeColor}})],1)])]):t._e()])},o={data:function(){return{barWidth:0,position:"top",_doneCallback:null,_incrementTimer:null,_completeTimer:null,_barEl:null,_started:!1,_timerOutTimer:null}},computed:{barStyle:function(){var t={width:100*this.barWidth+"%",height:this.barHeight};return this.themeColor&&(t["background-color"]=this.themeColor),t},zLoadingPosition:function(){return"top"===this.position?{top:0}:{bottom:0}}},watch:{visible:{immediate:r._withStripped=!0,handler:function(t){var e=this;(this._started=!0)!==t||"youtubeBar"!==this.type||this._barEl||this.$nextTick(function(){e._barEl=e.$refs.bar,e.increments()})}}},methods:{increments:function(){if(!(1<=this.barWidth)){var t=this.barWidth,e=0;e=0<=t&&t<.25?(3*Math.random()+3)/100:.25<=t&&t<.65?3*Math.random()/100:.65<=t&&t<.9?2*Math.random()/100:.9<=t&&t<.99?.005:0,this.setWidth(this.barWidth+e)}},completeAnimation:function(){this.visible=!1,this._started=!1},setWidth:function(t){this._started&&(1===(this.barWidth=t)&&this._barEl&&this._barEl.addEventListener("transitionend",this.completeAnimation,!1),this.clearTimer(this._incrementTimer),this._incrementTimer=setTimeout(this.increments,250))},complete:function(){this.clearTimer(this._timerOutTimer),this.setWidth(1)},successComplete:function(t){this.themeColor=t,this.complete()},errorComplete:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:"#f00";this.themeColor=t,this.complete()}},beforeDestroy:function(){this.targetEl.loadingInstance=null,this._barEl&&this._barEl.removeEventListener("transitionend",this.completeAnimation,!1)}},i=function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"spinner-loader",style:this.style},[e("svg",{staticClass:"spinner-circular",attrs:{viewBox:"25 25 50 50"}},[e("circle",
+	{
+		staticClass:"spinner-path",
+		style:this.circleStyle,
+		attrs:{
+			cx:"50",cy:"50",r:"20",
+			fill:"none",
+			"stroke-width":"4",
+			"stroke-miterlimit":"10"
+		}
+	})])])};i._withStripped=!0;var s={props:{size:{type:Number,default:50},themeColor:[String]},computed:{style:function(){return{width:this.size+"px",height:this.size+"px"}},
+circleStyle:function(){
+	return{stroke:'#2980B9'
+}
+}}};n("DNSQ");function a(t,e,n,r,o,i,s,a){var l,c="function"==typeof t?t.options:t;if(e&&(c.render=e,c.staticRenderFns=n,c._compiled=!0),r&&(c.functional=!0),i&&(c._scopeId="data-v-"+i),s?(l=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),o&&o.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(s)},c._ssrRegister=l):o&&(l=a?function(){o.call(this,this.$root.$options.shadowRoot)}:o),l)if(c.functional){c._injectStyles=l;var u=c.render;c.render=function(t,e){return l.call(e),u(t,e)}}else{var f=c.beforeCreate;c.beforeCreate=f?[].concat(f,l):[l]}return{exports:t,options:c}}var l=a(s,i,[],!1,null,null,null);l.options.__file="src/spinner/circle.vue";var c=l.exports,u=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"double-bounce-spinner",style:t.style},[n("div",{staticClass:"double-bounce1",style:t.bounceStyle}),t._v(" "),n("div",{staticClass:"double-bounce2",style:t.bounceStyle})])};u._withStripped=!0;var f={props:{size:{type:Number,default:50},themeColor:[String]},computed:{style:function(){return{width:this.size+"px",height:this.size+"px"}},bounceStyle:function(){return{"background-color":this.themeColor}}}},d=(n("41pa"),a(f,u,[],!1,null,null,null));d.options.__file="src/spinner/double-bounce.vue";var p=d.exports,h=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"stretch-spinner",style:t.style},[n("div",{staticClass:"rect rect-1",style:t.rectStyle}),t._v(" "),n("div",{staticClass:"rect rect-2",style:t.rectStyle}),t._v(" "),n("div",{staticClass:"rect rect-3",style:t.rectStyle}),t._v(" "),n("div",{staticClass:"rect rect-4",style:t.rectStyle}),t._v(" "),n("div",{staticClass:"rect rect-5",style:t.rectStyle})])};h._withStripped=!0;var v={props:{size:{type:Number,default:50},themeColor:[String]},computed:{style:function(){return{width:this.size+"px",height:this.size+"px"}},rectStyle:function(){return{"background-color":this.themeColor}}}},m=(n("EToE"),a(v,h,[],!1,null,null,null));m.options.__file="src/spinner/stretch.vue";var y=m.exports,b={name:"z-loading",mixins:[o],data:function(){return{visible:!1,timeOut:3e3,themeColor:"",type:"youtubeBar",loader:null,closeBtnVisible:!1}},computed:{loadingClass:function(){return"youtubeBar"===this.type?"z-loading-type--youtube":"z-loading-type--spinner"},closeStyle:function(){return{color:this.themeColor}},boxStyle:function(){return{"background-color":this.backgroundColor,"z-index":this.zIndex}}},watch:{type:{immediate:!0,handler:function(){this.loader={doubleBounce:p,circle:c,stretch:y}[this.type]}}},methods:{closeHandler:function(){this.close.call(this)},afterLeaveHandler:function(){this.$el.parentNode&&(this.$el.parentNode.classList.remove("zloading-parent--relative"),this.$el.parentNode.removeChild(this.$el)),this.$destroy(),"function"==typeof this._doneCallback&&this._doneCallback()},clearTimer:function(t){t&&clearTimeout(t)}}},g=(n("E2jh"),a(b,r,[],!1,null,null,null));g.options.__file="src/index.vue";var _=g.exports,C=function(t){for(var e=1,n=arguments.length;e<n;e++){var r=arguments[e]||{};for(var o in r)if(r.hasOwnProperty(o)){var i=r[o];void 0!==i&&(t[o]=i)}}return t};function x(t){return(x="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}n.d(e,"setConfig",function(){return j}),n.d(e,"zLading",function(){return L});var w=null,S={},T={barHeight:"4px",barWidth:0,timeOut:0,themeColor:"#f33",position:"top",type:"youtubeBar",backgroundColor:"rgba(0, 0, 0, 0.6)",size:50,showCloseBtn:!0,zIndex:999},E=function(t){var e=function(e,n){if(!e||!n)return null;"float"===n&&(n="cssFloat");try{var t=document.defaultView.getComputedStyle(e,"");return e.style[n]||t?t[n]:null}catch(t){return e.style[n]}}(t,"position");if(-1===["absolute","fixed"].indexOf(e)){var n="zloading-parent--relative";!1===t.classList.contains(n)&&t.classList.add(n)}t!==document.body&&w.$el.classList.remove("z-loading--fixed")},j=function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};C(T,t)},L=window.ZLoading;e.default={install:function(i){var s=i.extend(_),a=1,l=function(t,e){var n=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{},r=C({},T,n),o=null;return o=t.loadingInstance?(C(t.loadingInstance,r),t.loadingInstance.visible=e,t.loadingInstance):((w=new s({el:document.createElement("div"),data:r})).uid=a++,t.appendChild&&(w.visible=e,i.nextTick(function(){t.appendChild(w.$el),E(t)})),(w.targetEl=t).loadingInstance=w),i.nextTick(function(){0<r.timeOut&&w._setTimeout(r.timeOut)}),o};s.prototype._setTimeout=function(t){var e=this;S[this.uid]&&clearTimeout(S[this.uid]),0<t&&(S[this.uid]=setTimeout(function(){w=null,delete S[e.uid],e._hide()},Math.max(t,50)))},s.prototype._hide=function(){if("youtubeBar"===this.type)return this.complete&&this.complete();this.visible=!1},s.prototype.close=function(t){var e,n=50;return"number"==typeof t?n=t:1==(e=t,"[object Object]"===window.toString.call(e))&&("string"==typeof t.color&&(this.themeColor=t.color),"number"==typeof t.timeout&&(n=t.timeout)),this._setTimeout(n),this},s.prototype.wait=function(r){var o=this;return r&&-1<["object","function"].indexOf(x(r))&&"function"==typeof r.then?new Promise(function(t,e){var n=o;r.then(function(){n.close(),t.apply(void 0,arguments)}).catch(function(){n.close(),e.apply(void 0,arguments)})}):this},s.prototype.done=function(t){return"function"==typeof t&&(this._doneCallback=t),this};var r={close:function(){},open:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{},e=t.el||null;"string"==typeof t.el&&(e=document.querySelector(t.el)),e=e||document.body;var n=l(e,!0,t);return n._doneCallback=null,r.close=function(t){return n.close(t)},n}};window.ZLoading=i.prototype.$zLoading=r,i.directive("zLoading",function(t,e){var n=e.value,r=e.oldValue,o=e.modifiers,i=e.arg,s=void 0===i?"circle":i;if(n!==r){var a=t;if(!0===o.fullscreen&&(a=document.body),!0===n)return l(a,n,{type:s});a.loadingInstance&&a.loadingInstance.close()}})}}},x2y0:function(t,e,n){var r=n("d7vd");"string"==typeof r&&(r=[[t.i,r,""]]);var o={hmr:!0,transform:void 0,insertInto:void 0};n("aET+")(r,o);r.locals&&(t.exports=r.locals)}}).default});
+// # sourceMappingURL=z-loading.js.map
+
+/***/ }),
+
 /***/ "./resources/js/App.vue":
 /*!******************************!*\
   !*** ./resources/js/App.vue ***!
@@ -112171,12 +112420,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _websanova_vue_auth__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_websanova_vue_auth__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-notification */ "./node_modules/vue-notification/dist/index.js");
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_notification__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-bootstrap-datetimepicker */ "./node_modules/vue-bootstrap-datetimepicker/dist/vue-bootstrap-datetimepicker.js");
-/* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css */ "./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css");
-/* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var z_loading__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! z-loading */ "./node_modules/z-loading/dist/z-loading.js");
+/* harmony import */ var z_loading__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(z_loading__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var z_loading_dist_z_loading_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! z-loading/dist/z-loading.css */ "./node_modules/z-loading/dist/z-loading.css");
+/* harmony import */ var z_loading_dist_z_loading_css__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(z_loading_dist_z_loading_css__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue-bootstrap-datetimepicker */ "./node_modules/vue-bootstrap-datetimepicker/dist/vue-bootstrap-datetimepicker.js");
+/* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css */ "./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css");
+/* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_13__);
 /*
 require('./bootstrap');
 
@@ -112212,8 +112465,11 @@ Vue.use(vue_material__WEBPACK_IMPORTED_MODULE_5___default.a);
 Vue.use(vue_notification__WEBPACK_IMPORTED_MODULE_8___default.a);
 
 
+Vue.use(z_loading__WEBPACK_IMPORTED_MODULE_9___default.a);
 
-Vue.use(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_9___default.a);
+
+
+Vue.use(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_11___default.a);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   /*mode: 'history',*/
   routes: _rutas_js__WEBPACK_IMPORTED_MODULE_0__["default"]

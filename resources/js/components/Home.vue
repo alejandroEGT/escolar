@@ -34,7 +34,7 @@
 
                                             <md-button class="md-raised md-primary" @click="login">Ingresar</md-button>
 
-                                            <md-button type="submit" class="md-primary" @click="redirect_create_user">Create user</md-button>
+                                            <!-- <md-button type="submit" class="md-primary" @click="redirect_create_user">Create user</md-button> -->
                             
                                             <!-- <a href="">Crear una cuenta</a> -->
                                         </div>

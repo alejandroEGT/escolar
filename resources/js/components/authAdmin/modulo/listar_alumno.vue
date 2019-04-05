@@ -1,6 +1,6 @@
 
 <template>
-  <div class="">
+  <div class="animated fadeIn">
 	<div class="card">
 		<div class="card-header">
   				<h5><i class="fas fa-chalkboard-teacher"></i> Lista Alumnos</h5>

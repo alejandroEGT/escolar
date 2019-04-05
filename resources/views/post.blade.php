@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
         <!-- main css -->
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
 
 
 
@@ -34,6 +35,10 @@
         input.sinbordefondo::placeholder{
             font-size: 17px;
         }
+        /*.spinner-loader.spinner-circular circle{
+            stroke:blue;
+        }*/
+       
    </style>
 
         <div id="app">

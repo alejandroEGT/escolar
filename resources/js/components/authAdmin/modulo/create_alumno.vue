@@ -1,4 +1,5 @@
 <template>
+	<div class="animated fadeIn">
 	<div class="container">
 
 	    <div class="card">
@@ -89,6 +90,7 @@
 		  </div>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>

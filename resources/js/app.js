@@ -44,8 +44,14 @@ Vue.use(VueMaterial)
 
 import Notifications from 'vue-notification'
 
-
 Vue.use(Notifications)
+
+import zloading from 'z-loading';
+import 'z-loading/dist/z-loading.css';
+
+Vue.use(zloading);
+
+
 
 
 

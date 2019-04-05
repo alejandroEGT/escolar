@@ -150,31 +150,60 @@ class AdminCuentaController extends Controller
     	if (count($verify) > 0) {
     		return "exists";
     	}else{
-    		$ca = new Cursoasignatura;
-	    	$ca->curso_id = $r->curso;
-	    	$ca->asignatura_id = $r->asignatura;
-	    	$ca->jefe_curso = ($r->jefe == true)? 'S' : 'N';
-	    	$ca->docente_id = $r->docente;
-	    	$ca->activo = "S";
-	    	$ca->horas_duracion = $r->horas;
 
-	    	if ($ca->save()) {
-	    		return "success";
+    		$exist_jefe = Cursoasignatura::where([
+    		'curso_id' => $r->curso,
+    		// 'docente_id' => $r->docente,
+    		'jefe_curso' => 'S'
+	    	])->first();
+
+	    	if (!empty($exist_jefe) && $r->jefe == true) {// si el jefe de curso es false
+	    		return "exist_jefe";
 	    	}
-	    	return "failed";
+		    		$ca = new Cursoasignatura;
+			    	$ca->curso_id = $r->curso;
+			    	$ca->asignatura_id = $r->asignatura;
+			    	$ca->jefe_curso = ($r->jefe == true)? 'S' : 'N';
+			    	$ca->docente_id = $r->docente;
+			    	$ca->activo = "S";
+			    	$ca->horas_duracion = $r->horas;
+
+			    	if ($ca->save()) {
+			    		return "success";
+			    	}
+			    	return "failed";
 	    }
     }
     public function listar_asignatura_en_curso($curso)
     {
+
+
     	return Cursoasignatura::select([
     			'u.nombres','u.apellido_materno','u.apellido_paterno',
     			'a.descripcion','curso-asignatura.jefe_curso','a.id as asignatura_id'
     	])
     	                      ->join('curso as c','c.id','curso-asignatura.curso_id')
     						  ->join('asignatura as a', 'a.id','curso-asignatura.asignatura_id')
-    						  ->join('docente as d','d.id','curso-asignatura.docente_id')
-    						  ->join('users as u','u.id','d.user_id')
+    						  ->leftjoin('docente as d','d.id','curso-asignatura.docente_id')
+    						  ->leftjoin('users as u','u.id','d.user_id')
     						  ->where('c.id', $curso)->get();
+
+    }
+    public function traer_inicio($curso)
+    {
+    	$docentejefe = Cursoasignatura::select([
+    							'u.nombres','u.apellido_paterno','u.apellido_materno',
+    							'd.id as docente_id'
+    						])
+    	  					  ->join('docente as d','d.id','curso-asignatura.docente_id')
+    						  ->join('users as u','u.id','d.user_id')
+    						  ->where([ 'curso-asignatura.curso_id'=> $curso, 'jefe_curso'=>'S' ])
+    						  ->first();
+
+
+    	return [
+    		'docentejefe' => $docentejefe
+    	];
 
     }
 }

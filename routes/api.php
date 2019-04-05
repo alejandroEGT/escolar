@@ -51,6 +51,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/obtener_asignaturas','AdminCuentaController@obtener_asignaturas');
   Route::post('auth/admin/agregarasignatura','AdminCuentaController@agregarasignatura');
   Route::get('auth/admin/listar_asignatura_en_curso/{curso}','AdminCuentaController@listar_asignatura_en_curso');
+  Route::get('auth/admin/traer_inicio/{docente}','AdminCuentaController@traer_inicio');
  
 
 });

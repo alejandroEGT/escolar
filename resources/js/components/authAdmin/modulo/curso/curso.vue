@@ -1,11 +1,12 @@
 <template>
-	<div>
+	<!-- animated infinite bounce delay-1s -->
+	<div class="animated fadeIn" v-zLoading:circle="isLoading">
 		<div class="container table-responsive">
 			<div class="row">
 				<div class="col-md-5" style="">
 					<i class="fas fa-cube fa-3x"></i>
 					 <md-chip><label style="font-size: 20px">
-					 	<strong>{{ 'Curso/'+get_curso.descripcion }}
+					 	<strong v-zLoading:circle="isLoading">{{ 'Curso/'+get_curso.descripcion }}
 					 		<small>{{get_curso.promocion}}</small>
 					 	</strong>
 					 </label></md-chip>
@@ -16,12 +17,20 @@
 		<br>
 		<md-tabs>
       <md-tab id="tab-home" md-label="Inicio">
-      	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		
+      	<div class="row">
+      		<div class="col-md-3" style="margin-top:2px">
+      			<md-chip class="md-primary"> <i class="far fa-address-book fa-1x"></i> <strong>Docente jefe:</strong> {{ docente_jefe.nombres+' '+docente_jefe.apellido_paterno+' '+docente_jefe.apellido_materno }}</md-chip>
+      		</div>
+      		<div class="col-md-3" style="margin-top:2px">
+      			<md-chip class="md-accent"> <i class="far fa-address-book fa-1x"></i> <strong>Asignaturas:</strong> {{ contar_asignatura+' activas' }}</md-chip>
+      		</div>
+      		<div class="col-md-4"></div>
+      	</div>
+		
+
+
+
       </md-tab>
       <md-tab id="tab-pages" md-label="Asignaturas">
       		
@@ -71,7 +80,10 @@
 					    <tbody>
 					    	<tr v-for="listado in listar_asignatura">
 					    		<td>{{ listado.descripcion }}</td>
-					    		<td>{{ listado.nombres+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+
+					    		<td v-if="listado.nombres !=null">{{ listado.nombres+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+					    		<td v-if="listado.nombres ==null"><label style="">Sin Docente</label></td>
+
 					    		<td>{{ listado.jefe_curso }}</td>
 					    		
 					    		
@@ -89,9 +101,18 @@
 </template>
 
 <script>
+
+// import { setConfig } from 'zLoading';
+
+//       setConfig({
+//         type: 'circle',
+//         size: 100,
+//         timeOut: 3000
+//       });
 	export default{
 		data(){
 			return{
+				isLoading: true,
 				curso: this.$route.params.id,
 				get_curso:{},
 				select_asignaturas_json:{},
@@ -100,46 +121,75 @@
 					jefe: false,
 					asignatura:'',
 					docente:'',
-					curso: this.$route.params.id
+					curso: this.$route.params.id,
+					horas:''
 				},
-				listar_asignatura:{}
+				listar_asignatura:{},
+				docente_jefe:{},
+				contar_asignatura:''
 			}
 		},
 		created(){
+			this.traer_inicio();
 			this.traer_curso();
 			this.select_asignaturas();
 			this.select_docentes();
 			this.listar_asignaturas();
+			
 		},
 		methods:{
 			register(){
-				axios.post('api/auth/admin/agregarasignatura',this.form).then((res)=>{
-					if (res.data == "exists") {
-						this.$notify({
-						  group: 'error',
-						  title: 'Alerta',
-						  text: 'Asignatura ya registrado!',
-						});
-						return false;
-					}
-					if (res.data == "success") {
-						this.$notify({
-						  group: 'success',
-						  title: 'Alerta',
-						  text: 'Docente y curso agregados!',
-						});
-						this.listar_asignaturas();
-						return false;
-					}
-					if (res.data == "failed") {
-						this.$notify({
-						  group: 'error',
-						  title: 'Alerta',
-						  text: 'Algo anda mal, revisar bien campos',
-						});
-						return false;
-					}
 
+				if (this.form.asignatura=='' || this.form.docente=='' || this.form.horas=='') {
+
+					this.$notify({
+							  group: 'error',
+							  title: 'Alerta',
+							  text: 'LLenar todos los campos!',
+					});					
+					return false;
+				}
+					axios.post('api/auth/admin/agregarasignatura',this.form).then((res)=>{
+						if (res.data == "exists") {
+							this.$notify({
+							  group: 'error',
+							  title: 'Alerta',
+							  text: 'Asignatura ya registrado!',
+							});
+							return false;
+						}
+						if (res.data == "success") {
+							this.$notify({
+							  group: 'success',
+							  title: 'Alerta',
+							  text: 'Docente y curso agregados!',
+							});
+							this.listar_asignaturas();
+							return false;
+						}
+						if (res.data == "failed") {
+							this.$notify({
+							  group: 'error',
+							  title: 'Alerta',
+							  text: 'Algo anda mal, revisar bien campos',
+							});
+							return false;
+						}
+						if (res.data == "exist_jefe") {
+							this.$notify({
+							  group: 'error',
+							  title: 'Alerta',
+							  text: 'Ya hay un jefe en este curso',
+							});
+							return false;
+						}
+
+					});
+			},
+			traer_inicio(){
+				axios.get('api/auth/admin/traer_inicio/'+this.curso).then((res)=>{
+					this.docente_jefe = res.data.docentejefe
+					this.isLoading=false;
 				});
 			},
 			traer_curso(){
@@ -160,8 +210,11 @@
 			listar_asignaturas(){
 				axios.get('api/auth/admin/listar_asignatura_en_curso/'+this.curso).then((res)=>{
 					this.listar_asignatura = res.data;
+					this.contar_asignatura = res.data.length;
 				});
 			}
+
+			
 		}
 	}
 </script>
