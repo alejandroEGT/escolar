@@ -206,4 +206,38 @@ class AdminCuentaController extends Controller
     	];
 
     }
+
+    public function contar_elementos()
+    {
+    	$curso = Curso::select('id')->where([
+    		'promocion' => '2019',
+    		'cuenta_id' => $this::_cuenta()->cuenta_id,
+    		'activo' => 'S'
+    	])->get();
+
+    	$docente = Docente::select('docente.id')
+    	                  ->join('docente-establecimiento as de','de.docente_id','docente.id')
+    	                  ->where([
+    	                  	'de.cuenta_id'=> $this::_cuenta()->cuenta_id,
+    	                  	'de.activo' => 'S'
+    	                  ])->get();
+
+    	$alumno = Alumno::select('alumno.id')
+    					->join('alumno-curso as ac','ac.alumno_id','alumno.id')
+    					->join('curso as c','ac.curso_id','c.id')
+    					->where([
+    						'ac.anio_actual' => 'S',
+    						'alumno.activo' => 'S',
+    						'c.promocion' => '2019',
+    						'c.activo' => 'S',
+    						'c.cuenta_id' => $this::_cuenta()->cuenta_id
+    					])
+    					->get();
+
+    	return [
+    		'curso' => count($curso)>0 ? count($curso) : '0',
+    		'docente' => count($docente)>0 ? count($docente) : '0',
+    		'alumno' => count($alumno)>0 ? count($alumno) : '0'
+    	];
+    }
 }

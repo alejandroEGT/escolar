@@ -51,7 +51,7 @@ import 'z-loading/dist/z-loading.css';
 
 Vue.use(zloading);
 
-
+Vue.use(require('@hscmap/vue-window'))
 
 
 

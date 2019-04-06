@@ -105,7 +105,7 @@ export default {
       },
       url_(){
              this.$router.push({path:'/admin'}); 
-      },
+      }
   } ,
    computed: {
             img_section_style: function(){

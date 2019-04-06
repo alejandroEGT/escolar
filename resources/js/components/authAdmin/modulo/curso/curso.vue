@@ -1,6 +1,6 @@
 <template>
 	<!-- animated infinite bounce delay-1s -->
-	<div class="animated fadeIn" v-zLoading:circle="isLoading">
+	<div class="animated fadeIn">
 		<div class="container table-responsive">
 			<div class="row">
 				<div class="col-md-5" style="">
@@ -16,18 +16,23 @@
 		</div>
 		<br>
 		<md-tabs>
-      <md-tab id="tab-home" md-label="Inicio">
+      <md-tab id="tab-home" md-label="Inicio" v-zLoading:circle="isLoading">
 		
       	<div class="row">
+
       		<div class="col-md-3" style="margin-top:2px">
-      			<md-chip class="md-primary"> <i class="far fa-address-book fa-1x"></i> <strong>Docente jefe:</strong> {{ docente_jefe.nombres+' '+docente_jefe.apellido_paterno+' '+docente_jefe.apellido_materno }}</md-chip>
+      			<md-chip class="md-primary"> <i class="far fa-address-book fa-1x"></i> 
+      				<strong>Docente jefe:</strong> <label v-if="docente_jefe != null">{{ docente_jefe.nombres+' '+docente_jefe.apellido_paterno+' '+docente_jefe.apellido_materno }}</label>
+      			</md-chip>
       		</div>
-      		<div class="col-md-3" style="margin-top:2px">
+      		<div class="col-md-2" style="margin-top:2px">
       			<md-chip class="md-accent"> <i class="far fa-address-book fa-1x"></i> <strong>Asignaturas:</strong> {{ contar_asignatura+' activas' }}</md-chip>
       		</div>
-      		<div class="col-md-4"></div>
+      		<div class="col-md-3" style="margin-top:2px">
+      			<md-chip>Alumnos: {{ contar_alumnos }}</md-chip>
+      		</div>
       	</div>
-		
+		<br><br><br><br><br>
 
 
 
@@ -94,7 +99,67 @@
       		</div>
 
       </md-tab>
-      <md-tab id="tab-posts" md-label="Alumnos"></md-tab>
+      <md-tab id="tab-posts" md-label="Alumnos">
+      	
+		<div class="card">
+		<div class="card-header">
+  				<h5><i class="fas fa-chalkboard-teacher"></i> Lista Alumnos</h5>
+  			</div>
+
+  		<div class="card-body">
+			
+		    <div class="row justify-content-md-center">
+				      
+				      	
+				      <div class="table-responsive">
+
+					  <table class="table">
+					    <thead>
+					    	<tr style="background:#3F8DF7; color:white">
+					    		<td></td>
+					    		<td>
+					    			Grado
+					    		</td>
+					    		<td>Nombre</td>
+					    		<td>Run</td>
+					    		<td>Direccion</td>
+					    		<td>Activo</td>
+					    	</tr>
+					    </thead>
+					    <tbody>
+					    	<tr v-for="listado in list_cursos">
+					    		<td> 
+					    			<md-button class="md-icon-button md-raised md-primary">
+								        <md-icon><i class="fas fa-eye"></i></md-icon>
+								      </md-button>
+								</td>
+								
+								<td>
+									{{ listado.descripcion }}
+								</td>
+
+					    		<td>
+					    		{{ listado.nombre+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+					    		<td>
+					    			<label style="color:#99A3A4" v-if="!listado.run">No hay datos</label>
+					    			<label v-if="listado.run">{{ listado.run }}</label>
+					    		</td>
+					    		<td>
+					    			<label style="color:#99A3A4" v-if="!listado.direccion">No hay datos</label>
+					    			<label v-if="listado.direccion">{{ listado.direccion }}</label>
+					    		</td>
+					    		
+					    		<td>{{ listado.activo }}</td>
+					    	</tr>
+					    </tbody>
+					  </table>
+					</div>
+			</div>
+		</div>
+	</div>
+
+
+      </md-tab>
       <md-tab id="tab-favorites" md-label="Favorites"></md-tab>
     </md-tabs>
 	</div>
@@ -125,8 +190,12 @@
 					horas:''
 				},
 				listar_asignatura:{},
-				docente_jefe:{},
-				contar_asignatura:''
+				docente_jefe:{
+					nombres:'', apellido_paterno:'', apellido_materno:''
+				},
+				contar_asignatura:'',
+				list_cursos:{},
+				contar_alumnos:'',
 			}
 		},
 		created(){
@@ -135,6 +204,7 @@
 			this.select_asignaturas();
 			this.select_docentes();
 			this.listar_asignaturas();
+			this.listar_alumnos();
 			
 		},
 		methods:{
@@ -212,7 +282,13 @@
 					this.listar_asignatura = res.data;
 					this.contar_asignatura = res.data.length;
 				});
-			}
+			},
+			listar_alumnos(){
+	  			axios.get('api/auth/admin/listaralumno_filter/'+this.curso).then((res)=>{
+		            this.list_cursos = res.data;
+		            this.contar_alumnos = res.data.length+ ' Activo(s)';
+		        })
+	  		},
 
 			
 		}

@@ -6,7 +6,7 @@
             <md-card-header>
               <md-card-header-text>
                 <div class="md-title">Cursos</div>
-                <div class="md-subhead">23 cursos</div>
+                <div class="md-subhead">{{ curso }} cursos (2019)</div>
               </md-card-header-text>
 
               <md-card-media>
@@ -42,7 +42,7 @@
             <md-card-header>
               <md-card-header-text>
                 <div class="md-title">Docentes</div>
-                <div class="md-subhead">12 docentes</div>
+                <div class="md-subhead">{{ docente }} docentes (2019)</div>
               </md-card-header-text>
 
               <md-card-media>
@@ -62,7 +62,7 @@
           <md-card-header>
             <md-card-header-text>
               <div class="md-title">Alumnos</div>
-              <div class="md-subhead">120 alumnos</div>
+              <div class="md-subhead">{{ alumno }} alumnos (2019)</div>
             </md-card-header-text>
 
             <md-card-media>
@@ -130,11 +130,25 @@
   export default{
   	data(){
   		return{
-  			isLoading:true
+  			isLoading:true,
+
+  			curso:'',
+  			docente:'',
+  			alumno:''
   		}
   	},
-
+  	created(){
+  		this.contar_elementos()
+  	},
      methods:{
+
+       contar_elementos(){
+        axios.get('api/auth/admin/contar_elementos').then((res)=>{
+          	this.curso = res.data.curso;
+          	this.docente = res.data.docente;
+          	this.alumno = res.data.alumno;
+        })
+       },
        url_creardocente(){
          this.$router.push('admincreardocente'); 
        },
