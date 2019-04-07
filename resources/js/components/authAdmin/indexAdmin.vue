@@ -10,7 +10,7 @@
               </md-card-header-text>
 
               <md-card-media>
-                <img src="/img/5c9fa6a68a4fd97597dbd45301ae7ae2.jpg" alt="People">
+                <img src="/images/school-3.png" alt="People">
               </md-card-media>
             </md-card-header>
 
@@ -46,7 +46,7 @@
               </md-card-header-text>
 
               <md-card-media>
-                <img src="https://vignette.wikia.nocookie.net/central/images/6/64/Docentes.png/revision/latest?cb=20180523012406" alt="People">
+                <img src="/images/user.png" alt="People">
               </md-card-media>
             </md-card-header>
 
@@ -66,7 +66,7 @@
             </md-card-header-text>
 
             <md-card-media>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqk2WM9qtSs1phshNVV_GSWMTHAegEUSDlvI7woYVM9Jpf-aIo" alt="People">
+              <img src="/images/user-2.png" alt="People">
             </md-card-media>
           </md-card-header>
 
@@ -100,24 +100,24 @@
           </md-card> -->
       </div>
       <div class="col-md-4">
-          <!-- <md-card :style="img_section_style">
+          <md-card :style="img_section_style">
             <md-card-header>
               <md-card-header-text>
-                <div class="md-title">Cuentas</div>
-                <div class="md-subhead">23 cursos</div>
+                <div class="md-title">Permisos</div>
+                <!-- <div class="md-subhead">23 cursos</div> -->
               </md-card-header-text>
 
               <md-card-media>
-                <img src="https://hyipsoftware.com/wp-content/uploads/2016/02/admin.png" alt="People">
+                <img src="/images/secure.png" alt="People">
               </md-card-media>
             </md-card-header>
 
             <md-card-actions>
-              <md-button @click="url_listarcuenta" class="md-raised md-primary">Ver</md-button>
-              <md-button @click="url_crearcuenta" class="md-raised md-primary">Crear</md-button>
+              <md-button  class="md-raised md-primary">Entrar</md-button>
+             
               
             </md-card-actions>
-          </md-card> -->
+          </md-card>
       </div>
       <div class="col-4">
         

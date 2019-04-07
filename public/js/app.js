@@ -64643,10 +64643,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("md-card-media", [
                       _c("img", {
-                        attrs: {
-                          src: "/img/5c9fa6a68a4fd97597dbd45301ae7ae2.jpg",
-                          alt: "People"
-                        }
+                        attrs: { src: "/images/school-3.png", alt: "People" }
                       })
                     ])
                   ],
@@ -64697,11 +64694,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("md-card-media", [
                       _c("img", {
-                        attrs: {
-                          src:
-                            "https://vignette.wikia.nocookie.net/central/images/6/64/Docentes.png/revision/latest?cb=20180523012406",
-                          alt: "People"
-                        }
+                        attrs: { src: "/images/user.png", alt: "People" }
                       })
                     ])
                   ],
@@ -64761,11 +64754,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("md-card-media", [
                       _c("img", {
-                        attrs: {
-                          src:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqk2WM9qtSs1phshNVV_GSWMTHAegEUSDlvI7woYVM9Jpf-aIo",
-                          alt: "People"
-                        }
+                        attrs: { src: "/images/user-2.png", alt: "People" }
                       })
                     ])
                   ],
@@ -64803,24 +64792,57 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-4" }),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-4" },
+          [
+            _c(
+              "md-card",
+              { style: _vm.img_section_style },
+              [
+                _c(
+                  "md-card-header",
+                  [
+                    _c("md-card-header-text", [
+                      _c("div", { staticClass: "md-title" }, [
+                        _vm._v("Permisos")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("md-card-media", [
+                      _c("img", {
+                        attrs: { src: "/images/secure.png", alt: "People" }
+                      })
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-card-actions",
+                  [
+                    _c("md-button", { staticClass: "md-raised md-primary" }, [
+                      _vm._v("Entrar")
+                    ])
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-4" })
+      ])
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-4" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-4" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
