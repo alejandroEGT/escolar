@@ -55,7 +55,7 @@
                     <div class="footer_top flex-column">
                         <div class="footer_logo">
                             <a href="#">
-                                <img src="img/bogi.png" alt="">
+                                <img src="img/bogi2.png" alt="">
                             </a>
                             <h4>Ya volvemos </h4>
                         </div>

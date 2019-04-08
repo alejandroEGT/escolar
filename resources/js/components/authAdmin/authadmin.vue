@@ -17,9 +17,13 @@
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible">
-        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
+        <md-toolbar class="md-transparent" md-elevation="0">Menu</md-toolbar>
 
         <md-list>
+         <md-list-item>
+            <md-icon><i class="fas fa-user"></i></md-icon>
+            <span class="md-list-item-text" @click="url_perfil">Perfil</span>
+         </md-list-item>
           <md-list-item>
             <md-icon><i class="fas fa-home"></i></md-icon>
             <span class="md-list-item-text" @click="url_">Inicio</span>
@@ -105,6 +109,9 @@ export default {
       },
       url_(){
              this.$router.push({path:'/admin'}); 
+      },
+      url_perfil(){
+            this.$router.push({path:'/adminperfil'});
       }
   } ,
    computed: {

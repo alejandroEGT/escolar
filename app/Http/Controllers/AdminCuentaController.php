@@ -9,6 +9,7 @@ use App\Curso;
 use App\Cursoasignatura;
 use App\Docente;
 use App\User;
+use App\cuentas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -239,5 +240,24 @@ class AdminCuentaController extends Controller
     		'docente' => count($docente)>0 ? count($docente) : '0',
     		'alumno' => count($alumno)>0 ? count($alumno) : '0'
     	];
+    }
+
+    public function obtener_perfil()
+    {
+       return cuentas::select([
+                'cuentas.establecimiento',
+                'cuentas.direccion',
+                'cuentas.contacto',
+                'cuentas.estado_cuenta',
+                'cuentas.logo',
+                'u.nombres',
+                'u.apellido_paterno',
+                'u.apellido_materno',
+                'u.email',
+                'r.descripcion'
+        ])->join('cuentas_users as cu','cu.cuenta_id','cuentas.id')
+                     ->join('users as u','u.id','cu.user_id')
+                     ->join('rol as r','r.id','u.rol_id')
+                     ->first();
     }
 }
