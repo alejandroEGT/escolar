@@ -19,11 +19,11 @@
 						        <!-- <option value="3">Three</option> -->
 						      </select>
 			            </div>
-			             <div class="col-md-3">
+			            <!--  <div class="col-md-3">
 			     		
 			            	<multiselect v-model="form.docente" :options="options" :custom-label="nameWithLang" placeholder="Asignar Docente (Opcional)" label="name" track-by="name"></multiselect>
 			            
-			            </div>
+			            </div> -->
 			            <div class="col-md-3">
 			            	 <md-radio v-model="form.formato" :value="1"><small>Semestre</small></md-radio>
 	    					 <md-radio v-model="form.formato" :value="2"><small>Trimestre</small></md-radio>

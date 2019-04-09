@@ -13,6 +13,7 @@ use App\cuentas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminCuentaController extends Controller
 {
@@ -259,5 +260,104 @@ class AdminCuentaController extends Controller
                      ->join('users as u','u.id','cu.user_id')
                      ->join('rol as r','r.id','u.rol_id')
                      ->first();
+    }
+
+    public function actualizar_perfil(Request $r)
+    {
+        $c = Cuentas::find($this::_cuenta()->cuenta_id);
+        $u = User::find(Auth::user()->id);
+
+        switch ($r->nombre) {
+            case 'establecimiento':
+               $c->establecimiento = $r->establecimiento;
+               if ($c->save()) {
+                   return [
+                        'tipo' => 'success',
+                        'mensaje' => 'Establecimiento actualizado'
+                   ];
+               }
+
+               return [
+                        'tipo' => 'error',
+                        'mensaje' => 'error al actualizar'
+                   ];
+            break;
+
+            case 'contacto':
+                $c->contacto = $r->contacto;
+                if ($c->save()) {
+                    return [
+                        'tipo' => 'success',
+                        'mensaje' => 'Contacto actualizado'
+                    ];
+                }
+
+                return [
+                        'tipo' => 'error',
+                        'mensaje' => 'error al actualizar'
+                   ];
+            break;
+
+            case 'direccion':
+                $c->direccion = $r->direccion;
+                if ($c->save()) {
+                    return [
+                        'tipo' => 'success',
+                        'mensaje' => 'Dirección actualizado'
+                    ];
+                }
+                return [
+                        'tipo' => 'error',
+                        'mensaje' => 'error al actualizar'
+                   ];
+            break;
+
+            case 'email':
+                $u->email = $r->email;
+                if ($u->save()) {
+                    return [
+                        'tipo' => 'success',
+                        'mensaje' => 'Email actualizado'
+                    ];
+                }
+                return [
+                        'tipo' => 'error',
+                        'mensaje' => 'error al actualizar'
+                   ];
+            break;
+
+            case 'password':
+
+                if (Hash::check($r->actual_pass, $u->password)) {
+                    
+                    if ($r->new_pass === $r->repeat_pass) {
+                        $u->password = bcrypt($r->new_pass);
+                        if ($u->save()) {
+                             return[
+                                'tipo' => 'success',
+                                'mensaje' => 'Password actualizada'
+                            ];
+                        }
+                         return[
+                            'tipo' => 'error',
+                            'mensaje' => 'No fue posible actualizar la password'
+                        ];
+                    }
+                     return[
+                        'tipo' => 'error',
+                        'mensaje' => 'las nuevas passwords no son iguales'
+                    ];
+                }else{
+                    return[
+                        'tipo' => 'error',
+                        'mensaje' => 'Password incorrecta'
+                    ];
+                }
+            
+            default:
+                # code...
+                break;
+        }
+
     }
 }

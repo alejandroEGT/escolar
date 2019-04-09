@@ -1,8 +1,8 @@
 
 <template>
   <div>
-    <notifications position="bottom center" group="success" classes="vue-notification" />
-    <notifications position="bottom center" group="error" classes="vue-notification error" />
+    <notifications position="top center" group="success" classes="vue-notification success" />
+    <notifications position="top center" group="error" classes="vue-notification error" />
     <transition name="">
       <router-view></router-view>
     </transition>
@@ -38,7 +38,7 @@
   }
 
   &.success {
-    background: #68CD86;
+    background: #27AE60/*#68CD86*/;
     border-left-color: #42A85F;
   }
 }

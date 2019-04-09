@@ -53,6 +53,10 @@ Vue.use(zloading);
 
 Vue.use(require('@hscmap/vue-window'))
 
+import VModal from 'vue-js-modal'
+
+Vue.use(VModal)
+
 
 
  import datePicker from 'vue-bootstrap-datetimepicker';

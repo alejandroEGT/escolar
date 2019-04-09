@@ -54,6 +54,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/traer_inicio/{docente}','AdminCuentaController@traer_inicio');
   Route::get('auth/admin/contar_elementos','AdminCuentaController@contar_elementos');
   Route::get('auth/admin/obtener_perfil','AdminCuentaController@obtener_perfil');
+  Route::post('auth/admin/actualizar_perfil','AdminCuentaController@actualizar_perfil');
+  
  
 
 });
