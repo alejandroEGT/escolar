@@ -17,21 +17,31 @@
 		<br>
 		<md-tabs>
       <md-tab id="tab-home" md-label="Inicio" v-zLoading:circle="isLoading">
-		
-      	<div class="row">
+		<div class="animated fadeIn">
+			<div class="card">
+				<div class="card-header">
+		  				<h5><i class="far fa-address-book"></i> Inicio</h5>
+		  			</div>
 
-      		<div class="col-md-3" style="margin-top:2px">
-      			<md-chip class="md-primary"> <i class="far fa-address-book fa-1x"></i> 
-      				<strong>Docente jefe:</strong> <label v-if="docente_jefe != null">{{ docente_jefe.nombres+' '+docente_jefe.apellido_paterno+' '+docente_jefe.apellido_materno }}</label>
-      			</md-chip>
-      		</div>
-      		<div class="col-md-2" style="margin-top:2px">
-      			<md-chip class="md-accent"> <i class="far fa-address-book fa-1x"></i> <strong>Asignaturas:</strong> {{ contar_asignatura+' activas' }}</md-chip>
-      		</div>
-      		<div class="col-md-3" style="margin-top:2px">
-      			<md-chip>Alumnos: {{ contar_alumnos }}</md-chip>
-      		</div>
-      	</div>
+		  		<div class="card-body">
+					
+				      	<div class="row">
+
+				      		<div class="col-md-3" style="margin-top:2px">
+				      			<md-chip class="md-primary"> <i class="far fa-address-book fa-1x"></i> 
+				      				<strong>Docente jefe:</strong> <label v-if="docente_jefe != null">{{ docente_jefe.nombres+' '+docente_jefe.apellido_paterno+' '+docente_jefe.apellido_materno }}</label>
+				      			</md-chip>
+				      		</div>
+				      		<div class="col-md-2" style="margin-top:2px">
+				      			<md-chip class="md-accent"> <i class="far fa-address-book fa-1x"></i> <strong>Asignaturas:</strong> {{ contar_asignatura+' activas' }}</md-chip>
+				      		</div>
+				      		<div class="col-md-3" style="margin-top:2px">
+				      			<md-chip>Alumnos: {{ contar_alumnos }}</md-chip>
+				      		</div>
+				      	</div>
+				      </div>
+			</div>
+		</div>
 		<br><br><br><br><br>
 
 
@@ -235,6 +245,8 @@
 							  text: 'Docente y curso agregados!',
 							});
 							this.listar_asignaturas();
+							this.traer_inicio();
+							////////////////////////////
 							return false;
 						}
 						if (res.data == "failed") {

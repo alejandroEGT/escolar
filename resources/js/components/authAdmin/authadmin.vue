@@ -51,7 +51,7 @@
       </md-app-drawer>
 
       <md-app-content>
-        <div >
+        <div style="height:100%">
                  <router-view :key="$route.path"></router-view>  
               </div>
       </md-app-content>

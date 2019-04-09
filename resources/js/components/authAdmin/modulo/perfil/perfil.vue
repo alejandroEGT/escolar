@@ -1,5 +1,5 @@
 <template>
-	<div class="">
+	<div class="animated fadeIn">
 		<div class="card">
 			<div class="card-header">
 	  				<h5><i class="fas fa-user"></i> Perfil</h5>
@@ -9,13 +9,19 @@
 	  			<md-chip><i class="fas fa-school"></i> Establecimiento</md-chip><br><br>
 	  			<div class="row justify-content-md-center">
 	  				<div class="col-md-3">
-	  					<label><strong>Establecimiento:</strong> {{ ob.establecimiento }}</label>
+	  					<label><strong>Establecimiento:</strong> {{ ob.establecimiento }}
+							<a href=""><i class="far fa-edit"></i></a>
+	  					</label>
 	  				</div>
 	  				<div class="col-md-3">
-	  					<label><strong>Dirección:</strong> {{ ob.direccion }}</label>
+	  					<label><strong>Dirección:</strong> {{ ob.direccion }}
+							<a href=""><i class="far fa-edit"></i></a>
+	  					</label>
 	  				</div>
 	  				<div class="col-md-3">
-	  					<label><strong>Contacto:</strong> {{ ob.contacto }}</label>
+	  					<label><strong>Contacto:</strong> {{ ob.contacto }}
+							<a href=""><i class="far fa-edit"></i></a>
+	  					</label>
 	  				</div>
 	  				<div class="col-md-3">
 	  					<label><strong>Activo</strong> 
@@ -27,17 +33,19 @@
 
 	  			<hr>
 
-	  			 <md-chip class="md-primary"><i class="fas fa-user-shield"></i> Administrador</md-chip><br><br>
+	  			 <md-chip class="md-primary"><i class="fas fa-user-shield"></i> Administrador</md-chip> <a href=""><i class="far fa-edit"></i></a><br><br>
 
 	  			<div class="row justify-content-md-center">
 	  				<div class="col-md-3">
-	  					<label><strong>Nombre:</strong> {{ ob.nombres+' '+ob.apellido_paterno+' '+ob.apellido_materno }}</label>
+	  					<label><strong>Nombre:</strong> {{ ob.nombres+' '+ob.apellido_paterno+' '+ob.apellido_materno }}
+
+	  					</label>
 	  				</div>
 	  				<div class="col-md-3">
-	  					<label><strong>Email:</strong> {{ ob.email }}</label>
+	  					<label><strong>Email:</strong> {{ ob.email }} <a href=""><i class="far fa-edit"></i></a></label>
 	  				</div>
 	  				<div class="col-md-3">
-	  					<label><strong>Password:</strong> *******</label>
+	  					<label><strong>Password:</strong> ******* <a href=""><i class="far fa-edit"></i></a></label>
 	  				</div>
 	  				<div class="col-md-3">
 	  					<label><strong>Tipo de usuario:</strong> {{ ob.descripcion }}</label>

@@ -4904,6 +4904,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // import { setConfig } from 'zLoading';
 //       setConfig({
 //         type: 'circle',
@@ -4976,6 +4986,9 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           _this.listar_asignaturas();
+
+          _this.traer_inicio(); ////////////////////////////
+
 
           return false;
         }
@@ -5307,6 +5320,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5338,6 +5359,30 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -64680,7 +64725,12 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("md-app-content", [
-                _c("div", [_c("router-view", { key: _vm.$route.path })], 1)
+                _c(
+                  "div",
+                  { staticStyle: { height: "100%" } },
+                  [_c("router-view", { key: _vm.$route.path })],
+                  1
+                )
               ])
             ],
             1
@@ -66007,67 +66057,86 @@ var render = function() {
               attrs: { id: "tab-home", "md-label": "Inicio" }
             },
             [
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-3",
-                    staticStyle: { "margin-top": "2px" }
-                  },
-                  [
-                    _c("md-chip", { staticClass: "md-primary" }, [
-                      _c("i", { staticClass: "far fa-address-book fa-1x" }),
+              _c("div", { staticClass: "animated fadeIn" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-header" }, [
+                    _c("h5", [
+                      _c("i", { staticClass: "far fa-address-book" }),
+                      _vm._v(" Inicio")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col-md-3",
+                          staticStyle: { "margin-top": "2px" }
+                        },
+                        [
+                          _c("md-chip", { staticClass: "md-primary" }, [
+                            _c("i", {
+                              staticClass: "far fa-address-book fa-1x"
+                            }),
+                            _vm._v(" "),
+                            _c("strong", [_vm._v("Docente jefe:")]),
+                            _vm._v(" "),
+                            _vm.docente_jefe != null
+                              ? _c("label", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.docente_jefe.nombres +
+                                        " " +
+                                        _vm.docente_jefe.apellido_paterno +
+                                        " " +
+                                        _vm.docente_jefe.apellido_materno
+                                    )
+                                  )
+                                ])
+                              : _vm._e()
+                          ])
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
-                      _c("strong", [_vm._v("Docente jefe:")]),
-                      _vm._v(" "),
-                      _vm.docente_jefe != null
-                        ? _c("label", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col-md-2",
+                          staticStyle: { "margin-top": "2px" }
+                        },
+                        [
+                          _c("md-chip", { staticClass: "md-accent" }, [
+                            _c("i", {
+                              staticClass: "far fa-address-book fa-1x"
+                            }),
+                            _vm._v(" "),
+                            _c("strong", [_vm._v("Asignaturas:")]),
                             _vm._v(
-                              _vm._s(
-                                _vm.docente_jefe.nombres +
-                                  " " +
-                                  _vm.docente_jefe.apellido_paterno +
-                                  " " +
-                                  _vm.docente_jefe.apellido_materno
-                              )
+                              " " + _vm._s(_vm.contar_asignatura + " activas")
                             )
                           ])
-                        : _vm._e()
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-2",
-                    staticStyle: { "margin-top": "2px" }
-                  },
-                  [
-                    _c("md-chip", { staticClass: "md-accent" }, [
-                      _c("i", { staticClass: "far fa-address-book fa-1x" }),
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
-                      _c("strong", [_vm._v("Asignaturas:")]),
-                      _vm._v(" " + _vm._s(_vm.contar_asignatura + " activas"))
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col-md-3",
+                          staticStyle: { "margin-top": "2px" }
+                        },
+                        [
+                          _c("md-chip", [
+                            _vm._v("Alumnos: " + _vm._s(_vm.contar_alumnos))
+                          ])
+                        ],
+                        1
+                      )
                     ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-3",
-                    staticStyle: { "margin-top": "2px" }
-                  },
-                  [
-                    _c("md-chip", [
-                      _vm._v("Alumnos: " + _vm._s(_vm.contar_alumnos))
-                    ])
-                  ],
-                  1
-                )
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c("br"),
@@ -66799,7 +66868,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", { staticClass: "animated fadeIn" }, [
     _c("div", { staticClass: "card" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -66818,21 +66887,24 @@ var render = function() {
             _c("div", { staticClass: "col-md-3" }, [
               _c("label", [
                 _c("strong", [_vm._v("Establecimiento:")]),
-                _vm._v(" " + _vm._s(_vm.ob.establecimiento))
+                _vm._v(" " + _vm._s(_vm.ob.establecimiento) + "\n\t\t\t\t\t\t"),
+                _vm._m(1)
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-3" }, [
               _c("label", [
                 _c("strong", [_vm._v("Dirección:")]),
-                _vm._v(" " + _vm._s(_vm.ob.direccion))
+                _vm._v(" " + _vm._s(_vm.ob.direccion) + "\n\t\t\t\t\t\t"),
+                _vm._m(2)
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-3" }, [
               _c("label", [
                 _c("strong", [_vm._v("Contacto:")]),
-                _vm._v(" " + _vm._s(_vm.ob.contacto))
+                _vm._v(" " + _vm._s(_vm.ob.contacto) + "\n\t\t\t\t\t\t"),
+                _vm._m(3)
               ])
             ]),
             _vm._v(" "),
@@ -66857,6 +66929,8 @@ var render = function() {
             _c("i", { staticClass: "fas fa-user-shield" }),
             _vm._v(" Administrador")
           ]),
+          _vm._v(" "),
+          _vm._m(4),
           _c("br"),
           _c("br"),
           _vm._v(" "),
@@ -66872,7 +66946,8 @@ var render = function() {
                         _vm.ob.apellido_paterno +
                         " " +
                         _vm.ob.apellido_materno
-                    )
+                    ) +
+                    "\n\n  \t\t\t\t\t"
                 )
               ])
             ]),
@@ -66880,11 +66955,12 @@ var render = function() {
             _c("div", { staticClass: "col-md-3" }, [
               _c("label", [
                 _c("strong", [_vm._v("Email:")]),
-                _vm._v(" " + _vm._s(_vm.ob.email))
+                _vm._v(" " + _vm._s(_vm.ob.email) + " "),
+                _vm._m(5)
               ])
             ]),
             _vm._v(" "),
-            _vm._m(1),
+            _vm._m(6),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-3" }, [
               _c("label", [
@@ -66912,8 +66988,54 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "far fa-edit" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "far fa-edit" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "far fa-edit" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "far fa-edit" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "far fa-edit" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-3" }, [
-      _c("label", [_c("strong", [_vm._v("Password:")]), _vm._v(" *******")])
+      _c("label", [
+        _c("strong", [_vm._v("Password:")]),
+        _vm._v(" ******* "),
+        _c("a", { attrs: { href: "" } }, [
+          _c("i", { staticClass: "far fa-edit" })
+        ])
+      ])
     ])
   }
 ]
@@ -67045,6 +67167,53 @@ var staticRenderFns = [
               ])
             ])
           ]
+        ),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("h3", [_vm._v("Proyecto Bogi")]),
+        _vm._v(" "),
+        _c("hr"),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "row justify-content-start align-items-center",
+            staticStyle: {
+              "box-shadow": "2px 2px 10px #666",
+              "/* Sombra normal */\n  box-shadow": "5px -5px 0 2px #444",
+              padding: "10px"
+            }
+          },
+          [
+            _c("div", { staticClass: "col-md-2" }, [
+              _c("img", {
+                staticStyle: { height: "100%", width: "100%" },
+                attrs: { src: "img/cap2.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-2" }, [
+              _c("img", {
+                staticStyle: { height: "100%", width: "100%" },
+                attrs: { src: "img/cap3.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-2" }, [
+              _c("img", {
+                staticStyle: { height: "100%", width: "100%" },
+                attrs: { src: "img/cap4.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("img", {
+                staticStyle: { height: "100%", width: "100%" },
+                attrs: { src: "img/cap1.png" }
+              })
+            ])
+          ]
         )
       ])
     ])
@@ -67077,8 +67246,10 @@ var render = function() {
         _c("nav", { staticClass: "navbar navbar-expand-lg navbar-light" }, [
           _c("div", { staticClass: "container" }, [
             _vm._m(0),
-            _vm._v(" "),
+            _vm._v(" By "),
             _vm._m(1),
+            _vm._v(" "),
+            _vm._m(2),
             _vm._v(" "),
             _c(
               "div",
@@ -67144,7 +67315,21 @@ var staticRenderFns = [
       { staticClass: "navbar-brand logo_h", attrs: { href: "index.html" } },
       [
         _c("img", {
-          attrs: { src: "img/bogi2.png", width: "95", height: "100", alt: "" }
+          attrs: { src: "img/bogi2.png", width: "100", height: "100", alt: "" }
+        })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "navbar-brand logo_h", attrs: { href: "index.html" } },
+      [
+        _c("img", {
+          attrs: { src: "img/droban.png", width: "70", height: "100", alt: "" }
         })
       ]
     )

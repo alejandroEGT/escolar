@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="img/favicon.png" type="image/png">
+    <link rel="icon" width="100" href="img/bogi_head.png" type="image/png">
         <title>Laravel</title>
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
@@ -48,7 +48,7 @@
 
 
         <!--================Footer Area =================-->
-    <footer class="footer_area ">
+    <footer class="footer_area">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-12">

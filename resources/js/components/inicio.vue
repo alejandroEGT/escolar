@@ -50,6 +50,30 @@
 						<a class="primary_btn" href="#"><span>Esperar para mas detalles..</span></a>
 					</div>
 				</div>
+
+
+			</div>
+			<br>
+
+			<h3>Proyecto Bogi</h3>
+	<hr>
+
+			<div class="row justify-content-start align-items-center" style="box-shadow: 5px 5px 25px #222 inset;box-shadow: 2px 2px 10px #666;        /* Sombra normal */
+  box-shadow: 5px -5px 0 2px #444; padding:10px">
+				<div class="col-md-2">
+					
+					<img src="img/cap2.png" style="height:100%; width:100%">
+				
+				</div>
+				<div class="col-md-2">
+					<img src="img/cap3.png" style="height:100%; width:100%">
+				</div>
+				<div class="col-md-2">
+					<img src="img/cap4.png" style="height:100%; width:100%">
+				</div>
+				<div class="col-md-6">
+					<img src="img/cap1.png" style="height:100%; width:100%">
+				</div>
 			</div>
 		</div>
 	</section>
