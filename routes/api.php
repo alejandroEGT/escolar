@@ -55,8 +55,22 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/contar_elementos','AdminCuentaController@contar_elementos');
   Route::get('auth/admin/obtener_perfil','AdminCuentaController@obtener_perfil');
   Route::post('auth/admin/actualizar_perfil','AdminCuentaController@actualizar_perfil');
-  
+  Route::post('auth/admin/crear_asignatura','AdminCuentaController@crear_asignatura');
+
  
+
+
+
+
+
+
+
+
+ //DOCENTE DEL COLEGIO///////////////////////
+  Route::get('auth/docente/profesor_jefe','DocenteController@profesor_jefe');
+  Route::get('auth/docente/mis_cursos','DocenteController@mis_cursos');
+
+  //mis_cursos
 
 });
 

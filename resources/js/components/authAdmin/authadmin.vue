@@ -34,8 +34,8 @@
           </md-list-item>
 
           <md-list-item>
-            <md-icon>send</md-icon>
-            <span class="md-list-item-text">Sent Mail</span>
+            <md-icon><i class="fas fa-plus-square"></i></md-icon>
+            <span class="md-list-item-text" @click="url_addAsignatura">Agregar Asignatura</span>
           </md-list-item>
 
           <md-list-item>
@@ -108,10 +108,13 @@ export default {
           })
       },
       url_(){
-             this.$router.push({path:'/admin'}); 
+            this.$router.push({path:'/admin'}); 
       },
       url_perfil(){
             this.$router.push({path:'/adminperfil'});
+      },
+      url_addAsignatura(){
+            this.$router.push({path:'/adminagregarasignatura'});
       }
   } ,
    computed: {

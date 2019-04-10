@@ -16,7 +16,9 @@ class CreateAsignaturaTable extends Migration
         Schema::create('asignatura', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descripcion');
+            $table->text('observacion');
             $table->char('activo',1);
+            $table->integer('cuenta_id');
             $table->timestamps();
         });
     }

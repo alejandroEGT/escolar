@@ -360,4 +360,22 @@ class AdminCuentaController extends Controller
         }
 
     }
+    public function crear_asignatura(Request $r)
+    {
+        $a = new Asignatura;
+        $a->descripcion = $r->asignatura;
+        $a->observacion = $r->observacion;
+        $a->activo = 'S';
+        $a->cuenta_id = $this::_cuenta()->cuenta_id;
+        if ($a->save()) {
+            return [
+                'tipo' => 'success',
+                'mensaje'=>'Asignatura agregada'
+            ];
+        }
+        return [
+                'tipo' => 'error',
+                'mensaje'=>'Error al registrar'
+            ];
+    }
 }

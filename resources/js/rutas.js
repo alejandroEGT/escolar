@@ -25,6 +25,14 @@ import IndexComponent from './components/inicio.vue';
  import Listaralumno from "./components/authAdmin/modulo/listar_alumno.vue"
  import AdminCurso from "./components/authAdmin/modulo/curso/curso.vue"
  import AdminPerfil from "./components/authAdmin/modulo/perfil/perfil.vue"
+ import Adminagregarasignatura from "./components/authAdmin/modulo/agregar_asignatura.vue"
+
+
+
+ //Docente establecimiento
+ import AuthDocente from "./components/authdocente/authdocente.vue"
+ import IndexDocente from "./components/authdocente/indexDocente.vue"
+ import DocenteCursos from "./components/authdocente/modulo/ver_cursos.vue"
 
 const routes = [
   {
@@ -87,6 +95,26 @@ const routes = [
       {path: '/adminlistaralumno',name: 'adminlistaralumno',component: Listaralumno},
       {path:':id/curso', name: 'curso', component:AdminCurso},
       {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
+      {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
+    ]
+ },
+ {
+    path: '/docente',
+    component: AuthDocente,
+    name: 'Docente',
+    redirect:'docente',
+    iconCls: 'el-icon-message',
+    meta: {auth: 3},
+    children: [
+      {path: '/docente',name: 'docente',component: IndexDocente},
+      {path: '/docentecurso',name: 'docentecurso',component: DocenteCursos},
+      // {path: '/admincrearcurso',name: 'crearcurso',component: CreateCurso},
+      // {path: '/adminlistardocente',name: 'adminlistardocente',component: ListarDocente2},
+      // {path: '/admincrearalumno',name: 'admincrearalumno',component: CrearAlumno},
+      // {path: '/adminlistaralumno',name: 'adminlistaralumno',component: Listaralumno},
+      // {path:':id/curso', name: 'curso', component:AdminCurso},
+      // {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
+      // {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
     ]
  },
   // {
