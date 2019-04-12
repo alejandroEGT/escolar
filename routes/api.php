@@ -69,7 +69,9 @@ Route::group(['middleware' => 'jwt.auth'], function(){
  //DOCENTE DEL COLEGIO///////////////////////
   Route::get('auth/docente/profesor_jefe','DocenteController@profesor_jefe');
   Route::get('auth/docente/mis_cursos','DocenteController@mis_cursos');
-
+  Route::get('auth/docente/datos_basicos/{curso}/{asignatura}','DocenteController@datos_basicos');
+  Route::get('auth/docente/libro_nota/{curso}/{asignatura}/{seccion}','DocenteController@libro_notas');
+   Route::post('auth/docente/registrar_nota','DocenteController@registrar_nota');
   //mis_cursos
 
 });

@@ -33,6 +33,8 @@ import IndexComponent from './components/inicio.vue';
  import AuthDocente from "./components/authdocente/authdocente.vue"
  import IndexDocente from "./components/authdocente/indexDocente.vue"
  import DocenteCursos from "./components/authdocente/modulo/ver_cursos.vue"
+ import DocenteLibro from "./components/authdocente/modulo/curso/libro_clase.vue"
+ import Historia from "./components/authdocente/modulo/historia/historia.vue"
 
 const routes = [
   {
@@ -108,8 +110,8 @@ const routes = [
     children: [
       {path: '/docente',name: 'docente',component: IndexDocente},
       {path: '/docentecurso',name: 'docentecurso',component: DocenteCursos},
-      // {path: '/admincrearcurso',name: 'crearcurso',component: CreateCurso},
-      // {path: '/adminlistardocente',name: 'adminlistardocente',component: ListarDocente2},
+      {path: '/docentelibro/:curso/:asignatura',name: 'docentelibro',component: DocenteLibro},
+      {path: '/docentehistoria/:curso/:asignatura',name: 'docentehistoria',component: Historia},
       // {path: '/admincrearalumno',name: 'admincrearalumno',component: CrearAlumno},
       // {path: '/adminlistaralumno',name: 'adminlistaralumno',component: Listaralumno},
       // {path:':id/curso', name: 'curso', component:AdminCurso},
