@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actividad;
 use App\Alumnocalificacion;
 use App\Asignatura;
 use App\Curso;
@@ -93,5 +94,46 @@ class DocenteController extends Controller
     public function registrar_nota(Request $r)
     {
     	return Alumnocalificacion::registrar_nota($r);
+    }
+
+    public function registrar_actividad(Request $r)
+    {
+    	$recordatorio = new Actividad;
+    	$recordatorio->titulo = $r->titulo;
+    	$recordatorio->descripcion = $r->descripcion;
+        $recordatorio->fecha = date("Y-m-d",strtotime($r->fecha));
+        $recordatorio->curso_id = $r->curso;
+        $recordatorio->asignatura_id = $r->asignatura;
+        $recordatorio->activo = "S";
+        if ($recordatorio->save()) {
+        	 return [
+        	 	'tipo' => 'success', 'mensaje' => 'Actividad registrada'
+        	 ];
+        }else{
+        	return [
+        	 	'tipo' => 'error', 'mensaje' => 'Error al registrar'
+        	 ];
+        }
+    }
+    public function listar_actividad($curso, $asignatura)
+    {
+    	$cabeza = Actividad::select('fecha')->where([
+    		'curso_id' => $curso, 'asignatura_id' => $asignatura
+    	])->distinct('fecha')->get();
+    	
+    	$cuerpo = [];
+    	$sum=0;
+    	$array_return = [];
+
+    	foreach ($cabeza as $key) {
+    		 $cuerpo[$sum] = Actividad::where([
+    							'curso_id' => $curso, 'asignatura_id' => $asignatura, 'fecha' => $key->fecha
+    						])->get();
+    		  $array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
+    		 $array_return[$sum]['cuerpo'] = $cuerpo[$sum];
+
+    		 $sum++;
+    	}
+    	return $array_return;
     }
 }
