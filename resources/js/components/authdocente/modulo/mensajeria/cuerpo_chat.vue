@@ -1,77 +1,130 @@
-
 <template>
-  
-                <div>
-                    <div class="box-chat" >
-                        <div class="chat-body" v-chat-scroll >
-                            <!-- <chat-messages :messages="messages"></chat-messages> -->
-                            <div v-for="message in messages">
-					              <div v-if="id_mio == message.id_user_envia" >
-					                <ol class="discussion">
-					                  <li class="self">
-					                    <div class="avatar">
-					                      <img  :src="message.foto_user_1" />
-					                    </div>
-					                    <div>
-					                     
-					                    </div>
-					                    <div class="messages" >
-					                      <!-- <p>{{ message.nombre }}</p> -->
-					                      <p>{{ message.mensaje }}</p>
-					                      <img style="height:100%; width:100%" :src="message.archivo">
-					                      <time datetime="2009-11-13T20:14">40 mins</time>
-					                    </div>
-					                  </li>
-					                  </ol>
-					              </div>
-					              <div v-if="id_mio != message.id_user_envia" >
-					                 <ol class="discussion">
-					                  <li class="other">
-					                    <div class="avatar">
-					                      <img :src="message.foto_user_2" />
-					                    </div>
-					                    <div>
-					                     
-					                    </div>
-						                    <div class="messages" >
-						                      <!-- <p>{{ message.nombre }}</p> -->
-						                      <p>{{ message.mensaje }}</p>
-						                      <div v-if="message.archivo">
-						                        <img style="height:100%; width:100%" :src="message.archivo">
-						                      </div>
-						                      
-						                      <time datetime="2009-11-13T20:14">37 mins</time>
-						                    </div>
-					                  </li>
-					                  </ol>
-					              </div>
-            				</div>  
-            				<div class="row">
-					            <div class="col-md-12">
-					                
-					                <textarea class="textarea_chat" placeholder="Escribir mensaje" name="message" v-model="newMessage" @keyup.enter="addMessage">
-					                    
-					                </textarea>
+	<div>
+	<div class="box-chat" >
+	 <div class="chat-body" v-chat-scroll >	
+    <ol class="chat">
+   		<div v-for="message in messages">
+				<div v-if="id_mio == message.id_user_envia" >
 
+					<li class="self">
+				        <div class="avatar"><img :src="'/'+message.foto_use_1" draggable="false"/></div>
+				      <div class="msg">
+				        <p>{{message.mensaje}} <!-- <emoji class="books"/> --></p>
+				        <time>20:18</time>
+				      </div>
+				    </li>
 
-					            </div>
-         
-       						 </div>
-                     
-                        </div>
-                
-                 <div class="chat-footsss">           
-                     <!-- <chat-form v-on:messagesent="addMessage" :user="nameAuth" :load="btn_load"></chat-form> -->
-                    <!--  <form method="POST" id="form1" enctype="multipart/form-data">
-                      <input type="hidden" name="id_recibe" v-model="id_recibe" >
-                      <input type="file" name="fotos[]" @change="sendFoto">
-                  </form> -->
-                  </div>
-                    </div>
-                </div>
-          
+				</div>
+				
+				 <div v-if="id_mio != message.id_user_envia" >
+				    
+				    <li class="other">
+				        <div class="avatar"><img :src="'/'+message.foto_use_2" draggable="false"/></div>
+				      <div class="msg">
+				        <p style="color:white">{{message.mensaje}} <!-- <emoji class="pizza"/> --></p>
+				        <time>20:17</time>
+				      </div>
+				    </li>
+				 </div>
+	    </div>
+    <!-- <li class="other">
+        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Qué contexto de Góngora? <emoji class="suffocated"/></p>
+        <time>20:18</time>
+      </div>
+    </li>
+    <li class="self">
+        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
+      <div class="msg">
+        <p>El que mandó Marialu</p>
+        <p>Es para mañana...</p>
+        <time>20:18</time>
+      </div>
+    </li>
+    <li class="other">
+        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+      <div class="msg">
+        <p><emoji class="scream"/></p>
+        <p>Pásamelo! <emoji class="please"/></p>
+        <time>20:18</time>
+      </div>
+    </li>
+    <li class="self">
+        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
+      <div class="msg">
+        <img src="https://i.imgur.com/QAROObc.jpg" draggable="false"/>
+        <time>20:19</time>
+      </div>
+    </li>
+    <li class="other">
+        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Gracias! <emoji class="hearth_blue"/></p>
+        <time>20:20</time>
+      </div>
+    </li>
+        <div class="day">Hoy</div>
+    <li class="self">
+        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Te apetece jugar a Minecraft?</p>
+        <time>18:03</time>
+      </div>
+    </li>
+    <li class="other">
+        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Venga va, hace ya mucho que no juego...</p>
+        <time>18:07</time>
+      </div>
+    </li>
+    <li class="self">
+        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Ehh, me crashea el Launcher... <emoji class="cryalot"/></p>
+        <time>18:08</time>
+      </div>
+    </li>
+    <li class="other">
+        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+      <div class="msg">
+        <p><emoji class="lmao"/></p>
+        <time>18:08</time>
+      </div>
+    </li>
+    <li class="self">
+        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Es broma</p>
+        <p>Ataque Moai!</p>
+        <p><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span></p>
+        <time>18:09</time>
+      </div>
+    </li>
+    <li class="other">
+        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+      <div class="msg">
+          <p>Copón</p>
+        <p><emoji class="funny"/></p>
+        <time>18:08</time>
+      </div>
+    </li>
+    <li class="self">
+        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
+      <div class="msg">
+        <p>Hey there's a new update about this chat UI with more responsive elements! Check it now:</p>
+        <p><a href="https://codepen.io/Varo/pen/YPmwpQ" target="parent">Chat UI 2.0</a></p>
+        <time>18:09</time>
+      </div> -->
+    </li>
+   
+    </ol>
+ </div>
+</div>
+    <input class="textarea" type="text" placeholder="Ingrese mensaje.." name="message" v-model="newMessage" @keyup.enter="addMessage"/>
+	</div>
 </template>
-
 
 
 
@@ -80,7 +133,6 @@
     export default{
         data(){
             return{
-                loading: true,
                 id: this.$route.params.user,
                 amigo:{
                     nombres:'',
@@ -95,8 +147,7 @@
                 btn_load: false,
                 nameAuth: this.$auth.user(),
                 messages:[
-                	{id:1, nombre:'alejandro', mensaje:'hola como estas'},
-                	{id:2, nombre:'mariana', mensaje:'bien y tu'}
+                	
                 ],
                 newMessage: '',
                 id_recibe: this.$route.params.id,
@@ -127,7 +178,7 @@
                         this.messages.push({
                           mensaje: e.message.mensaje,
                           archivo: e.message.archivo,
-                          foto_user_2: e.user.avatar,
+                          foto_use_2: e.user.avatar,
                           use_2: e.user.nombres,
                           created_at: e.user.created_at
                         });
@@ -163,7 +214,7 @@
                           //created_at: '192'
                           
                           mensaje: this.newMessage,
-                         // foto_user_1: this.nameAuth.avatar,
+                          foto_use_1: this.nameAuth.avatar,
                           use_1: this.user.nombres,
                           id_user_envia: this.user.id,
                           //created_at: e.user.created_at
@@ -200,13 +251,208 @@
     }
 </script>
 
+
+
 <style type="text/css">
-    .avatar_amigo{
-        border-radius: 50px;
-        height: 70px;
-        width: 70px;
-    }
-    .box-chat{
+	
+
+
+
+/* M E N U */
+
+/*.menu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 50px;
+    background: rgba(82,179,217,0.9);
+    z-index: 100;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}*/
+
+
+
+
+/* M E S S A G E S */
+
+.chat {
+    list-style: none;
+    background: none;
+    margin: 0;
+    padding: 0 0 50px 0;
+    margin-top: 60px;
+    margin-bottom: 10px;
+
+}
+.chat li {
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex;
+
+}
+.chat .avatar {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    display: block;
+    z-index: 2;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    background-color: rgba(255,255,255,0.9);
+}
+.chat .avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    background-color: rgba(255,255,255,0.9);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+}
+.chat .day {
+    position: relative;
+    display: block;
+    text-align: center;
+    color: #c0c0c0;
+    height: 20px;
+    text-shadow: 7px 0px 0px #e5e5e5, 6px 0px 0px #e5e5e5, 5px 0px 0px #e5e5e5, 4px 0px 0px #e5e5e5, 3px 0px 0px #e5e5e5, 2px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 0px 0px 0px #e5e5e5, -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5, -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5, -7px 0px 0px #e5e5e5;
+    box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5, inset 0px -2px 0px #d7d7d7;
+    line-height: 38px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+}
+
+.other .msg {
+    order: 1;
+    border-top-left-radius: 0px;
+    box-shadow: -1px 2px 0px #D4D4D4;
+    background: #5DADE2;
+    border-radius: 8px;
+    width: 200px;
+}
+.other:before {
+    content: "";
+    position: relative;
+    top: 0px;
+    right: 0px;
+    left: 40px;
+    width: 0px;
+    height: 0px;
+    border: 5px solid #fff;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    /*background: #5499C7;*/
+}
+
+.self {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.self .msg {
+    order: 1;
+    border-bottom-right-radius: 0px;
+    box-shadow: 1px 2px 0px #D4D4D4;
+    background: #5D6D7E;
+    border-radius: 8px;
+    width: 200px;
+}
+.self .avatar {
+    order: 2;
+
+}
+.self .avatar:after {
+    content: "";
+    position: relative;
+    display: inline-block;
+    bottom: 19px;
+    right: 0px;
+    width: 0px;
+    height: 0px;
+    /*border: 5px solid red;*/
+    border-right-color: transparent;
+    border-top-color: transparent;
+    /*box-shadow: 0px 2px 0px red;*/
+
+}
+
+.msg {
+    background: white;
+    min-width: 50px;
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+}
+.msg p {
+    font-size: 0.8rem;
+    margin: 0 0 0.2rem 0;
+    color: white;
+}
+.msg img {
+    position: relative;
+    display: block;
+    width: 450px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px #eee;
+    transition: all .4s cubic-bezier(0.565, -0.260, 0.255, 1.410);
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+@media screen and (max-width: 800px) {
+    .msg img {
+    width: 300px;
+}
+}
+@media screen and (max-width: 550px) {
+    .msg img {
+    width: 200px;
+}
+}
+
+.msg time {
+    font-size: 0.7rem;
+    color: #ccc;
+    margin-top: 3px;
+    float: right;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.msg time:before{
+    content:"\f017";
+    color: #ddd;
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+
+
+
+
+.box-chat{
         position: relative;
         height: 500px;
         width: 100%;
@@ -234,144 +480,84 @@
     }
 
 
-</style>
-<style scoped lang="scss" >
-    
+/*emoji{
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: -7px;
+    margin-right: 2px;
+    transform: translate3d(0px, 3px, 0px);
+}*/
+/*emoji.please{background-image: url(https://imgur.com/ftowh0s.png);}
+emoji.lmao{background-image: url(https://i.imgur.com/MllSy5N.png);}
+emoji.happy{background-image: url(https://imgur.com/5WUpcPZ.png);}
+emoji.pizza{background-image: url(https://imgur.com/voEvJld.png);}
+emoji.cryalot{background-image: url(https://i.imgur.com/UUrRRo6.png);}
+emoji.books{background-image: url(https://i.imgur.com/UjZLf1R.png);}
+emoji.moai{background-image: url(https://imgur.com/uSpaYy8.png);}
+emoji.suffocated{background-image: url(https://i.imgur.com/jfTyB5F.png);}
+emoji.scream{background-image: url(https://i.imgur.com/tOLNJgg.png);}
+emoji.hearth_blue{background-image: url(https://i.imgur.com/gR9juts.png);}
+emoji.funny{background-image: url(https://i.imgur.com/qKia58V.png);}
 
-    @import url(http://weloveiconfonts.com/api/?family=typicons);
-    [class*="typicons-"]:before {
-      font-family: 'Typicons', sans-serif;
-    }
+@-webikt-keyframes pulse {
+  from { opacity: 0; }
+  to { opacity: 0.5; }
+}
 
+::-webkit-scrollbar {
+    min-width: 12px;
+    width: 12px;
+    max-width: 12px;
+    min-height: 12px;
+    height: 12px;
+    max-height: 12px;
+    background: #e5e5e5;
+    box-shadow: inset 0px 50px 0px rgba(82,179,217,0.9), inset 0px -52px 0px #fafafa;
+}
 
-    .top-bar {
-     
-      h1 {
-        display: inline;
-        font-size: 1.1rem;
-      }
-      .typicons-message {
-        display: inline-block;
-        padding: 4px 5px 2px 5px;
-      }
-      .typicons-minus {
-        position: relative;
-        top: 3px;
-      }
-      .left {
-        float: left;
-      }
-      .right {
-        float: right;
-        padding-top: 5px;
-      }
-      > * {
-        position: relative; 
-      }
-      &::before {
-        content: "";
-        position: absolute;
-        top: -100%;
-        left: 0;
-        right: 0;
-        bottom: -100%;
-        opacity: 0.25;
-        background: radial-gradient(white, black);
-        animation: pulse 1s ease alternate infinite;
-      }
-    }
+::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border: none;
+    border-radius: 100px;
+    border: solid 3px #e5e5e5;
+    box-shadow: inset 0px 0px 3px #999;
+}
 
-    .discussion {
-      list-style: none;
-      /*background: #e5e5e5;*/
-      margin: 0;
-      padding: 0 0 50px 0; // finality
-      li {
-        padding: 0.5rem;
-        overflow: hidden;
-        display: flex;
-      }
-      .avatar {
-        width: 40px; // stronger than %
-        // could set height, but gonna bottom-align instead
-        position: relative; // for triangle
-        img {
-          display: block; // triangle position
-          width: 100%;
-          border-radius:40%;
-        }
-      }
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+  box-shadow: inset 0px 0px 3px #888;
+}
 
-    .other {
-      .avatar {
-        &:after {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 0;
-          height: 0;
-          border: 5px solid #00A2F8;
-          border-left-color: transparent;
-          border-bottom-color: transparent;
-        }
-      }
-      .messages{
-        border-bottom-left-radius: 10px;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius:10px;
-      }
-    }
+::-webkit-scrollbar-thumb:active {
+    background: #aaa;
+  box-shadow: inset 0px 0px 3px #7f7f7f;
+}
 
+::-webkit-scrollbar-button {
+    display: block;
+    height: 26px;
+}*/
 
-    .self {
-      justify-content: flex-end;
-      align-items: flex-end;
-      .messages {
-        order: 1;
-        border-bottom-right-radius: 0; // weird shadow fix
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        border-bottom-left-radius:10px;
-      }
-      .avatar {
-        order: 2;
-        &:after {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 0;
-          height: 0;
-          //**border: 5px solid #00A2F8;**//
-          border-right-color: transparent;
-          border-top-color: transparent;
-          box-shadow: 1px 1px 2px rgba(black, 0.2); // not quite perfect but close
-        }
-      }
-    }
+/* T Y P E */
 
-    .messages {
-      
-      width:300px;
-      color:white;
-      background: #00A2F8;
-      padding: 10px;
+input.textarea {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 50px;
+    z-index: 99;
+    background: #fafafa;
+    border: none;
+    outline: none;
+    padding-left: 55px;
+    padding-right: 55px;
+    color: #666;
+    font-weight: 400;
+}
 
-        box-shadow: 5px 10px #E5E8E8;
-      p {
-        font-size: 0.9rem;
-        margin: 0 0 0.2rem 0;
-      }
-      time {
-        font-size: 0.7rem;
-        color: #34495E;
-      }
-    }
-
-    @keyframes pulse {
-      from { opacity: 0; }
-      to { opacity: 0.5; }
-    }
 </style>

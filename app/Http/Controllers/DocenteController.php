@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class DocenteController extends Controller
 {
+
 	public function docente()
 	{
 		return Docente::where('user_id', Auth::user()->id)->first();
@@ -149,7 +150,8 @@ class DocenteController extends Controller
     	//dd($this::establecimiento());
 
     	return  User::select([
-    		       'users.id as user_id', 'users.nombres','users.apellido_paterno','users.apellido_materno'
+    		       'users.id as user_id', 'users.nombres','users.apellido_paterno','users.apellido_materno',
+    		       'users.avatar'
     		    ])->join('docente as d','d.user_id','users.id')
     			->join('docente-establecimiento as de','de.docente_id','d.id')
     		    ->where([
@@ -157,7 +159,6 @@ class DocenteController extends Controller
     			   	'de.cuenta_id' => $this::establecimiento()->cuenta_id
     	   	    ])
     		    ->get();
-
     	
     }
 }

@@ -13,7 +13,7 @@
 
 			        <md-list-item v-for="(p, index) in json_docentes" :key="index">
 			          <md-avatar>
-			            <img src="https://placeimg.com/40/40/people/5" alt="People">
+			            <img :src="'/'+p.avatar" alt="People">
 			          </md-avatar>
 
 			          <span class="md-list-item-text">{{ p.nombres+' '+p.apellido_paterno+' '+p.apellido_materno }}</span>

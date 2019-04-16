@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Laravolt\Avatar\Avatar;
 
 class AdminCuentaController extends Controller
 {
@@ -52,8 +53,19 @@ class AdminCuentaController extends Controller
     		   ->where('id', $curso)
     	       ->where('activo','S')->first();
     }
+    public function aleatorio_colors(){
+        $array =  Array('#F5B041','#EC7063','#B2BABB','#45B39D','#BB8FCE','#3498DB','#5D6D7E');
+        $rand = random_int ( 0 , 6 );
+        return $array[$rand];
+    } 
     public function crearDocente(Request $r)
     {
+        $avatar = new Avatar;
+
+        $uriAvatar = 'storage/user_avatar/'.time().'.png';
+       // $urlBack = 'background/'.time().'-'.$request->email.'.png';
+        $nombre_letra = substr($r->nombre,0,1);
+        $avatar->create(strtoupper($nombre_letra))->setBackground($this->aleatorio_colors())->save($uriAvatar, $quality = 90);
 
     	$user = new User;
     	$user->nombres = $r->nombre;
@@ -63,6 +75,7 @@ class AdminCuentaController extends Controller
     	$user->rol_id = '3';
     	$user->sexo = $r->sexo;
     	$user->password = bcrypt($r->password);
+        $user->avatar = $uriAvatar;
 
     	if ($user->save()) {
     		$docente = new Docente;

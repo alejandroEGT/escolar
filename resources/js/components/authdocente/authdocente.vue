@@ -8,7 +8,7 @@
 
         <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
             <md-avatar>
-          <img src="https://www.santotomas.edu.co/wp-content/uploads/2018/04/btn-docente.png" alt="Avatar">
+          <img :src="'/'+user.avatar" alt="Avatar">
         </md-avatar>
           <!-- <md-icon>menu</md-icon> -->
         </md-button>
