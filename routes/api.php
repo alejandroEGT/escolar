@@ -74,7 +74,13 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::post('auth/docente/registrar_nota','DocenteController@registrar_nota');
   Route::post('auth/docente/registrar_actividad','DocenteController@registrar_actividad');
   Route::get('auth/docente/listar_actividad/{curso}/{asignatura}','DocenteController@listar_actividad');
+  Route::get('auth/docente/listar_docentes','DocenteController@listar_docentes_colegio');
+
+  // listar_docentes_colegio
   //mis_cursos
+
+  Route::get('auth/messages/{id}', 'ChatController@fetch');
+  Route::post('auth/messages', 'ChatController@sentMessage');
 
 });
 

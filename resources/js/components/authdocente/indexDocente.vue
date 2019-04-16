@@ -21,6 +21,26 @@
 		            </md-card-actions>
 		          </md-card>
 	      </div>
+	       <div class="col-md-4 col-sm-5">
+
+	      		<md-card :style="img_section_style">
+		            <md-card-header>
+		              <md-card-header-text>
+		                <div class="md-title">Chat</div>
+		                <div class="md-subhead">(2019)</div>
+		              </md-card-header-text>
+
+		              <md-card-media>
+		                <img src="/images/chat.png" alt="People">
+		              </md-card-media>
+		            </md-card-header>
+
+		            <md-card-actions>
+		              <md-button @click="url_chat" class="md-raised md-primary">Ver</md-button>
+		              
+		            </md-card-actions>
+		          </md-card>
+	      </div>
 	  	</div>
 	</div>
 </template>
@@ -38,6 +58,9 @@
 	    methods:{
 	    	url_curso(){
 	    		this.$router.push({path:'/docentecurso'}); 
+	    	},
+	    	url_chat(){
+	    		this.$router.push({path:'/docentechat'}); 
 	    	}
 	    },
 

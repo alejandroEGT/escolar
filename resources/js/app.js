@@ -22,7 +22,8 @@ const app = new Vue(Vue.util.extend({ router })).$mount('#app');*/
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
+import Vue from 'vue'
 import Rutas from './rutas.js';
 
 import VueRouter from 'vue-router';
@@ -63,6 +64,8 @@ Vue.use(VModal)
   import 'bootstrap/dist/css/bootstrap.css';
   import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
   Vue.use(datePicker);
+  import VueChatScroll from 'vue-chat-scroll'
+  Vue.use(VueChatScroll)
 
 
 
@@ -84,6 +87,8 @@ Vue.use(require('@websanova/vue-auth'), {
    refreshData: {enabled: false},
 });
 
+// Vue.component('chat-messages', require('./components/authdocente/modulo/mensajeria/ChatMessages.vue'));
+Vue.component('chat-form', require('./components/authdocente/modulo/mensajeria/ChatForm.vue'));
 new Vue(App).$mount('#app');
 // const app = new Vue(Vue.util.extend({ router }, App)).$mount('#app');
 

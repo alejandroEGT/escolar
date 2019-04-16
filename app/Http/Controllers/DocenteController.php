@@ -8,14 +8,22 @@ use App\Asignatura;
 use App\Curso;
 use App\Cursoasignatura;
 use App\Docente;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DocenteController extends Controller
 {
 	public function docente()
 	{
 		return Docente::where('user_id', Auth::user()->id)->first();
+	}
+	public function establecimiento()
+	{
+		return DB::table('docente-establecimiento')->select('cuenta_id')->where( 'docente_id',$this::docente()->id)
+		->first();
+		# code...
 	}
     public function profesor_jefe()
     {
@@ -135,5 +143,21 @@ class DocenteController extends Controller
     		 $sum++;
     	}
     	return $array_return;
+    }
+    public function listar_docentes_colegio()
+    {
+    	//dd($this::establecimiento());
+
+    	return  User::select([
+    		       'users.id as user_id', 'users.nombres','users.apellido_paterno','users.apellido_materno'
+    		    ])->join('docente as d','d.user_id','users.id')
+    			->join('docente-establecimiento as de','de.docente_id','d.id')
+    		    ->where([
+    			   	'de.activo' => 'S',
+    			   	'de.cuenta_id' => $this::establecimiento()->cuenta_id
+    	   	    ])
+    		    ->get();
+
+    	
     }
 }

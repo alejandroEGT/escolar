@@ -35,6 +35,9 @@ import IndexComponent from './components/inicio.vue';
  import DocenteCursos from "./components/authdocente/modulo/ver_cursos.vue"
  import DocenteLibro from "./components/authdocente/modulo/curso/libro_clase.vue"
  import Historia from "./components/authdocente/modulo/historia/historia.vue"
+ import Chat from "./components/authdocente/modulo/mensajeria/chat.vue"
+ import Boxchat from "./components/authdocente/modulo/mensajeria/cuerpo_chat.vue"
+
 
 const routes = [
   {
@@ -112,8 +115,8 @@ const routes = [
       {path: '/docentecurso',name: 'docentecurso',component: DocenteCursos},
       {path: '/docentelibro/:curso/:asignatura',name: 'docentelibro',component: DocenteLibro},
       {path: '/docentehistoria/:curso/:asignatura',name: 'docentehistoria',component: Historia},
-      // {path: '/admincrearalumno',name: 'admincrearalumno',component: CrearAlumno},
-      // {path: '/adminlistaralumno',name: 'adminlistaralumno',component: Listaralumno},
+      {path: '/docentechat',name: 'docentechat',component: Chat},
+      {path: '/docenteboxchat/:user',name: 'docenteboxchat',component: Boxchat},
       // {path:':id/curso', name: 'curso', component:AdminCurso},
       // {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
       // {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
