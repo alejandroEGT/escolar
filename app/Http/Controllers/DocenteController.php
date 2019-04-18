@@ -156,9 +156,8 @@ class DocenteController extends Controller
     }
     public function listar_actividad($curso, $asignatura)
     {
-    	setlocale(LC_TIME, 'es_ES.UTF-8');
-// En windows
-setlocale(LC_TIME, 'spanish');
+    	setlocale(LC_ALL, "es_ES", 'Spanish_Spain', 'Spanish');
+		//$spanish_date = iconv('ISO-8859-2', 'UTF-8', strftime("%A, %d de %B de %Y", strtotime($row['date'])));
     	$cabeza = Actividad::select('fecha')->where([
     		'curso_id' => $curso, 'asignatura_id' => $asignatura
     	])->distinct('fecha')->get();
@@ -172,7 +171,8 @@ setlocale(LC_TIME, 'spanish');
     							'curso_id' => $curso, 'asignatura_id' => $asignatura, 'fecha' => $key->fecha
     						])->get();
     		  //$array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
-    		 $array_return[]['cabeza']['fecha'] = strftime("%A, %d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha))));
+    		 //$array_return[]['cabeza']['fecha'] = strftime("%A, %d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha))));
+    		 $array_return[]['cabeza']['fecha'] = iconv('ISO-8859-2', 'UTF-8', strftime("%A, %d de %B de %Y", strtotime($key->fecha)));
     		 $array_return[$sum]['cuerpo'] = $cuerpo[$sum];
 
     		 $sum++;
