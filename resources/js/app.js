@@ -59,6 +59,10 @@ import VModal from 'vue-js-modal'
 Vue.use(VModal)
 
 
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+Vue.use(VueSidebarMenu)
+
 
  import datePicker from 'vue-bootstrap-datetimepicker';
   import 'bootstrap/dist/css/bootstrap.css';

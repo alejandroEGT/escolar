@@ -127,9 +127,6 @@
 					    <thead>
 					    	<tr style="background:#3F8DF7; color:white">
 					    		<td></td>
-					    		<td>
-					    			Grado
-					    		</td>
 					    		<td>Nombre</td>
 					    		<td>Run</td>
 					    		<td>Direccion</td>
@@ -144,9 +141,9 @@
 								      </md-button>
 								</td>
 								
-								<td>
+								<!-- <td>
 									{{ listado.descripcion }}
-								</td>
+								</td> -->
 
 					    		<td>
 					    		{{ listado.nombre+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>

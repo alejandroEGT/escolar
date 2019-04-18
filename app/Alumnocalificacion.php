@@ -9,7 +9,7 @@ class Alumnocalificacion extends Model
 {
 	protected $table="alumno-calificacion";
 
-    protected function traer_notas($curso, $asignatura, $seccion)
+    protected function traer_notas($curso, $asignatura, $seccion, $docente)
     {
 
 		
@@ -23,6 +23,7 @@ class Alumnocalificacion extends Model
     	           ->join('alumno-curso as ac', 'ac.alumno_id','alumno.id')
     			   ->join('curso-asignatura as ca','ca.curso_id','ac.curso_id')	
     	           ->where([
+    	           		'ca.docente_id' => $docente,
     	           		'ca.curso_id' => $curso, 'ca.asignatura_id' => $asignatura, 'ac.activo' => 'S'
     	           ])
     	           ->orderBy('alumno.apellido_paterno')
@@ -49,7 +50,7 @@ class Alumnocalificacion extends Model
 						$solo_lista->nota10= null;
 
 				foreach ($calificaciones as $existe) {
-
+					$arr_total = [];
 					if ($solo_lista->id == $existe->alumno_id) {
 						$solo_lista->seccion = $existe->seccion;
 						$solo_lista->nota1= $existe->nota1;
@@ -62,10 +63,34 @@ class Alumnocalificacion extends Model
 						$solo_lista->nota8= $existe->nota8;
 						$solo_lista->nota9= $existe->nota9;
 						$solo_lista->nota10= $existe->nota10;
+
+						$arr_total = [
+							$solo_lista->nota1,
+							$solo_lista->nota2,
+							$solo_lista->nota3,
+							$solo_lista->nota4,
+							$solo_lista->nota5,
+							$solo_lista->nota6,
+							$solo_lista->nota7,
+							$solo_lista->nota8,
+							$solo_lista->nota9,
+							$solo_lista->nota10
+
+						];
+
+						$filtro_total = array_filter($arr_total);
+						$cantidad_total = count($filtro_total);
+						//return ($cantidad_total);
+						$solo_lista->total = number_format((array_sum($filtro_total) / $cantidad_total),2);
 					}
 				}
 				
 			}
+
+
+			
+
+
 			return $alumnos;
 
     }
@@ -116,7 +141,7 @@ class Alumnocalificacion extends Model
     		 }
     		 if($existe->save()){
     		 	return[
-    		 		'tipo'=>'success', 'mensaje'=>'Nota actualizada'
+    		 		'tipo'=>'success', 'mensaje'=>'Nota Ingresada'
     		 	];
     		 }
     	}else{
@@ -166,7 +191,7 @@ class Alumnocalificacion extends Model
     		 }
     		  if($ac->save()){
     		 	return[
-    		 		'tipo'=>'success', 'mensaje'=>'Nota actualizada'
+    		 		'tipo'=>'success', 'mensaje'=>'Nota Ingresada'
     		 	];
     		 }
     		

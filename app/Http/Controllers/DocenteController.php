@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actividad;
+use App\Alumno_curso;
 use App\Alumnocalificacion;
 use App\Asignatura;
 use App\Curso;
@@ -26,6 +27,22 @@ class DocenteController extends Controller
 		->first();
 		# code...
 	}
+
+	public function validar_docente_en_curso_y_asignatura($curso, $asignatura)
+	{
+		$ca = Cursoasignatura::where([
+    		'curso_id' => $curso,
+    	    'asignatura_id' => $asignatura,
+    		'docente_id' => $this::docente()->id,
+    		'activo' => 'S'
+    	])->first();
+
+    	if (!empty($ca)) {
+    		return true;
+    	}
+    	return false;
+	}
+
     public function profesor_jefe()
     {
     	$jefe = Cursoasignatura::select([
@@ -97,7 +114,8 @@ class DocenteController extends Controller
 
     public function libro_notas($curso, $asignatura, $seccion)
     {
-    	return Alumnocalificacion::traer_notas($curso, $asignatura, $seccion);
+    	$docente = Docente::where('user_id', Auth::user()->id)->first();
+    	return Alumnocalificacion::traer_notas($curso, $asignatura, $seccion, $docente->id);
     }
 
     public function registrar_nota(Request $r)
@@ -107,25 +125,40 @@ class DocenteController extends Controller
 
     public function registrar_actividad(Request $r)
     {
-    	$recordatorio = new Actividad;
-    	$recordatorio->titulo = $r->titulo;
-    	$recordatorio->descripcion = $r->descripcion;
-        $recordatorio->fecha = date("Y-m-d",strtotime($r->fecha));
-        $recordatorio->curso_id = $r->curso;
-        $recordatorio->asignatura_id = $r->asignatura;
-        $recordatorio->activo = "S";
-        if ($recordatorio->save()) {
-        	 return [
-        	 	'tipo' => 'success', 'mensaje' => 'Actividad registrada'
-        	 ];
-        }else{
-        	return [
-        	 	'tipo' => 'error', 'mensaje' => 'Error al registrar'
-        	 ];
-        }
+
+
+    	$valida = $this::validar_docente_en_curso_y_asignatura($r->curso, $r->asignatura);
+
+    	if ($valida) {
+    		$recordatorio = new Actividad;
+	    	$recordatorio->titulo = $r->titulo;
+	    	$recordatorio->descripcion = $r->descripcion;
+	        $recordatorio->fecha = date("Y-m-d",strtotime($r->fecha));
+	        $recordatorio->curso_id = $r->curso;
+	        $recordatorio->asignatura_id = $r->asignatura;
+	        $recordatorio->activo = "S";
+	        if ($recordatorio->save()) {
+	        	 return [
+	        	 	'tipo' => 'success', 'mensaje' => 'Actividad registrada'
+	        	 ];
+	        }else{
+	        	return [
+	        	 	'tipo' => 'error', 'mensaje' => 'Error al registrar'
+	        	 ];
+	        }
+    	}else{
+    		return [
+	        	 	'tipo' => 'error', 'mensaje' => 'Error al registrar'
+	        	 ];
+    	}
+
+    	
     }
     public function listar_actividad($curso, $asignatura)
     {
+    	setlocale(LC_TIME, 'es_ES.UTF-8');
+// En windows
+setlocale(LC_TIME, 'spanish');
     	$cabeza = Actividad::select('fecha')->where([
     		'curso_id' => $curso, 'asignatura_id' => $asignatura
     	])->distinct('fecha')->get();
@@ -138,7 +171,8 @@ class DocenteController extends Controller
     		 $cuerpo[$sum] = Actividad::where([
     							'curso_id' => $curso, 'asignatura_id' => $asignatura, 'fecha' => $key->fecha
     						])->get();
-    		  $array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
+    		  //$array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
+    		 $array_return[]['cabeza']['fecha'] = strftime("%A, %d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha))));
     		 $array_return[$sum]['cuerpo'] = $cuerpo[$sum];
 
     		 $sum++;
@@ -156,9 +190,17 @@ class DocenteController extends Controller
     			->join('docente-establecimiento as de','de.docente_id','d.id')
     		    ->where([
     			   	'de.activo' => 'S',
-    			   	'de.cuenta_id' => $this::establecimiento()->cuenta_id
-    	   	    ])
+    			   	'de.cuenta_id' => $this::establecimiento()->cuenta_id,
+    	   	    ])->where('users.id','!=', Auth::user()->id)
     		    ->get();
     	
+    }
+
+    public function listar_alumnos_jcurso($curso)
+    {
+    	if (empty($curso)) {
+    		return false;
+    	}
+    	return Alumno_curso::docente_obtener_alumnos($this::establecimiento()->cuenta_id, $curso, $this::docente()->id);
     }
 }

@@ -22,7 +22,7 @@
 					    </thead>
 					    <tbody>
 					    	<tr v-for="listado in listar_docentes">
-					    		<td>{{ listado.nombres+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+					    		<td><img height="50" width="50" :src="'/'+listado.avatar"> {{ listado.nombres+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
 					    		<td>{{ listado.email }}</td>
 					    		<td>{{ listado.contacto }}</td>
 					    		<td>{{ listado.activo }}</td>

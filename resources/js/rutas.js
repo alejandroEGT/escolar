@@ -37,6 +37,7 @@ import IndexComponent from './components/inicio.vue';
  import Historia from "./components/authdocente/modulo/historia/historia.vue"
  import Chat from "./components/authdocente/modulo/mensajeria/chat.vue"
  import Boxchat from "./components/authdocente/modulo/mensajeria/cuerpo_chat.vue"
+ import Jcurso from "./components/authdocente/modulo/curso/jcurso.vue"
 
 
 const routes = [
@@ -117,7 +118,8 @@ const routes = [
       {path: '/docentehistoria/:curso/:asignatura',name: 'docentehistoria',component: Historia},
       {path: '/docentechat',name: 'docentechat',component: Chat},
       {path: '/docenteboxchat/:user',name: 'docenteboxchat',component: Boxchat},
-      // {path:':id/curso', name: 'curso', component:AdminCurso},
+      {path:'/docentejcurso/:curso/:texto', name: 'jcurso', component:Jcurso},
+      {path: '/docentecrearalumno',name: 'docentecrearalumno',component: CrearAlumno},
       // {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
       // {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
     ]

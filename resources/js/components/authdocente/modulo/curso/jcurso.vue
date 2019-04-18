@@ -1,0 +1,213 @@
+<template>  	
+<div v-if="btb_add_alumnos" >
+	<div class="card">
+			<div class="card-header">
+  				<h5><i class="fas fa-user-graduate"></i>Administrar {{curso_txt}}</h5>
+  			</div>
+		  <div class="card-body">
+		  </div>
+    </div>
+
+  	<div class="table-responsive">
+  		 
+					<md-button class="md-raised md-primary" @click="show('add_alumno')">Crear Alumno</md-button>
+
+					<modal :name="'add_alumno'" height="auto" :scrollable="true">
+								      	<div>
+								      		<div class="card">
+												<div class="card-header">
+									  				<h5><i class="fas fa-user-graduate"></i>Crear Alumno</h5>
+									  			</div>
+											  <div class="card-body">
+											  	
+											  	<h6>(Obligatorio)</h6>
+												<hr>
+
+											  	<div class="row">
+											  		<div class="col-md-3">
+											  			<input v-model="form.nombre" type="text" placeholder="Nombres"class="form-control"  name="">
+											  		</div>
+											  		<div class="col-md-3">
+											  			<input v-model="form.apellido_p" type="text" placeholder="Apellido paterno"class="form-control"  name="">
+											  		</div>
+											  		<div class="col-md-3">
+											  			<input v-model="form.apellido_m" type="text" placeholder="Apellido materno" class="form-control" name="">
+											  		</div>
+											  		<div class="col-md-3">
+											  			<select v-model="form.sexo"  class="form-control form-control-md" id="inlineFormCustomSelect">
+														       <option value="">Sexo</option>
+														        <option value="M">Masculino</option>
+														        <option value="F">Femenino</option>
+														        <!-- <option value="3">Three</option> -->
+														</select>
+											  		</div>
+											  		
+											  	</div>
+												<br>
+												<h6>(Opcional)</h6>
+												<hr>
+											  	<div class="row">
+											  		<div class="col-md-3" >
+											  			<input v-model="form.run" placeholder="Run" type="text"  class="form-control" >
+											  			
+											  		</div>
+											  		<div class="col-md-3">
+											  			<datepicker 
+													        v-model="form.nacimiento"
+													        :language="es" 
+													        :bootstrap-styling="true"
+													        placeholder="Fecha nacimiento"
+															format='dd/MM/yyyy'
+													    ></datepicker>
+											  		</div>
+											  		<div class="col-md-3">
+											  			<input v-model="form.direccion" type="text" placeholder="Dirección"class="form-control"  name="">
+											  		</div>
+											  		<div class="col-md-2">
+											  			<!-- <select v-model="form.curso"  class="form-control form-control-md" id="inlineFormCustomSelect">
+														       <option value="">Curso...</option>
+														        <option v-for="c in cursos" :value="c.id">{{ c.descripcion }}</option>
+														        
+														        
+														</select> -->
+											  		</div>
+											  		
+											  	</div>
+											  </div>
+											</div>
+		  									<br>
+		  	 								<md-button class="md-raised md-primary" :style="'float:left'" @click="register">Crear</md-button>
+		  	 								<md-button class="md-raised" :style="'float:left'" @click="hide('add_alumno')">Cancelar</md-button>
+
+		  	 								<br><br><br><br><br><br><br><br><br><br><br>
+								      	</div>
+								      </modal>
+					  <table class="table">
+					    <thead>
+					    	<tr style="background:#3F8DF7; color:white">
+					    		<td></td>
+					    		<td>Nombre</td>
+					    		<td>Run</td>
+					    		<td>Direccion</td>
+					    		<td>Activo</td>
+					    	</tr>
+					    </thead>
+					    <tbody>
+					    	<tr v-for="(listado, i) in list_cursos">
+					    		<td> 
+					    			<md-button @click="show(listado.alumno_id)" class="md-icon-button md-raised md-primary">
+								        <md-icon><i class="fas fa-eye"></i></md-icon>
+								      </md-button>
+
+								      <modal :name="''+listado.alumno_id" :adaptive="true" width="100%" height="100%">
+								      	<div>
+								      		<md-tabs class="md-transparent" md-alignment="fixed">
+										      <md-tab id="tab-home" md-label="Datos alumno">
+										      	<div>
+										      	  <p>Nombre: <input class="form-control" type="text" v-model="listado.nombre"></p>
+										      	  <p>Apellido paterno: <input class="form-control" type="text" v-model="listado.apellido_paterno"></p>
+										      	 <p>Apellido materno: <input class="form-control" type="text" v-model="listado.apellido_materno"></p>
+										      	  <p>Run: <input class="form-control" type="text" v-model="listado.run" placeholder="Ingrese run.."></p>
+										      	   <p>Direccion: <input class="form-control" type="text" v-model="listado.direccion" placeholder="Ingrese dirección.."></p>
+										      	</div>
+
+										      </md-tab>
+										      <md-tab id="tab-pages" md-label="Datos apoderado"></md-tab>
+										      <md-tab id="tab-posts" md-label="Posts"></md-tab>
+										      
+										    </md-tabs>
+								      	</div>
+								      </modal>
+								</td>
+								
+								<!-- <td>
+									{{ listado.descripcion }}
+								</td> -->
+
+					    		<td>
+					    		{{ listado.nombre+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+					    		<td>
+					    			<label style="color:#99A3A4" v-if="!listado.run">No hay datos</label>
+					    			<label v-if="listado.run">{{ listado.run }}</label>
+					    		</td>
+					    		<td>
+					    			<label style="color:#99A3A4" v-if="!listado.direccion">No hay datos</label>
+					    			<label v-if="listado.direccion">{{ listado.direccion }}</label>
+					    		</td>
+					    		
+					    		<td>{{ listado.activo }}</td>
+					    	</tr>
+					    </tbody>
+					  </table>
+	</div>
+</div>
+</template>
+
+<script>
+ import Datepicker from 'vuejs-datepicker';
+ import {en, es} from 'vuejs-datepicker/dist/locale'
+	export default{
+		components:{Datepicker},
+		data(){
+			return{
+				
+				list_cursos:{},
+				contar_alumnos:{},
+				curso: this.$route.params.curso,
+				curso_txt: this.$route.params.texto,
+				btb_add_alumnos:false,
+				form:{
+	  				nombre:'', apellido_p:'', apellido_m:'',
+	  				sexo:'', curso: this.$route.params.curso, direccion:'', nacimiento:'', run:''},
+	  			en: en,
+      			es: es,
+			}
+		},
+		created(){
+
+			this.listar_alumnos();
+		},
+		methods:{
+			listar_alumnos(){
+	  			axios.get('api/auth/docente/listar_alumno_jcurso/'+this.curso).then((res)=>{
+		            this.list_cursos = res.data;
+		            this.contar_alumnos = res.data.length+ ' Activo(s)';
+
+		            if (res.data.length > 0) {
+		            	this.btb_add_alumnos = true;
+		            	
+		            }
+		        })
+	  		},
+	  		show ($title) {
+
+			    this.$modal.show(''+$title+'');
+
+			},
+			hide ($title) {
+			 	this.listar_alumnos()
+			    this.$modal.hide(''+$title+'');
+			},
+			url_crearalumno(){
+
+			},
+			register(){
+	  			axios.post('api/auth/admin/crearalumno', this.form).then((res)=>{
+		            if (res.data == 'success') {
+		            	this.form = {
+		            		nombre:'', apellido_p:'', apellido_m:'',
+	  						sexo:'', curso:this.$route.params.curso, direccion:'', nacimiento:'', run:''};
+		           		}
+
+		           		this.$notify({
+						  group: 'success',
+						  title: 'Alerta',
+						  text: 'Alumno Registrado!',
+						});
+					this.listar_alumnos()
+
+		        })
+	  		},
+		}
+	}
+</script>

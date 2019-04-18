@@ -5,13 +5,13 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-3">
-						<strong>Docente:</strong> {{ user.nombres+' '+user.apellido_paterno+' '+user.apellido_materno }}
+						<small><strong>Docente:</strong> {{ user.nombres+' '+user.apellido_paterno+' '+user.apellido_materno }}</small>
 					</div>
 					<div class="col-md-3">
-						<strong>Curso:</strong> {{ cur.descripcion }}
+						<small><strong>Curso:</strong> {{ cur.descripcion }}</small>
 					</div>
 					<div class="col-md-3">
-						<strong>Asignatura:</strong> {{ asig.descripcion }}
+						<small><strong>Asignatura:</strong> {{ asig.descripcion }}</small>
 					</div>
 				</div>
 				<br>
@@ -71,7 +71,10 @@
 						    		<td><input @keyup.enter="registrar_nota($event,'n8',l.id)" class="form-control form-control-sm" type="" :value="l.nota8"></td>
 						    		<td><input @keyup.enter="registrar_nota($event,'n9',l.id)" class="form-control form-control-sm" type="" :value="l.nota9"></td>
 						    		<td><input @keyup.enter="registrar_nota($event,'n10',l.id)" class="form-control form-control-sm" type="" :value="l.nota10"></td>
-						    		<td>100</td>
+						    		<td>
+						    			<strong v-if="l.total < 40">{{l.total}}</strong>
+						    			<strong v-if="l.total > 40">{{l.total}}</strong>
+						    		</td>
 						    	</tr>
 						    
 					    </tbody>
@@ -121,7 +124,11 @@
 				}
 				
 				axios.post('api/auth/docente/registrar_nota', form).then((res)=>{
-
+					this.$notify({
+							  group: ''+res.data.tipo+'',
+							  title: 'Alerta',
+							  text: ''+res.data.mensaje+'',
+					});	
 				})
 			}
 		}
