@@ -8,7 +8,9 @@ use App\Asignatura;
 use App\Curso;
 use App\Cursoasignatura;
 use App\Docente;
+use App\Permiso;
 use App\User;
+use App\Userpermiso;
 use App\cuentas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +36,7 @@ class AdminCuentaController extends Controller
     	$curso->cuenta_id = $this::_cuenta()->cuenta_id;
     	$curso->formato_id = $r->formato;
     	$curso->activo = "S";
+        $curso->nivel_educativo = $r->nivel;
     	if ($curso->save()) {
     		return "success";
     	}
@@ -41,7 +44,9 @@ class AdminCuentaController extends Controller
 
     public function listar_curso()
     {
-    	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)->get();
+    	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+        ->where('activo', 'S')
+        ->get();
     }
     public function obtener_cursos()
     {
@@ -149,7 +154,10 @@ class AdminCuentaController extends Controller
 
     public function obtener_asignaturas()
     {
-    	return Asignatura::all();
+    	return Asignatura::where([
+            'cuenta_id' => $this::_cuenta()->cuenta_id,
+            'activo' => 'S'
+        ])->get();
     }
 
     public function agregarasignatura(Request $r)
@@ -390,5 +398,52 @@ class AdminCuentaController extends Controller
                 'tipo' => 'error',
                 'mensaje'=>'Error al registrar'
             ];
+    }
+
+    public function validar_pass($pass)
+    {
+        $db = User::find(Auth::user()->id);
+
+        if(Hash::check($pass, $db->password)) {
+            return "1";
+        }else{
+            return "0";
+        }
+    }
+    public function listar_permisos()
+    {
+        return DB::table('permisos')->get();
+    }
+    public function agregar_permiso(Request $r)
+    {
+        $cantidad_permisos = count($r->permiso);
+
+        foreach ($r->permiso as $key) {
+            $up = new Userpermiso;
+            $up->user_id = $r->usuario;
+            $up->permiso_id = $key;
+            $up->activo = 'S';
+            $up->cuenta_id = $this::_cuenta()->cuenta_id;
+            if($up->save()){
+                return ['tipo'=>'success','mensaje'=>'Acceso asignado'];
+            }else{
+                return ['tipo'=>'error','mensaje'=>'Error, no es posible asignar'];
+            }
+        }
+    }
+    public function listar_permisos_user()
+    {
+        return Userpermiso::select([
+                'u.nombres', 'u.apellido_materno','u.apellido_paterno','u.email',
+                'p.descripcion', 'user_permiso.activo'
+        ])->join('users as u','u.id','user_permiso.user_id')
+                          ->join('permisos as p','user_permiso.permiso_id','p.id')
+                            ->where([
+                                'user_permiso.cuenta_id' => $this::_cuenta()->cuenta_id,
+                                'user_permiso.activo' => 'S',
+                                //'u.activo' => 'S',
+
+                            ])
+                            ->get();
     }
 }

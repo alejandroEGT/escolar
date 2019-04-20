@@ -19,6 +19,28 @@
 				  			 <md-button class="md-raised md-primary" :style="'float:left'" @click="register">Crear</md-button>
 				  		</div>
 					</div>
+					<br>
+					 <table class="table">
+					    <thead>
+					    	<tr style="background:#3F8DF7; color:white">
+					    		<td>ID</td>
+					    		<td>Nombre</td>
+					    		<td>Descripción</td>
+					    		<td>Activo</td>
+					    		<!-- <td>Direccion</td>
+					    		<td>Activo</td> -->
+					    	</tr>
+					    </thead>
+					    <tbody>
+					    	<tr v-for="listado in listar_asignaturas">
+					    		<td>{{ listado.id}}</td>
+								
+								<td>{{ listado.descripcion }}</td>
+					    		<td>{{ listado.observacion }}</td>
+					    		<td>{{ listado.activo }}</td>
+					    	</tr>
+					    </tbody>
+					  </table>
 			  </div>
 			</div>
 		</div>
@@ -29,15 +51,17 @@
 	export default{
 		data(){
 			return{
-				form:{}
+				form:{},
+				listar_asignaturas:{}
 			}
 		},
 		created(){
-
+			this.listar()
 		},
 		methods:{
 			register(){
 				axios.post('api/auth/admin/crear_asignatura', this.form).then((res)=>{
+					this.listar()
 					this.$notify({
 						  group: ''+res.data.tipo+'',
 						  title: 'Alerta',
@@ -47,6 +71,11 @@
 				if (res.data.tipo == "success") {
 					this.form = {};
 				}
+			},
+			listar(){
+				axios.get('api/auth/admin/obtener_asignaturas').then((res)=>{
+					this.listar_asignaturas = res.data;
+				});
 			}
 		}
 	}

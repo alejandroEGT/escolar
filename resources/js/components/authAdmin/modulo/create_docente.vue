@@ -14,7 +14,7 @@
 			  		</div>
 			  		<div class="col-md-2">
 			  			<select v-model="form.sexo"  class="form-control form-control-md" id="inlineFormCustomSelect">
-						        
+						        <option value="">Seleccione sexo..</option>
 						        <option value="M">Masculino</option>
 						        <option value="F">Femenino</option>
 						        <!-- <option value="3">Three</option> -->
@@ -72,7 +72,7 @@ import Datepicker from 'vuejs-datepicker';
   		},
   		data(){
 	  		return{
-	  			form:{},
+	  			form:{ sexo:''},
 	  			en: en,
       			es: es
 	  		}

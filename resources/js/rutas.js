@@ -26,7 +26,7 @@ import IndexComponent from './components/inicio.vue';
  import AdminCurso from "./components/authAdmin/modulo/curso/curso.vue"
  import AdminPerfil from "./components/authAdmin/modulo/perfil/perfil.vue"
  import Adminagregarasignatura from "./components/authAdmin/modulo/agregar_asignatura.vue"
-
+ import Permisos from "./components/authAdmin/modulo/permisos.vue"
 
 
  //Docente establecimiento
@@ -102,6 +102,7 @@ const routes = [
       {path:':id/curso', name: 'curso', component:AdminCurso},
       {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
       {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
+      {path: '/adminpermiso',name:'adminpermiso', component:Permisos}
     ]
  },
  {
@@ -119,7 +120,7 @@ const routes = [
       {path: '/docentechat',name: 'docentechat',component: Chat},
       {path: '/docenteboxchat/:user',name: 'docenteboxchat',component: Boxchat},
       {path:'/docentejcurso/:curso/:texto', name: 'jcurso', component:Jcurso},
-      {path: '/docentecrearalumno',name: 'docentecrearalumno',component: CrearAlumno},
+      {path: '/docentecrearalumno/',name: 'docentecrearalumno',component: CrearAlumno},
       // {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
       // {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
     ]

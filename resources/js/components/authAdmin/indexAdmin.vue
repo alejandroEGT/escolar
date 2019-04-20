@@ -113,7 +113,7 @@
             </md-card-header>
 
             <md-card-actions>
-              <md-button  class="md-raised md-primary">Entrar</md-button>
+              <md-button @click="show('password')"  class="md-raised md-primary">Entrar</md-button>
              
               
             </md-card-actions>
@@ -123,6 +123,32 @@
         
       </div>
     </div>
+
+    <modal name="password" width="300" height="230">
+      <br>
+        <div class="container">
+          Valide su password para acceder
+          <div class="row">
+              <div class="col-md-12">
+                <input id="edit_contacto" placeholder="Ingrese su Password" type="password" v-model="pass" class="form-control" >
+              </div>
+          </div>
+          
+          
+          <div class="row justify-content-md-center" style="margin-top: 5px">
+            <div class="col-md-12">
+              <md-button @click="url_permiso" class="md-icon-button md-dense md-raised md-primary">
+                  <md-icon><i class="far fa-save"></i></md-icon>
+
+               </md-button>
+
+                <md-button @click="hide('password')" class="md-icon-button md-dense md-raised md-accent">
+                  <md-icon><i class="fas fa-times"></i></md-icon>
+                </md-button>
+            </div>  
+           </div>
+        </div>
+    </modal>
   </div>
 </template>
 
@@ -134,7 +160,8 @@
 
   			curso:'',
   			docente:'',
-  			alumno:''
+  			alumno:'',
+        pass:'',
   		}
   	},
   	created(){
@@ -163,13 +190,31 @@
        },
        url_listardocente(){
 	         this.$router.push('adminlistardocente'); 
-	   },
-	   url_crearalumno(){
-	         this.$router.push('admincrearalumno'); 
-	   },
-	   url_listaralumno(){
-	         this.$router.push('adminlistaralumno'); 
-	   }
+  	   },
+  	   url_crearalumno(){
+  	         this.$router.push('admincrearalumno'); 
+  	   },
+  	   url_listaralumno(){
+  	         this.$router.push('adminlistaralumno'); 
+  	   },
+       url_permiso(){
+           
+           axios.get('api/auth/admin/validar_pass/'+this.pass).then((res)=>{
+              if (res.data == '1') {
+                this.$router.push('adminpermiso');
+              }
+           });
+                
+       },
+       show ($title) {
+
+          this.$modal.show(''+$title+'');
+
+       },
+       hide ($title) {
+          this.obtener_perfil();
+            this.$modal.hide(''+$title+'');
+       },
      } 
      ,
      computed: {

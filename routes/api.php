@@ -56,8 +56,12 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/obtener_perfil','AdminCuentaController@obtener_perfil');
   Route::post('auth/admin/actualizar_perfil','AdminCuentaController@actualizar_perfil');
   Route::post('auth/admin/crear_asignatura','AdminCuentaController@crear_asignatura');
+  Route::get('auth/admin/validar_pass/{pass}','AdminCuentaController@validar_pass');
+  Route::get('auth/admin/listar_permisos','AdminCuentaController@listar_permisos');
+  Route::post('auth/admin/agregar_permiso','AdminCuentaController@agregar_permiso');
+  Route::get('auth/admin/listar_permisos_user','AdminCuentaController@listar_permisos_user');
 
- 
+
 
 
 

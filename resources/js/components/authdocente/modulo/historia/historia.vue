@@ -142,83 +142,86 @@
     	}
     }
 </script>
+
+
+
 <style type="text/css">
 	.posit,li{
-  list-style:none;
-}
-.posit{
-  overflow:hidden;
-  /*padding:3em;*/
-}
-.posit li a{
-	/*margin-left: 10%*/
-  text-decoration:none;
-  color:#000;
-  background:#ffc;
-  display:block;
-  height:80%;
-  width:80%/*12em*/;
-  padding:1em;
-  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
-  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
-  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
-  -moz-transition:-moz-transform .15s linear;
-  -o-transition:-o-transform .15s linear;
-  -webkit-transition:-webkit-transform .15s linear;
-}
-.posit li{
-  margin:1em;
-  float:left;
-}
-.posit li h2{
-  font-size:110%;
-  font-weight:bold;
-  padding-bottom:10px;
-}
-.posit  li p{
-	color:black;
-  font-family:"Reenie Beanie",arial,sans-serif;
-  font-size:100%;
-}
-.posit  li a{
-  -webkit-transform: rotate(-6deg);
-  -o-transform: rotate(-6deg);
-  -moz-transform:rotate(-6deg);
-}
-.posit  li:nth-child(even) a{
-  -o-transform:rotate(4deg);
-  -webkit-transform:rotate(4deg);
-  -moz-transform:rotate(4deg);
-  position:relative;
-  top:5px;
-  background:#cfc;
-}
-.posit  li:nth-child(3n) a{
-  -o-transform:rotate(-3deg);
-  -webkit-transform:rotate(-3deg);
-  -moz-transform:rotate(-3deg);
-  position:relative;
-  top:-5px;
-  background:#ccf;
-}
-.posit  li:nth-child(5n) a{
-  -o-transform:rotate(5deg);
-  -webkit-transform:rotate(5deg);
-  -moz-transform:rotate(5deg);
-  position:relative;
-  top:-10px;
-}
-.posit  li a:hover,ul li a:focus{
-  box-shadow:10px 10px 7px rgba(0,0,0,.7);
-  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
-  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
-  -webkit-transform: scale(1.25);
-  -moz-transform: scale(1.25);
-  -o-transform: scale(1.25);
-  position:relative;
-  z-index:5;
-}
-ol{text-align:center;}
-ol li{display:inline;padding-right:1em;}
-ol li a{color:#fff;}
+	  list-style:none;
+	}
+	.posit{
+	  overflow:hidden;
+	  /*padding:3em;*/
+	}
+	.posit li a{
+		/*margin-left: 10%*/
+	  text-decoration:none;
+	  color:#000;
+	  background:#ffc;
+	  display:block;
+	  height:80%;
+	  width:80%/*12em*/;
+	  padding:1em;
+	  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
+	  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+	  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+	  -moz-transition:-moz-transform .15s linear;
+	  -o-transition:-o-transform .15s linear;
+	  -webkit-transition:-webkit-transform .15s linear;
+	}
+	.posit li{
+	  margin:1em;
+	  float:left;
+	}
+	.posit li h2{
+	  font-size:110%;
+	  font-weight:bold;
+	  padding-bottom:10px;
+	}
+	.posit  li p{
+		color:black;
+	  font-family:"Reenie Beanie",arial,sans-serif;
+	  font-size:100%;
+	}
+	.posit  li a{
+	  -webkit-transform: rotate(-6deg);
+	  -o-transform: rotate(-6deg);
+	  -moz-transform:rotate(-6deg);
+	}
+	.posit  li:nth-child(even) a{
+	  -o-transform:rotate(4deg);
+	  -webkit-transform:rotate(4deg);
+	  -moz-transform:rotate(4deg);
+	  position:relative;
+	  top:5px;
+	  background:#cfc;
+	}
+	.posit  li:nth-child(3n) a{
+	  -o-transform:rotate(-3deg);
+	  -webkit-transform:rotate(-3deg);
+	  -moz-transform:rotate(-3deg);
+	  position:relative;
+	  top:-5px;
+	  background:#ccf;
+	}
+	.posit  li:nth-child(5n) a{
+	  -o-transform:rotate(5deg);
+	  -webkit-transform:rotate(5deg);
+	  -moz-transform:rotate(5deg);
+	  position:relative;
+	  top:-10px;
+	}
+	.posit  li a:hover,ul li a:focus{
+	  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+	  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
+	  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+	  -webkit-transform: scale(1.25);
+	  -moz-transform: scale(1.25);
+	  -o-transform: scale(1.25);
+	  position:relative;
+	  z-index:5;
+	}
+	ol{text-align:center;}
+	ol li{display:inline;padding-right:1em;}
+	ol li a{color:#fff;}
 </style>

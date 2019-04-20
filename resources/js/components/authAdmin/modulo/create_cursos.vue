@@ -10,7 +10,17 @@
 			            <div class="col-md-2">
 			              <input type="text" class="form-control form-control-md" v-model="form.descripcion" placeholder="Descripcion" name="">
 			            </div>
-
+						<div class="col-md-2">
+			            	<select v-model="form.nivel" class="form-control form-control-md" id="inlineFormCustomSelect">
+						        <option value="">Seleccione nivel..</option>
+						        <option value="E. BÁSICA">E. BÁSICA</option>
+						        <option value="E. MEDIA">E. MEDIA</option>
+						        <hr>
+						        <option value="PRIMARIA">Primaria</option>
+						        <option value="SECUNDARIA">Secundaria</option>
+						        <!-- <option value="3">Three</option> -->
+						      </select>
+			            </div>
 			            <div class="col-md-2">
 			            	<select v-model="form.promocion" class="form-control form-control-md" id="inlineFormCustomSelect">
 						        
@@ -53,6 +63,7 @@
 						    <thead>
 						    	<tr style="background:#3F8DF7; color:white">
 						    		<td>Descripción</td>
+						    		<td>Nivel Educativo</td>
 						    		<td>Promoción</td>
 						    		<td>Formato</td>
 						    		<!-- <td>Email</td>
@@ -67,6 +78,7 @@
 						    				{{listado.descripcion}}
 						    			</md-chip>
 						    		</td>
+						    		<td>{{ listado.nivel_educativo }}</td>
 						    		<td>{{listado.promocion}}</td>
 						    		<td v-if="listado.formato_id  == 1">Semestral</td>
 						    		<td v-if="listado.formato_id  == 2">Trimestral</td>
@@ -92,7 +104,7 @@ import Multiselect from 'vue-multiselect'
 		data(){
 			return{
 				form:{
-					promocion:'2019',
+					promocion:'2019', nivel:''
 					
 				},
 				radio: false,
