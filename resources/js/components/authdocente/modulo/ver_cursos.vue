@@ -3,7 +3,8 @@
 		<div class="">
 			<h3>Mis Cursos</h3>
 			<hr>
-			<div id="card_lol" class="card " style="width:20rem; margin-left: 4px; margin-top:4px; border:none; box-shadow: 5px 5px 25px #222 inset;box-shadow: 2px 2px 10px #666;        /* Sombra normal */
+			<div id="card_lol" class="card " style="width:100%; margin-left: 4px; 
+			margin-top:4px; border:none; box-shadow: 5px 5px 25px #222 inset;box-shadow: 2px 2px 10px #666;        /* Sombra normal */
   box-shadow: 5px -5px 0 2px #444;" v-for="listado in listar_cursos" :style="img_section_style">
 				<div class="card-body">
 					    <h5 class="card-title">{{listado.asignatura}} <small>{{listado.promocion}}</small></h5>

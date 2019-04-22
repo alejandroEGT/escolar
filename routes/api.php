@@ -60,8 +60,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/listar_permisos','AdminCuentaController@listar_permisos');
   Route::post('auth/admin/agregar_permiso','AdminCuentaController@agregar_permiso');
   Route::get('auth/admin/listar_permisos_user','AdminCuentaController@listar_permisos_user');
-
-
+  Route::post('auth/admin/crearapoderado','AdminCuentaController@crearapoderado');
+  Route::get('auth/admin/listar_apoderado/{alumno}/{curso}','AdminCuentaController@listar_apoderado');
 
 
 
@@ -80,6 +80,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/docente/listar_actividad/{curso}/{asignatura}','DocenteController@listar_actividad');
   Route::get('auth/docente/listar_docentes','DocenteController@listar_docentes_colegio');
   Route::get('auth/docente/listar_alumno_jcurso/{curso}','DocenteController@listar_alumnos_jcurso');
+
+
 
   // listar_docentes_colegio
   //mis_cursos

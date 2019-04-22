@@ -75,6 +75,7 @@
 											  	</div>
 											  </div>
 											</div>
+
 		  									<br>
 		  	 								<md-button class="md-raised md-primary" :style="'float:left'" @click="register">Crear</md-button>
 		  	 								<md-button class="md-raised" :style="'float:left'" @click="hide('add_alumno')">Cancelar</md-button>
@@ -99,23 +100,76 @@
 								        <md-icon><i class="fas fa-eye"></i></md-icon>
 								      </md-button>
 
-								      <modal :name="''+listado.alumno_id" :adaptive="true" width="100%" height="100%">
+								      <modal :name="''+listado.alumno_id" :adaptive="true" width="90%" height="90%">
 								      	<div>
-								      		<md-tabs class="md-transparent" md-alignment="fixed">
-										      <md-tab id="tab-home" md-label="Datos alumno">
-										      	<div>
-										      	  <p>Nombre: <input class="form-control" type="text" v-model="listado.nombre"></p>
-										      	  <p>Apellido paterno: <input class="form-control" type="text" v-model="listado.apellido_paterno"></p>
-										      	 <p>Apellido materno: <input class="form-control" type="text" v-model="listado.apellido_materno"></p>
-										      	  <p>Run: <input class="form-control" type="text" v-model="listado.run" placeholder="Ingrese run.."></p>
-										      	   <p>Direccion: <input class="form-control" type="text" v-model="listado.direccion" placeholder="Ingrese dirección.."></p>
-										      	</div>
+								      		<div class="card">
+													<div class="card-header">
+										  				<h5><i class="fas fa-user-graduate"></i>Datos del alumno</h5>
+										  			</div>
+												  <div class="card-body">
+									      		<md-tabs class="md-transparent" md-alignment="fixed">
+											      <md-tab id="tab-home" md-label="Alumno">
+											      	<div>
+											      	  <p>Nombre: <input class="form-control" type="text" v-model="listado.nombre"></p>
+											      	  <p>Apellido paterno: <input class="form-control" type="text" v-model="listado.apellido_paterno"></p>
+											      	 <p>Apellido materno: <input class="form-control" type="text" v-model="listado.apellido_materno"></p>
+											      	  <p>Run: <input class="form-control" type="text" v-model="listado.run" placeholder="Ingrese run.."></p>
+											      	   <p>Direccion: <input class="form-control" type="text" v-model="listado.direccion" placeholder="Ingrese dirección.."></p>
+											      	</div>
 
-										      </md-tab>
-										      <md-tab id="tab-pages" md-label="Datos apoderado"></md-tab>
-										      <md-tab id="tab-posts" md-label="Posts"></md-tab>
-										      
-										    </md-tabs>
+											      </md-tab>
+											      <md-tab id="tab-pages" md-label="Apoderado" @click="view_apo(listado.alumno_id)">
+
+											      	<div class="card">
+											      		<div class="card-header">
+											      			Lista de apoderado
+											      		</div>
+											      		<div class="card-body">
+											      			 <div class="table-responsive">
+
+															  <table class="table">
+															    <thead>
+															    	<tr style="background:#3F8DF7; color:white">
+															    		<td>Nombre</td>
+															    		<td>Email</td>
+															    		<!-- <td>Contacto</td> -->
+															    		<td>Activo</td>
+															    	</tr>
+															    </thead>
+															    <tbody>
+															    	<tr v-for="listado in list_apo">
+															    		<td><img height="50" width="50" :src="'/'+listado.avatar"> {{ listado.nombres+' '+listado.apellido_paterno+' '+listado.apellido_materno }}</td>
+															    		<td>{{ listado.email }}</td>
+															    		
+															    		<td>{{ listado.activo }}</td>
+															    	</tr>
+															    </tbody>
+															  </table>
+															</div>
+											      		</div>
+											      	</div>
+											      </md-tab>
+											      <md-tab id="tab-posts" md-label="Crear Apoderado">
+											      	<div class="card">
+											      		<div class="card-header">
+											      			Crear apoderado
+											      		</div>
+											      		<div class="card-body">	
+															<input v-model="apod.nombres" type="text" class="form-control" placeholder="Nombres">
+															<input v-model="apod.apellido_p" type="text" class="form-control" placeholder="Apellido Paterno">
+															<input v-model="apod.apellido_m" type="text" class="form-control" placeholder="Apellido Materno">
+															<input v-model="apod.email" type="email" class="form-control" 
+															placeholder="Email">
+															<!-- <input v-model="apod.contacto" type="numeric"> -->
+																<md-button @click="agregar_apo(listado.alumno_id)" class="md-raised md-primary">Crear</md-button>
+
+											      		</div>
+											      	</div>
+											      </md-tab>
+											      
+											    </md-tabs>
+											</div>
+										</div>
 								      	</div>
 								      </modal>
 								</td>
@@ -161,6 +215,10 @@
 	  				sexo:'', curso: this.$route.params.curso, direccion:'', nacimiento:'', run:''},
 	  			en: en,
       			es: es,
+      			apod:{
+      				nombres:'', apellido_p:'', apellido_m:'', email:'', alumno:''
+      			},
+      			list_apo:{}
 			}
 		},
 		created(){
@@ -208,6 +266,29 @@
 
 		        })
 	  		},
+	  		agregar_apo($alumno){
+	  			this.apod.alumno = $alumno;
+	  			axios.post('api/auth/admin/crearapoderado', this.apod).then((res)=>{
+	  				if(res.data.tipo === "success"){
+		  				this.$notify({
+							  group: ''+res.data.tipo+'',
+							  title: 'Alerta',
+							  text: ''+res.data.mensaje+'',
+							});
+		  				this.apod = {
+		  					nombres:'', apellido_p:'', apellido_m:'', email:'', alumno:''
+		  				}
+	  				}
+	  			});
+	  		},
+	  		view_apo($al){
+	  			this.listar_apoderado($al);
+	  		},
+	  		listar_apoderado($alumno){
+	  			axios.get('api/auth/admin/listar_apoderado/'+$alumno+'/'+this.curso ).then((res)=>{
+	  				this.list_apo = res.data;
+	  			});
+	  		}
 		}
 	}
 </script>

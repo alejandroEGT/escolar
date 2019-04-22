@@ -24,7 +24,8 @@
     <!-- Logo -->
     <div class="header-left u-flex0">
       <a href="/" class="logo"><img width="40" :src="'/'+user.avatar" alt="Avatar"></a>
-      <label style="color:white">{{ user.nombres+' '+user.apellido_paterno+' '+user.apellido_materno }}</label>
+      <label style="color:white"><small>
+      {{ user.nombres+' '+user.apellido_paterno+' '+user.apellido_materno }}</small></label>
     </div>
     
     <!-- menu -->
@@ -41,9 +42,10 @@
     <div class="header-right u-flex u-flexCenter u-flex0">
    
       <div class="follow u-hide-before-md">
-        <a href="#"><a style="color:white">Perfil</a></a>
-        <a @click="url_" style="color:white">Inicio</a>
-        <a @click="logout" style="color:white">Salir</a>
+      	<button style="color:white" class="btn btn-link" v-if="coun_curs_jefe > 0" data-toggle="modal" data-target="#exampleModal" ><small>Profesor jefe</small></button>
+        <button class="btn btn-link" style="color:white"><small>Perfil</small></button>
+        <button class="btn btn-link" @click="url_" style="color:white"><small>Inicio</small></button>
+        <button class="btn btn-link" @click="logout" style="color:white"><small>Salir</small></button>
         <!-- <a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a> -->
       </div>
       
@@ -85,6 +87,38 @@
                  <router-view :key="$route.path"></router-view>  
               </div>
     
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Profesor Jefe</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div v-for="c in j_curso">
+			      		<button @click="url_jcurso(c.curso_id, c.descripcion)" class="btn btn-link">{{ c.descripcion+' ('+c.nivel_educativo +' '+c.promocion+')' }}</button>
+			      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+  Launch demo modal
+</button>
+ -->
+
       
   </div>
 </template>
@@ -310,6 +344,7 @@ export default {
   },
   methods:{
   	 logout: function () {
+  	 	this.close_menu();
          this.$auth.logout({
                   makeRequest: true,
                   redirect: '/'
@@ -340,6 +375,7 @@ export default {
       },
       url_jcurso($curso, $txt){
       	this.close_menu();
+      	$('#exampleModal').modal('hide');
       	this.$router.push({name:'jcurso', params:{ curso: $curso, texto: $txt }});
       },
       accion(){

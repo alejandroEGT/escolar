@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Alumno;
 use App\Alumno_curso;
+use App\Alumnoapoderado;
 use App\Asignatura;
 use App\Curso;
 use App\Cursoasignatura;
@@ -59,8 +60,10 @@ class AdminCuentaController extends Controller
     	       ->where('activo','S')->first();
     }
     public function aleatorio_colors(){
-        $array =  Array('#F5B041','#EC7063','#B2BABB','#45B39D','#BB8FCE','#3498DB','#5D6D7E');
-        $rand = random_int ( 0 , 6 );
+        $array =  Array('#F5B041','#EC7063','#B2BABB','#45B39D','#BB8FCE','#3498DB','#5D6D7E', '#DC7633','#17A589',
+                        '#5499C7','#28B463'
+                        );
+        $rand = random_int ( 0 , 10 );
         return $array[$rand];
     } 
     public function crearDocente(Request $r)
@@ -445,5 +448,56 @@ class AdminCuentaController extends Controller
 
                             ])
                             ->get();
+    }
+
+    public function crearapoderado(Request $r)
+    {
+
+        $avatar = new Avatar;
+
+        $uriAvatar = 'storage/user_avatar/'.time().'.png';
+       // $urlBack = 'background/'.time().'-'.$request->email.'.png';
+        $nombre_letra = substr($r->nombres,0,1);
+        $avatar->create(strtoupper($nombre_letra))->setBackground($this->aleatorio_colors())->save($uriAvatar, $quality = 90);
+        $ap = new User;
+        $aa = new Alumnoapoderado;
+        $ap->nombres = $r->nombres;
+        $ap->apellido_paterno = $r->apellido_p;
+        $ap->apellido_materno = $r->apellido_m;
+        $ap->email = $r->email;
+        $ap->password = bcrypt('123456');
+        $ap->rol_id = 20;
+        $ap->sexo ='I';
+        $ap->avatar = $uriAvatar;
+        if ($ap->save()) {
+           $aa->alumno_id = $r->alumno;
+           $aa->user_id = $ap->id;
+           $aa->activo = "S";
+           if ($aa->save()) {
+               return [
+                'tipo'=>'success',
+                'mensaje' => 'Apoderado ingresado'
+            ];
+           }
+           return [
+                'tipo'=>'error',
+                'mensaje' => 'Error al ingresar'
+            ];
+        }
+         return [
+                'tipo'=>'error',
+                'mensaje' => 'Error al ingresar'
+            ];
+    }
+    public function listar_apoderado($alumno, $curso)
+    {
+        return User::join('alumno_apoderado as aa','aa.user_id','users.id')
+                   ->join('alumno as a','a.id','aa.alumno_id')
+                   ->join('alumno-curso as ac','ac.alumno_id','a.id')
+                   ->where([
+                        'ac.curso_id' => $curso,
+                        'aa.alumno_id' => $alumno
+                   ])
+                   ->get();
     }
 }

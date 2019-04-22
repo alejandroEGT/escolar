@@ -22,7 +22,7 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-3">
-						<input maxlength="50" v-model="form.titulo" class="form-control" type="text" name="" placeholder="Titulo">	
+						<input maxlength="250" v-model="form.titulo" class="form-control" type="text" name="" placeholder="Titulo">	
 					</div>		
 					<div class="col-md-3">
 						<datepicker 
@@ -37,7 +37,7 @@
 				<br>
 				<div class="row">
 					<div class="col-md-3">
-						<textarea maxlength="50" v-model="form.descripcion" class="form-control form-control-sm"  placeholder="Descripción de la actividad"></textarea>
+						<textarea maxlength="250" v-model="form.descripcion" class="form-control form-control-sm"  placeholder="Descripción de la actividad"></textarea>
 					</div>
 					<div class="col-md-1">
 						<center><md-button @click="register" class="md-icon-button md-raised md-primary">
@@ -117,14 +117,24 @@
 
     	methods:{
     		register(){
+    			if ($.trim(this.form.fecha) == "" || $.trim(this.form.descripcion) == "" || $.trim(this.form.titulo) == "") {
+    				this.$notify({
+						  group: 'error',
+						  title: 'Alerta',
+						  text: 'Faltan campos por llenar',
+						});
+    				return false;
+    			}
     			axios.post('api/auth/docente/registrar_actividad', this.form).then((res)=>{
     				this.$notify({
 						  group: ''+res.data.tipo+'',
 						  title: 'Alerta',
 						  text: ''+res.data.mensaje+'',
 						});
+
+    				this.listar()
     			});
-    			this.listar()
+    			
     		},
     		datos_basicos(){
 				axios.get('api/auth/docente/datos_basicos/'+this.curso+'/'+this.asignatura).then((res)=>{

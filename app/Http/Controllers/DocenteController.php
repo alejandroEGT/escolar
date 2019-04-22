@@ -48,13 +48,15 @@ class DocenteController extends Controller
     	$jefe = Cursoasignatura::select([
     			'c.id as curso_id',
     			'c.descripcion',
+    			'c.nivel_educativo',
     			'c.promocion',
     			'c.cuenta_id'
     	])
     	->join('curso as c','c.id','curso-asignatura.curso_id')
     	->where([
     		'docente_id'=> $this::docente()->id,
-    		'jefe_curso'=> 'S'
+    		'jefe_curso'=> 'S',
+    		'c.promocion' => date("Y")
     	])->get();
 
     	if (count($jefe)>0) {
