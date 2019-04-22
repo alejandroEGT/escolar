@@ -20,27 +20,29 @@
 				  		</div>
 					</div>
 					<br>
-					 <table class="table">
-					    <thead>
-					    	<tr style="background:#3F8DF7; color:white">
-					    		<td>ID</td>
-					    		<td>Nombre</td>
-					    		<td>Descripción</td>
-					    		<td>Activo</td>
-					    		<!-- <td>Direccion</td>
-					    		<td>Activo</td> -->
-					    	</tr>
-					    </thead>
-					    <tbody>
-					    	<tr v-for="listado in listar_asignaturas">
-					    		<td>{{ listado.id}}</td>
-								
-								<td>{{ listado.descripcion }}</td>
-					    		<td>{{ listado.observacion }}</td>
-					    		<td>{{ listado.activo }}</td>
-					    	</tr>
-					    </tbody>
-					  </table>
+					<div class="table-responsive">
+						 <table class="table">
+						    <thead>
+						    	<tr style="background:#3F8DF7; color:white">
+						    		<td>ID</td>
+						    		<td>Nombre</td>
+						    		<td>Descripción</td>
+						    		<td>Activo</td>
+						    		<!-- <td>Direccion</td>
+						    		<td>Activo</td> -->
+						    	</tr>
+						    </thead>
+						    <tbody>
+						    	<tr v-for="listado in listar_asignaturas">
+						    		<td>{{ listado.id}}</td>
+									
+									<td>{{ listado.descripcion }}</td>
+						    		<td>{{ listado.observacion }}</td>
+						    		<td>{{ listado.activo }}</td>
+						    	</tr>
+						    </tbody>
+						  </table>
+					</div>
 			  </div>
 			</div>
 		</div>
