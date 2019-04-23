@@ -174,7 +174,7 @@ class DocenteController extends Controller
     							'curso_id' => $curso, 'asignatura_id' => $asignatura, 'fecha' => $key->fecha
     						])->get();
     		  //$array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
-    		 $array_return[]['cabeza']['fecha'] = mb_convert_encoding(strftime("%A, %d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha)))),  'UTF-8', 'UTF-8');
+    		 $array_return[]['cabeza']['fecha'] = mb_convert_encoding(strftime("%d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha)))),  'UTF-8', 'UTF-8');
     		 $array_return[$sum]['cuerpo'] = $cuerpo[$sum];
 
     		 $sum++;
