@@ -179,7 +179,7 @@ class DocenteController extends Controller
 
     		 $sum++;
     	}
-    	dd($array_return);
+    	return response()->json($array_return);
     }
     public function listar_docentes_colegio()
     {
