@@ -30,6 +30,9 @@
 							<option value="3" >3ro trimestre</option>
 						</select>
 					</div>
+					<div class="col-md-2">
+						<button @click="exportar_nota_por_asignatura" class="btn btn-primary btn-sm"><small><i class="fas fa-file-csv fa-2x"></i> Exportar a excel</small></button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -84,6 +87,7 @@
 </template>
 
 <script>
+import { saveAs } from 'file-saver';
 	export default{
 		data(){
 			return{
@@ -130,6 +134,32 @@
 							  text: ''+res.data.mensaje+'',
 					});	
 				})
+			},
+			exportar_nota_por_asignatura(){
+				let options = {
+					responseType: 'blob',
+				    headers: {
+				      
+				      'Acept': 'application/vnd.ms-excel'
+				    }
+				  }
+				axios.get('api/auth/docente/exportar_nota_por_asignatura/'+this.curso+'/'+this.asignatura+'/'+this.seccion,
+					options
+				).then((res)=>{
+					//console.log(res.headers['content-disposition']);
+					console.log(this.cur.descripcion)
+					  const url = window.URL.createObjectURL(new Blob([res.data]));
+					 //  var blob = new Blob([res.data]);
+						// saveAs(blob, "hello world.xlsx");
+					   const link = document.createElement('a');
+					   link.href = url;
+					   link.setAttribute('download', this.cur.descripcion+'_'+this.asig.descripcion+'.xlsx'); //or any other extension
+					   document.body.appendChild(link);
+					   link.click();
+				})
+
+
+				
 			}
 		}
 	}

@@ -70,6 +70,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
 
 
 
+
  //DOCENTE DEL COLEGIO///////////////////////
   Route::get('auth/docente/profesor_jefe','DocenteController@profesor_jefe');
   Route::get('auth/docente/mis_cursos','DocenteController@mis_cursos');
@@ -80,7 +81,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/docente/listar_actividad/{curso}/{asignatura}','DocenteController@listar_actividad');
   Route::get('auth/docente/listar_docentes','DocenteController@listar_docentes_colegio');
   Route::get('auth/docente/listar_alumno_jcurso/{curso}','DocenteController@listar_alumnos_jcurso');
-
+    
+  Route::get('auth/docente/exportar_nota_por_asignatura/{curso}/{asignatura}/{seccion}', 'ExcelController@exportar_nota_por_asignatura');
 
 
   // listar_docentes_colegio

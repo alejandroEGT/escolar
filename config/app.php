@@ -178,6 +178,7 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
         Laravolt\Avatar\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
 
     ],
@@ -232,6 +233,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
 
         'Avatar'    => Laravolt\Avatar\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
