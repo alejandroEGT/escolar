@@ -217,7 +217,7 @@ class DocenteController extends Controller
     public function actividad_general()
     {
     	$cabeza = Actividad::select('recordatorio.fecha')
-    	->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
+    	->join('curso-asignatura as ca','ca.id','recordatorio.curso_asignatura_id')
     	->where([
     		'ca.docente_id' => $this::docente()->id,
     		//'recordatorio.activo' => 'S'
