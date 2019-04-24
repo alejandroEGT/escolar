@@ -10,6 +10,7 @@ use App\Curso;
 use App\Cursoasignatura;
 use App\Docente;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -162,8 +163,8 @@ class DocenteController extends Controller
 // En windows
 		setlocale(LC_TIME, 'spanish');
     	$cabeza = Actividad::select('fecha')->where([
-    		'curso_id' => $curso, 'asignatura_id' => $asignatura
-    	])->distinct('fecha')->get();
+    		'curso_id' => $curso, 'asignatura_id' => $asignatura, 'activo' => 'S'
+    	])->distinct('fecha')->orderBy('fecha','desc')->get();
     	
     	$cuerpo = [];
     	$sum=0;
@@ -171,12 +172,19 @@ class DocenteController extends Controller
 
     	foreach ($cabeza as $key) {
     		 $cuerpo[$sum] = Actividad::where([
-    							'curso_id' => $curso, 'asignatura_id' => $asignatura, 'fecha' => $key->fecha
-    						])->get();
+    							'curso_id' => $curso, 'asignatura_id' => $asignatura, 'fecha' => $key->fecha, 'activo' => 'S'
+    						])->orderBy('created_at','desc')->get();
+    		 $i=0;
+    		 foreach ($cuerpo[$sum] as $cu) {
+    		 	$cu->cuando = Carbon::parse($cu->created_at)->diffForHumans();
+    		 	//$cu->created_at = Carbon::parse('2019-04-15 00:40:52')->diffForHumans();
+    		 }
+
+
     		  //$array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
     		 $array_return[]['cabeza']['fecha'] = mb_convert_encoding(strftime("%d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha)))),  'UTF-8', 'UTF-8');
     		 $array_return[$sum]['cuerpo'] = $cuerpo[$sum];
-
+    		 
     		 $sum++;
     	}
     	return response()->json($array_return);
@@ -204,5 +212,72 @@ class DocenteController extends Controller
     		return false;
     	}
     	return Alumno_curso::docente_obtener_alumnos($this::establecimiento()->cuenta_id, $curso, $this::docente()->id);
+    }
+    public function actividad_general()
+    {
+    	$cabeza = Actividad::select('recordatorio.fecha')
+    	->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
+    	->where([
+    		'ca.docente_id' => $this::docente()->id,
+    		//'recordatorio.activo' => 'S'
+    	])->distinct('fecha')->orderBy('fecha','desc')->get();
+
+    	$cuerpo = [];
+    	$n= [];
+    	$s=[];
+    	$sum=0;
+    	$array_return = [];
+
+    	foreach ($cabeza as $key) {
+    		 $cuerpo[$sum] = Actividad::select([
+    		 	'ca.curso_id', 'ca.asignatura_id','ca.docente_id','recordatorio.id as recordatorio_id',
+    		 	'recordatorio.titulo','recordatorio.descripcion','recordatorio.activo','recordatorio.created_at',
+    		 	'c.descripcion as curso','c.nivel_educativo','a.descripcion as asignatura'
+    		 ])
+    		 ->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
+    		 ->join('curso as c','c.id','ca.curso_id')
+    		 ->join('asignatura as a','a.id','ca.asignatura_id')
+    		 ->where([
+    				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, /*'recordatorio.activo' => 'S'*/
+    		])->orderBy('recordatorio.created_at','desc')->get();
+
+    		 $n[$sum] = Actividad::select([
+    		 	'ca.curso_id', 'ca.asignatura_id','ca.docente_id','recordatorio.id as recordatorio_id',
+    		 	'recordatorio.titulo','recordatorio.descripcion','recordatorio.activo','recordatorio.created_at',
+    		 	'c.descripcion as curso','c.nivel_educativo','a.descripcion as asignatura'
+    		 ])
+    		 ->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
+    		 ->join('curso as c','c.id','ca.curso_id')
+    		 ->join('asignatura as a','a.id','ca.asignatura_id')
+    		 ->where([
+    				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, 'recordatorio.activo' => 'N'
+    		])->orderBy('recordatorio.created_at','desc')->get();
+    		 $s[$sum] = Actividad::select([
+    		 	'ca.curso_id', 'ca.asignatura_id','ca.docente_id','recordatorio.id as recordatorio_id',
+    		 	'recordatorio.titulo','recordatorio.descripcion','recordatorio.activo','recordatorio.created_at',
+    		 	'c.descripcion as curso','c.nivel_educativo','a.descripcion as asignatura'
+    		 ])
+    		 ->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
+    		 ->join('curso as c','c.id','ca.curso_id')
+    		 ->join('asignatura as a','a.id','ca.asignatura_id')
+    		 ->where([
+    				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, 'recordatorio.activo' => 'S'
+    		])->orderBy('recordatorio.created_at','desc')->get();
+    		 $i=0;
+    		 foreach ($cuerpo[$sum] as $cu) {
+    		 	$cu->cuando = Carbon::parse($cu->created_at)->diffForHumans();
+    		 	//$cu->created_at = Carbon::parse('2019-04-15 00:40:52')->diffForHumans();
+    		 }
+
+
+    		  //$array_return[]['cabeza']['fecha'] = date("d-m-Y",strtotime($key->fecha));
+    		 $array_return[]['cabeza']['fecha'] = mb_convert_encoding(strftime("%d de %B del %Y", strtotime(date("d-m-Y",strtotime($key->fecha)))),  'UTF-8', 'UTF-8');
+    		 $array_return[$sum]['cuerpo'] = $cuerpo[$sum];
+    		 $array_return[$sum]['s'] = count($s[$sum]);
+    		 $array_return[$sum]['n'] = count($n[$sum]);
+    		 $array_return[$sum]['porcentaje'] =$array_return[$sum]['n']!=0?($array_return[$sum]['n']*100)/($array_return[$sum]['n'] + $array_return[$sum]['s']):0;
+    		 $sum++;
+    	}
+    	return response()->json($array_return);
     }
 }

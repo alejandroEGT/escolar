@@ -419,20 +419,52 @@ class AdminCuentaController extends Controller
     }
     public function agregar_permiso(Request $r)
     {
-        $cantidad_permisos = count($r->permiso);
 
-        foreach ($r->permiso as $key) {
-            $up = new Userpermiso;
-            $up->user_id = $r->usuario;
-            $up->permiso_id = $key;
-            $up->activo = 'S';
-            $up->cuenta_id = $this::_cuenta()->cuenta_id;
-            if($up->save()){
-                return ['tipo'=>'success','mensaje'=>'Acceso asignado'];
-            }else{
+            $cantidad_permisos = count($r->permiso);
+            $save = 0;
+            $error =0;
+            $repeat =0;
+            $retornar =[];
+            foreach ($r->permiso as $key) {
+
+                $verify = Userpermiso::where([
+                        'user_id' => $r->usuario,
+                        'permiso_id' => $key,
+                        'activo' => 'S'
+                ])->first();
+                //dd(empty($verify));
+
+                if (empty($verify)) {
+                    $up = new Userpermiso;
+                    $up->user_id = $r->usuario;
+                    $up->permiso_id = $key;
+                    $up->activo = 'S';
+                    $up->cuenta_id = $this::_cuenta()->cuenta_id;
+                    if($up->save()){
+                        //return ['tipo'=>'success','mensaje'=>'Acceso asignado'];
+                        $save++;
+                    }else{
+                        $error++;
+                        //return ['tipo'=>'error','mensaje'=>'Error, no es posible asignar'];
+                    }
+                }else{
+                    $repeat++;
+                    //$retornar[0] = ['tipo'=>'repeat','mensaje'=>'Existen permisos ya asignados'];
+                }  
+            }
+            if ($save > 0 and $repeat > 0) {
+                return ['tipo'=>'success','mensaje'=>'Acceso asignado, pero ya existen algunos accesos en este usuario'];
+            }
+            if ($repeat > 0 and $save == 0) {
+                return ['tipo'=>'error','mensaje'=>'ya existen algunos accesos en este usuario'];
+            }
+            if ($error > 0) {
                 return ['tipo'=>'error','mensaje'=>'Error, no es posible asignar'];
             }
-        }
+            if ($save > 0) {
+                return ['tipo'=>'success','mensaje'=>'Acceso asignado'];
+            }
+            
     }
     public function listar_permisos_user()
     {

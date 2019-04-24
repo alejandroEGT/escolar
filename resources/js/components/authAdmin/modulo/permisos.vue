@@ -118,7 +118,7 @@
 				console.log(data);
 
 				axios.post('api/auth/admin/agregar_permiso', data).then((res)=>{
-
+					
 					this.$notify({
 						  group: ''+res.data.tipo+'',
 						  title: 'Alerta',

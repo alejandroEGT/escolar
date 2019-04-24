@@ -18,20 +18,20 @@
 				<div class="row">
 					<div class="col-md-6">
 						<select v-model="seccion" @change="libro_notas" class="form-control form-control-sm" v-if="cur.formato_id == 1">
-							<option value="0">Filtrar notas por semestre..</option>
+							<option value="0">Filtrar notas por criterio..</option>
 							<option value="1">1er Semestre</option>
 							<option value="2">2do Semestre</option>
 						</select>
 
 						<select v-model="seccion" @click="libro_notas" class="form-control form-control-sm" v-if="cur.formato_id == 2">
-							<option value="0">Filtrar notas por trimestre..</option>
+							<option value="0">Filtrar notas por criterio..</option>
 							<option value="1" >1er trimestre</option>
 							<option value="2" >2do trimestre</option>
 							<option value="3" >3ro trimestre</option>
 						</select>
 					</div>
 					<div class="col-md-2">
-						<button @click="exportar_nota_por_asignatura" class="btn btn-primary btn-sm"><small><i class="fas fa-file-csv fa-2x"></i> Exportar a excel</small></button>
+						<button v-if="filtro_seccion == true" @click="exportar_nota_por_asignatura" class="btn btn-primary btn-sm"><small><i class="fas fa-file-csv fa-2x"></i> Exportar a excel</small></button>
 					</div>
 				</div>
 			</div>
@@ -40,8 +40,8 @@
 
 
 		<div class="table-responsive">
-
-					  <table class="table">
+					<center v-if="filtro_seccion == false"> <i class="fas fa-search"></i> Primero filtrar por criterio..</center>
+					  <table class="table" v-if="filtro_seccion == true">
 					    <thead>
 					    	<tr style="background:#3F8DF7; color:white">
 					    		<td>Apellidos</td>
@@ -97,7 +97,8 @@ import { saveAs } from 'file-saver';
 				cur:{},
 				asig:{},
 				seccion:'0',
-				l_notas:{}
+				l_notas:{},
+				filtro_seccion : false
 			}
 		},
 		created(){
@@ -115,6 +116,10 @@ import { saveAs } from 'file-saver';
 			libro_notas(){
 				axios.get('api/auth/docente/libro_nota/'+this.curso+'/'+this.asignatura+'/'+this.seccion).then((res)=>{
 						this.l_notas = res.data;
+						this.filtro_seccion = true;
+						if(this.seccion == "0"){
+							this.filtro_seccion = false;
+						}
 				});
 			},
 			registrar_nota($this, n, alumno){

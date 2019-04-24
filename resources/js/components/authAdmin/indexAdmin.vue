@@ -138,7 +138,7 @@
           <div class="row justify-content-md-center" style="margin-top: 5px">
             <div class="col-md-12">
               <md-button @click="url_permiso" class="md-icon-button md-dense md-raised md-primary">
-                  <md-icon><i class="far fa-save"></i></md-icon>
+                  <md-icon><i class="far fa-check-circle"></i></md-icon>
 
                </md-button>
 

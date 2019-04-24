@@ -46,7 +46,7 @@
 					</div>
 				</div>
 				<hr>
-				<ul>
+				
     			
     			<div class="table-responsive">
     				<table class="table">
@@ -61,7 +61,7 @@
     						</td>
     						<td style="border-left: 1px solid #3498DB">
     							<div v-for="x in l.cuerpo" >
-    								<h6>{{x.titulo}}</h6>
+    								<h6>{{x.titulo}} <small style="color:#616A6B">({{ x.cuando }})</small></h6>
 						        <p>{{ x.descripcion }}</p><hr>
     							</div>
     						</td>
@@ -81,7 +81,7 @@
 						</ul>
 					<hr>
 				</div> -->
-			</ul>
+			
 			</div>
 		</div>
 	</div>
