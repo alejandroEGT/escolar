@@ -235,8 +235,8 @@ class DocenteController extends Controller
     		 	'c.descripcion as curso','c.nivel_educativo','a.descripcion as asignatura'
     		 ])
     		 ->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
-    		 ->join('curso as c','c.id','ca.curso_id')
-    		 ->join('asignatura as a','a.id','ca.asignatura_id')
+    		 ->join('curso as c','c.id','recordatorio.curso_id')
+    		 ->join('asignatura as a','a.id','recordatorio.asignatura_id')
     		 ->where([
     				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, /*'recordatorio.activo' => 'S'*/
     		])->orderBy('recordatorio.created_at','desc')->get();
