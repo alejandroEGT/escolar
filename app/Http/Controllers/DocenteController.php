@@ -39,9 +39,9 @@ class DocenteController extends Controller
     	])->first();
 
     	if (!empty($ca)) {
-    		return true;
+    		return $ca;
     	}
-    	return false;
+    	return null;
 	}
 
     public function profesor_jefe()
@@ -131,8 +131,8 @@ class DocenteController extends Controller
 
 
     	$valida = $this::validar_docente_en_curso_y_asignatura($r->curso, $r->asignatura);
-
-    	if ($valida) {
+    	//dd($valida);
+    	if ($valida != null) {
     		$recordatorio = new Actividad;
 	    	$recordatorio->titulo = $r->titulo;
 	    	$recordatorio->descripcion = $r->descripcion;
@@ -140,6 +140,7 @@ class DocenteController extends Controller
 	        $recordatorio->curso_id = $r->curso;
 	        $recordatorio->asignatura_id = $r->asignatura;
 	        $recordatorio->activo = "S";
+	        $recordatorio->curso_asignatura_id = $valida->id;
 	        if ($recordatorio->save()) {
 	        	 return [
 	        	 	'tipo' => 'success', 'mensaje' => 'Actividad registrada'
@@ -236,7 +237,7 @@ class DocenteController extends Controller
     		 ])
     		 ->join('curso as c','c.id','recordatorio.curso_id')
     		 ->join('asignatura as a','a.id','recordatorio.asignatura_id')
-    		 ->join('curso-asignatura as ca','ca.curso_id','recordatorio.curso_id')
+    		 ->join('curso-asignatura as ca','ca.id','recordatorio.curso_asignatura_id')
     		 ->where([
     				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, /*'recordatorio.activo' => 'S'*/
     		])->orderBy('recordatorio.created_at','desc')->get();
@@ -247,9 +248,9 @@ class DocenteController extends Controller
     		 	'recordatorio.titulo','recordatorio.descripcion','recordatorio.activo','recordatorio.created_at',
     		 	'c.descripcion as curso','c.nivel_educativo','a.descripcion as asignatura'
     		 ])
-    		 ->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
-    		 ->join('curso as c','c.id','ca.curso_id')
-    		 ->join('asignatura as a','a.id','ca.asignatura_id')
+    		 ->join('curso as c','c.id','recordatorio.curso_id')
+    		 ->join('asignatura as a','a.id','recordatorio.asignatura_id')
+    		 ->join('curso-asignatura as ca','ca.id','recordatorio.curso_asignatura_id')
     		 ->where([
     				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, 'recordatorio.activo' => 'N'
     		])->orderBy('recordatorio.created_at','desc')->get();
@@ -258,9 +259,9 @@ class DocenteController extends Controller
     		 	'recordatorio.titulo','recordatorio.descripcion','recordatorio.activo','recordatorio.created_at',
     		 	'c.descripcion as curso','c.nivel_educativo','a.descripcion as asignatura'
     		 ])
-    		 ->join('curso-asignatura as ca','ca.asignatura_id','recordatorio.asignatura_id')
-    		 ->join('curso as c','c.id','ca.curso_id')
-    		 ->join('asignatura as a','a.id','ca.asignatura_id')
+    		 ->join('curso as c','c.id','recordatorio.curso_id')
+    		 ->join('asignatura as a','a.id','recordatorio.asignatura_id')
+    		 ->join('curso-asignatura as ca','ca.id','recordatorio.curso_asignatura_id')
     		 ->where([
     				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, 'recordatorio.activo' => 'S'
     		])->orderBy('recordatorio.created_at','desc')->get();
