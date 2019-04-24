@@ -239,8 +239,8 @@ class DocenteController extends Controller
     		 ->join('curso-asignatura as ca','ca.curso_id','recordatorio.curso_id')
     		 ->where([
     				'ca.docente_id' => $this::docente()->id,'fecha' => $key->fecha, /*'recordatorio.activo' => 'S'*/
-    		])->orderBy('recordatorio.created_at','desc')->toSql();
-    		 return $cuerpo[$sum];
+    		])->orderBy('recordatorio.created_at','desc')->get();
+    		 //return $cuerpo[$sum];
 
     		 $n[$sum] = Actividad::select([
     		 	'ca.curso_id', 'ca.asignatura_id','ca.docente_id','recordatorio.id as recordatorio_id',
