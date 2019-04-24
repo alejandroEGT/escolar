@@ -138,6 +138,7 @@ import { saveAs } from 'file-saver';
 							  title: 'Alerta',
 							  text: ''+res.data.mensaje+'',
 					});	
+					this.libro_notas();
 				})
 			},
 			exportar_nota_por_asignatura(){

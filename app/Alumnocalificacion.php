@@ -81,7 +81,7 @@ class Alumnocalificacion extends Model
 						$filtro_total = array_filter($arr_total);
 						$cantidad_total = count($filtro_total);
 						//return ($cantidad_total);
-						$solo_lista->total = number_format((array_sum($filtro_total) / $cantidad_total),2);
+						$solo_lista->total = $cantidad_total==0?null:number_format((array_sum($filtro_total) / $cantidad_total),2);
 					}
 				}
 				

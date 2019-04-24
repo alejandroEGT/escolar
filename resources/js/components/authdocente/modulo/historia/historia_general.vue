@@ -21,8 +21,13 @@
     						</td>
     						<td style="border-left: 1px solid #3498DB">
     							<div v-for="x in l.cuerpo" >
-    								<h6><i v-if="x.activo == 'S'" style="color:#2ECC71;" class="fas fa-circle"></i>
-    									<i v-if="x.activo == 'N'" style="color:#B2BABB;" class="fas fa-circle"></i>
+    								<h6>
+    									<button v-if="x.activo == 'S'" class="btn btn-link" @click="desactivar(x.recordatorio_id)">
+    									<i  style="color:#2ECC71;"  class="fas fa-circle"></i>
+										</button>
+										<button v-if="x.activo == 'N'" class="btn btn-link" @click="activar(x.recordatorio_id)">
+    									<i style="color:#B2BABB;"  class="fas fa-circle"></i>
+    								    </button>
     									{{x.titulo}} <small style="color:#616A6B">({{ x.cuando }})</small></h6>
 						        <p>{{ x.descripcion }}</p><hr>
     							</div>
@@ -47,9 +52,23 @@
 		methods:{
 			listar(){
 				axios.get('api/auth/docente/actividad_general').then((res)=>{
+					
 					this.listar_act = res.data;
 				});
+			},
+			activar($record){
+			axios.get('api/auth/docente/activiar_record/'+$record).then((res)=>{
+					//this.listar_act = res.data;
+					this.listar();
+				});
+			},
+			desactivar($record){
+				axios.get('api/auth/docente/desactiviar_record/'+$record).then((res)=>{
+						this.listar();
+						//this.listar_act = res.data;
+					});
 			}
 		},
+		
 	}
 </script>

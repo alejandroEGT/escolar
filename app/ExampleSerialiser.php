@@ -12,13 +12,13 @@ class ExampleSerialiser implements SerialiserInterface
     {
         $row = [];
 
-        $row[] = $data->id;
+        //$row[] = $data->id;
         $row[] = $data->nombre;
         $row[] = $data->apellido_paterno;
         $row[] = $data->apellido_materno;
-        $row[] = $data->curso_id;
-        $row[] = $data->asignatura_id;
-        $row[] = $data->seccion;
+       // $row[] = $data->curso_id;
+       // $row[] = $data->asignatura_id;
+       // $row[] = $data->seccion;
         $row[] = $data->nota1;
         $row[] = $data->nota2;
         $row[] = $data->nota3;
@@ -37,13 +37,13 @@ class ExampleSerialiser implements SerialiserInterface
     public function getHeaderRow()
     {
         return [
-            'ID',
+           // 'ID',
             'NOMBRES',
             'APELLIDO_P',
             'APELLIDO_M',
-            'CURSO_ID',
-            'ASIGNATURA_ID',
-            'SECCION',
+           // 'CURSO_ID',
+           // 'ASIGNATURA_ID',
+           // 'SECCION',
             'NOTA1',
             'NOTA2',
             'NOTA3',

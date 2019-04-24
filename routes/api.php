@@ -85,6 +85,9 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/docente/exportar_nota_por_asignatura/{curso}/{asignatura}/{seccion}', 'ExcelController@exportar_nota_por_asignatura');
 
   Route::get('auth/docente/actividad_general','DocenteController@actividad_general');
+  Route::get('auth/docente/activiar_record/{record}','DocenteController@activiar_record');
+  Route::get('auth/docente/desactiviar_record/{record}','DocenteController@desactiviar_record');
+  
   
 
   // listar_docentes_colegio

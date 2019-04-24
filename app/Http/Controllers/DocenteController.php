@@ -282,4 +282,20 @@ class DocenteController extends Controller
     	}
     	return response()->json($array_return);
     }
+    public function desactiviar_record($record)
+    {
+    	$ac = Actividad::find($record);
+    	$ac->activo = "N";
+    	if($ac->save()){
+    		return "true";
+    	}
+    }
+    public function activiar_record($record)
+    {
+    	$ac = Actividad::find($record);
+    	$ac->activo = "S";
+    	if($ac->save()){
+    		return "true";
+    	}
+    }
 }
