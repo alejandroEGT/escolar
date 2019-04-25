@@ -11,8 +11,12 @@ class Chat extends Model
 {
     protected $table="chat";
 
+    public function getCreatedAtAttribute($date) {
+      //  return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d.m.Y');
+        return Carbon::parse($date)->diffForHumans();
+    }
 
-     protected function getMensajes($id_otro)
+    protected function getMensajes($id_otro)
     {
     	$id = Auth::user()->id;
     	$query = DB::select("SELECT DISTINCT ch.mensaje, ch.archivo,ch.id_user_envia, ch.id_user_recibe, ch.created_at,

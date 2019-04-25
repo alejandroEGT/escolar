@@ -25,7 +25,7 @@ class ChatController extends Controller
 		  $message->mensaje = $request->message;
 		  $message->activo = "S";
 		  if($message->save()){
-		  		$message->cuando = Carbon::parse($message->created_at)->diffForHumans();
+		  		
                // $verify = Notificachat::where('codigo_chat', $cod)->first();
 	                // $verify = Notificachat::where([
 	                //     'user_envia'=> Auth::user()->id,
