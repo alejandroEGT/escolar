@@ -51,4 +51,29 @@ class ChatController extends Controller
                     
           }
     }
+     public function sendFoto(Request $dato){
+        //dd($dato->file('fotos'));
+         $user = Auth::user();
+        if($files=$dato->file('fotos')){
+            foreach($files as $file){
+                $name=$file->getClientOriginalName();
+                $file->move('storage/chatfotos',$name);
+
+                $message = new Chat;
+                $message->id_user_envia = Auth::user()->id;
+                $message->id_user_recibe = $dato->id_recibe;
+                $message->mensaje = $dato->newMessage;
+                $message->archivo = 'storage/chatfotos/'.$name;
+                $message->activo = "S";
+
+                if($message->save()){
+                    broadcast(new MessageSentEvent($user, $message))->toOthers();
+                    return "true";
+
+                }
+                return "false";
+
+            }
+        }
+    }
 }

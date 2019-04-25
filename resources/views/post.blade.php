@@ -59,14 +59,14 @@
                             <a href="#">
                                 <img src="img/bogi2.png" alt="">
                             </a>
-                            <h4>Ya volvemos </h4>
+                            <!-- <h4>Ya volvemos </h4> -->
                         </div>
-                        <div class="footer_social">
+                       <!--  <div class="footer_social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
                             <a href="#"><i class="fa fa-dribbble"></i></a>
                             <a href="#"><i class="fa fa-behance"></i></a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

@@ -95,6 +95,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
 
   Route::get('auth/messages/{id}', 'ChatController@fetch');
   Route::post('auth/messages', 'ChatController@sentMessage');
+  Route::post('auth/fotoChat','ChatController@sendFoto');
 
 });
 

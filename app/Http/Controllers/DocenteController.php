@@ -201,6 +201,7 @@ class DocenteController extends Controller
     			->join('docente-establecimiento as de','de.docente_id','d.id')
     		    ->where([
     			   	'de.activo' => 'S',
+                    'd.activo' => 'S',
     			   	'de.cuenta_id' => $this::establecimiento()->cuenta_id,
     	   	    ])->where('users.id','!=', Auth::user()->id)
     		    ->get();
