@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Chat;
 use App\Events\MessageSentEvent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,7 @@ class ChatController extends Controller
 		  $message->mensaje = $request->message;
 		  $message->activo = "S";
 		  if($message->save()){
-
+		  		$message->cuando = Carbon::parse($cu->created_at)->diffForHumans();
                // $verify = Notificachat::where('codigo_chat', $cod)->first();
 	                // $verify = Notificachat::where([
 	                //     'user_envia'=> Auth::user()->id,
