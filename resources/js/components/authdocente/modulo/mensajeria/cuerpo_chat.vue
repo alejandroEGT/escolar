@@ -11,7 +11,7 @@
 				      <div class="msg">
 				        <p>{{message.mensaje}} <!-- <emoji class="books"/> --></p>
                         <div v-if="message.archivo">
-                           <img  :src="message.archivo">
+                           <img  style="width:100%; height:100%;"  :src="message.archivo">
                         </div>
 				        <time>20:18</time>
 				      </div>
@@ -22,7 +22,7 @@
 				 <div v-if="id_mio != message.id_user_envia" >
 				    
 				    <li class="other">
-				        <div class="avatar"><img :src="'/'+message.foto_use_2" draggable="false"/></div>
+				        <div class="avatar"><im style="width:100%; height:100%;"g  :src="'/'+message.foto_use_2" draggable="false"/></div>
 				      <div class="msg">
 				        <p style="color:white">{{message.mensaje}} <!-- <emoji class="pizza"/> --></p>
                         <div v-if="message.archivo">
@@ -169,7 +169,7 @@
                         'content-Type': 'miltipart/form-data'
                     }
                 }).then((response) =>{
-                    
+                    this.newMessage = ''
                     console.log(response.data)
                     this.fetchMessages();
                     
