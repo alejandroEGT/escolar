@@ -108,7 +108,9 @@ class AdminCuentaController extends Controller
     {
     	return User::join('docente as d','d.user_id','users.id')
     	           ->join('docente-establecimiento as de','de.docente_id','d.id')
-    	           ->where('de.cuenta_id', $this::_cuenta()->cuenta_id)->get();
+    	           ->where('de.cuenta_id', $this::_cuenta()->cuenta_id)
+                   ->where('d.activo','S')
+                   ->get();
     	      
     }
 
