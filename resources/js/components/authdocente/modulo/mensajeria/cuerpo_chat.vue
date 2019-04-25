@@ -13,7 +13,7 @@
                         <div v-if="message.archivo">
                            <img style="width:100%; height:100%;"  :src="message.archivo">
                         </div>
-				        <time>20:18</time>
+				        <time><i class="far fa-clock"></i> {{' '+message.cuando}}</time>
 				      </div>
 				    </li>
 
@@ -28,7 +28,7 @@
                         <div v-if="message.archivo">
                            <img style="width:100%; height:100%;"  :src="message.archivo">
                         </div>
-				        <time>20:17</time>
+				        <time><i class="far fa-clock"></i> {{' '+message.cuando}}</time>
 				      </div>
 				    </li>
 				 </div>
@@ -145,7 +145,7 @@
                           foto_use_1: this.nameAuth.avatar,
                           use_1: this.user.nombres,
                           id_user_envia: this.user.id,
-                          //created_at: e.user.created_at
+                          cuando: 'Ahora'
 
                         });
             var datos={}  
@@ -361,7 +361,7 @@
 
 .msg time {
     font-size: 0.7rem;
-    color: #ccc;
+    color: white;
     margin-top: 3px;
     float: right;
     cursor: default;
@@ -371,8 +371,8 @@
     -ms-user-select: none;
 }
 .msg time:before{
-    content:"\f017";
-    color: #ddd;
+    content:"";
+    color: white;
     font-family: FontAwesome;
     display: inline-block;
     margin-right: 4px;
