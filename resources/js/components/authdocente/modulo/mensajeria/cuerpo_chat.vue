@@ -108,7 +108,7 @@
                           archivo: e.message.archivo,
                           foto_use_2: e.user.avatar,
                           use_2: e.user.nombres,
-                          cuando: e.user.created_at,
+                          cuando: e.message.created_at,
                           //cuando: e.message.cuando
                         });
                   }
