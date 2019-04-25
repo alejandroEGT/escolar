@@ -27,7 +27,7 @@
 	      		<md-card :style="img_section_style">
 		            <md-card-header>
 		              <md-card-header-text>
-		                <div class="md-title">Chat</div>
+		                <div class="md-title">Chat <i style="color:green" :class="''+icon+''"></i> </div>
 		                <div class="md-subhead">(2019)</div>
 		              </md-card-header-text>
 
@@ -71,10 +71,23 @@
 		data(){
 			return{
 				isLoading:true,
+				icon:''
 			}
 		},
 		created(){
 			this.isLoading = false;
+
+			Echo.private('chat.'+this.nameAuth.id).listen('MessageSentEvent', (e) => {
+                  if (e.message.id_user_recibe === this.$auth.user().id) {
+
+                      var audio = new Audio('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3');
+                      audio.play();
+                      this.icon='far fa-clock'
+                        
+                  }
+                                    
+          }); 
+
 		},
 	    methods:{
 	    	url_curso(){
@@ -89,6 +102,9 @@
 	    },
 
 		computed: {
+
+
+
             img_section_style: function(){
             	var bgImg="https://static.rfstat.com/renderforest/images/v2/logo-homepage/bg-bottom-right.svg"
                 // var bgImg= "https://media.istockphoto.com/videos/soft-background-blue-loopable-video-id656234942?s=640x640"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLScrhnHLqmeyJOawurq_DxtYyCOmJzsi3OPuwFBWSQnORPWuJA"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeVz1N3HAKFw2bJtxZSnGDHUZZ5M4CHGdJOFckagmT3m-TS_5S"/*"https://rlv.zcache.com/wavy_teal_aqua_blue_spripes_label-r68f3d96569964f51ac304e6859e334e5_v11mb_8byvr_307.jpg?rvtype=content"*/
