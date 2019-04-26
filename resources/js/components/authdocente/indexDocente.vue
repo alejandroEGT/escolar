@@ -77,8 +77,8 @@
 		created(){
 			this.isLoading = false;
 
-			Echo.private('chat.'+this.nameAuth.id).listen('MessageSentEvent', (e) => {
-                  if (e.message.id_user_recibe === this.$auth.user().id) {
+			Echo.private('chat.'+this.$auth.user().id).listen('MessageSentEvent', (e) => {
+            if(e.message.id_user_recibe == this.$auth.user().id){
 
                       var audio = new Audio('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3');
                       audio.play();
