@@ -82,7 +82,7 @@
 
                       var audio = new Audio('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3');
                       audio.play();
-                      this.icon='far fa-clock'
+                      this.icon='fas fa-comment'
                         
                   }
                                     
