@@ -6,6 +6,8 @@ use App\Alumno;
 use App\Alumno_curso;
 use App\Alumnoapoderado;
 use App\Asignatura;
+use App\Comportamiento;
+use App\ComportamientoNivel;
 use App\Curso;
 use App\Cursoasignatura;
 use App\Docente;
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravolt\Avatar\Avatar;
+
 
 class AdminCuentaController extends Controller
 {
@@ -533,5 +536,52 @@ class AdminCuentaController extends Controller
                         'aa.alumno_id' => $alumno
                    ])
                    ->get();
+    }
+
+    public function crear_comportamiento(Request $r)
+    {
+        $su = 0;
+
+        $c = new Comportamiento;
+        $c->descripcion = $r->descripcion;
+        $c->cuenta_id = $this::_cuenta()->cuenta_id;
+        $c->activo = "S";
+        if ($c->save()) {
+            foreach ($r->nivel as $key) {
+                  $cn = new ComportamientoNivel;
+                  $cn->comportamiento_id = $c->id;
+                  $cn->nivel_educativo_id = $key;
+                  $cn->activo = "S"; 
+                  if ($cn->save()) {
+                      $su++;
+                  }
+                  
+            }
+        }
+        if ($su > 0) {
+            return [ 'tipo'=>'success', 'mensaje'=>'Comportamiento agregado' ];
+        }
+        return [ 'tipo'=>'error', 'mensaje'=>'Error al agregar' ];
+    }
+    public function ver_comportamiento()
+    {
+        $comp = Comportamiento::select([
+                        'id','activo','descripcion'
+                ])->where([
+                    'comportamiento.cuenta_id' => $this::_cuenta()->cuenta_id,
+                    'comportamiento.activo' => 'S'
+               ])->get();
+        foreach ($comp as $key) {
+            $key['nivel'] = DB::table('comportamiento_nivel as cn')
+                            ->select([
+                                    'nivel_educativo_id','descripcion as nivel'
+                            ])
+            ->join('nivel_educativo as ne','ne.id','cn.nivel_educativo_id')->where([
+                    'cn.comportamiento_id' => $key->id,
+                    'ne.activo' => 'S'
+                ])->get();
+        }
+
+        return $comp;
     }
 }

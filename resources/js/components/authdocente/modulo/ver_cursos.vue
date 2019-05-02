@@ -25,6 +25,13 @@
 					      <md-button class="md-icon-button md-raised" >
 					        <md-icon><i class="fas fa-chart-area"></i></md-icon>
 					      </md-button>
+
+
+					      <md-button @click="url_mensaje(listado.curso_id, listado.asignatura_id)" class="md-icon-button md-raised" >
+					        <md-icon><i class="fas fa-envelope"></i></md-icon>
+					      </md-button>
+
+					      
 			    </div>
 			</div>
 					      	
@@ -56,6 +63,9 @@
 				
 				this.$router.push({ name: 'docentehistoria', params: { curso: $curso, asignatura:$asignatura }})
 			},
+			url_mensaje($curso, $asignatura){
+				this.$router.push({ name: 'docentemensaje', params:{ curso: $curso, asignatura:$asignatura } });
+			}
 		},
 		computed: {
             img_section_style: function(){

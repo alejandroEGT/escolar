@@ -1,5 +1,5 @@
 <template>  	
-<div v-if="btb_add_alumnos" >
+<div >
 	<div class="card">
 			<div class="card-header">
   				<h5><i class="fas fa-user-graduate"></i>Administrar {{curso_txt}}</h5>
@@ -83,7 +83,7 @@
 		  	 								<br><br><br><br><br><br><br><br><br><br><br>
 								      	</div>
 								      </modal>
-					  <table class="table">
+					  <table v-if="btb_add_alumnos"  class="table">
 					    <thead>
 					    	<tr style="background:#3F8DF7; color:white">
 					    		<td></td>
@@ -96,9 +96,64 @@
 					    <tbody>
 					    	<tr v-for="(listado, i) in list_cursos">
 					    		<td> 
-					    			<md-button @click="show(listado.alumno_id)" class="md-icon-button md-raised md-primary">
+					    			  <div class="row">
+					    			  	<div class="col-md-4">
+					    			  		<md-button @click="show(listado.alumno_id)" class="md-icon-button md-raised md-primary">
 								        <md-icon><i class="fas fa-eye"></i></md-icon>
 								      </md-button>
+								      
+					    			  	</div>
+					    			  	<div class="col-md-4">
+					    			  		<md-button data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
+								        <md-icon><i class="fas fa-clipboard-check"></i></md-icon>
+								      </md-button>
+					    			  	</div>
+					    			  </div>
+										<!-- Modal -->
+										<div class="modal fade" :id="'modal'+listado.alumno_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+										  <div class="modal-dialog" role="document">
+										    <div class="modal-content">
+										      <div class="modal-header">
+										        <h5 class="modal-title" id="exampleModalLongTitle">Documentos</h5>
+										        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										          <span aria-hidden="true">&times;</span>
+										        </button>
+										      </div>
+										      <div class="modal-body">
+										        <ul class="nav nav-tabs" id="myTab" role="tablist">
+												  <li class="nav-item">
+												    <a class="nav-link active" id="documento-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+												  </li>
+												  <li class="nav-item">
+												    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+												  </li>
+												  <li class="nav-item">
+												    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+												  </li>
+												</ul>
+												<div class="tab-content" id="myTabContent">
+												  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="documento-tab">
+												  	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+												  	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+												  	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+												  	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+												  	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+												  	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+												  </div>
+												  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+												  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+												</div>
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+										        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+										      </div>
+										    </div>
+										  </div>
+										</div>
+
+
+
 
 								      <modal :name="''+listado.alumno_id" :adaptive="true" width="90%" height="90%">
 								      	<div>

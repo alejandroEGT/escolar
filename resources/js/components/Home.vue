@@ -81,13 +81,13 @@ export default {
     },
     login(){
 
-      axios.get('api/auth/valida_rol/'+this.email).then((res)=>{
+      axios.get('api/auth/valida_rol/'+this.email.toLowerCase()).then((res)=>{
               
            var app = this
            if (1 == res.data) {
                this.$auth.login({
                 params: {
-                  email: app.email,
+                  email: app.email.toLowerCase(),
                   password: app.password
                 }, 
                 success: function () {},
@@ -100,7 +100,7 @@ export default {
            if (2 == res.data) {
              this.$auth.login({
                 params: {
-                  email: app.email,
+                  email: app.email.toLowerCase(),
                   password: app.password
                 }, 
                 success: function () {},
@@ -114,7 +114,7 @@ export default {
            if (3 == res.data) {
              this.$auth.login({
                 params: {
-                  email: app.email,
+                  email: app.email.toLowerCase(),
                   password: app.password
                 }, 
                 success: function () {},

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Chat;
 use App\Events\MessageSentEvent;
+use App\Notificachat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -25,26 +27,33 @@ class ChatController extends Controller
 		  $message->mensaje = $request->message;
 		  $message->activo = "S";
 		  if($message->save()){
-		  		
-               // $verify = Notificachat::where('codigo_chat', $cod)->first();
-	                // $verify = Notificachat::where([
-	                //     'user_envia'=> Auth::user()->id,
-	                //     'user_recibe'=> $request->id_recibe
-	                // ])->orWhere('user_envia','=',$request->id_recibe)
-	                // ->where('user_recibe','=', Auth::user()->id)->first();
+
+              // $verify = Notificachat::where('codigo_chat', $cod)->first();
+	                $verify = Notificachat::where([
+	                    'user_envia'=> Auth::user()->id,
+	                    'user_recibe'=> $request->id_recibe
+	                ])->orWhere('user_envia','=',$request->id_recibe)
+	                ->where('user_recibe','=', Auth::user()->id)
+	                ->first();
 
                 //return $verify;
 
-	                // if ($verify) {
-	                //     $verify->id_chat = $message->id;
-	                //     $verify->save();
-	                // }else{
-	                //     $nch = new Notificachat;
-	                //     $nch->user_envia = Auth::user()->id;
-	                //     $nch->user_recibe = $request->id_recibe;
-	                //     $nch->id_chat = $message->id;
-	                //     $nch->save();
-	                // }
+	                if ($verify) {
+	                    $verify->id_chat = $message->id;
+	                    $verify->user_envia = Auth::user()->id;
+                    	$verify->user_recibe = $request->id_recibe;
+	                    $verify->visto = "N";
+	                    $verify->updated_at = DB::raw('NOW()');
+	                    $verify->save();
+	                }else{
+	                    $nch = new Notificachat;
+	                    $nch->user_envia = Auth::user()->id;
+	                    $nch->user_recibe = $request->id_recibe;
+	                    $nch->id_chat = $message->id;
+	                    $nch->activo = "S";
+	                    $nch->visto = "N";
+	                    $nch->save();
+	                }
 
 
                 broadcast(new MessageSentEvent($user, $message))->toOthers();

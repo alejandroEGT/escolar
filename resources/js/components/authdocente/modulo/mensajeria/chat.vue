@@ -19,7 +19,9 @@
 			          <span class="md-list-item-text">{{ p.nombres+' '+p.apellido_paterno+' '+p.apellido_materno }}</span>
 
 			          <md-button @click="url_boxchat(p.user_id)" class="md-icon-button md-list-action">
-			            <md-icon class="md-primary">chat_bubble</md-icon>
+			            <md-icon v-if="p.visto == 'N' ":style="'color:#52BE80'" class="md-primary">chat_bubble</md-icon>
+			            <md-icon v-if="p.visto == 'S' " :style="'color:#7F8C8D'" class="md-primary"></md-icon>
+			            <md-icon v-if="p.visto == null " :style="'color:#7F8C8D'" class="md-primary">chat_bubble</md-icon>
 			          </md-button>
 			        </md-list-item>
 

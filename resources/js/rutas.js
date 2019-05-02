@@ -27,7 +27,9 @@ import IndexComponent from './components/inicio.vue';
  import AdminPerfil from "./components/authAdmin/modulo/perfil/perfil.vue"
  import Adminagregarasignatura from "./components/authAdmin/modulo/agregar_asignatura.vue"
  import Permisos from "./components/authAdmin/modulo/permisos.vue"
-
+ import CreaConducta from "./components/authAdmin/modulo/conducta/crear_conducta.vue"
+ import VerConducta from "./components/authAdmin/modulo/conducta/ver_conducta.vue"
+ import AdminReporte from "./components/authAdmin/modulo/reporte/reporte.vue"
 
  //Docente establecimiento
  import AuthDocente from "./components/authdocente/authdocente.vue"
@@ -39,6 +41,8 @@ import IndexComponent from './components/inicio.vue';
  import Boxchat from "./components/authdocente/modulo/mensajeria/cuerpo_chat.vue"
  import Jcurso from "./components/authdocente/modulo/curso/jcurso.vue"
  import Actividad from "./components/authdocente/modulo/historia/historia_general.vue"
+ import DocenteMensaje from "./components/authdocente/modulo/mensajeria/mensaje.vue"
+
 
 const routes = [
   {
@@ -102,7 +106,10 @@ const routes = [
       {path:':id/curso', name: 'curso', component:AdminCurso},
       {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
       {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
-      {path: '/adminpermiso',name:'adminpermiso', component:Permisos}
+      {path: '/adminpermiso',name:'adminpermiso', component:Permisos},
+      {path: '/creaconducta',name:'creaconducta', component:CreaConducta},
+      {path: '/verconducta',name:'verconducta', component:VerConducta},
+      {path: '/adminreporte',name:'adminreporte', component:AdminReporte}
     ]
  },
  {
@@ -122,7 +129,7 @@ const routes = [
       {path:'/docentejcurso/:curso/:texto', name: 'jcurso', component:Jcurso},
       {path: '/docentecrearalumno/',name: 'docentecrearalumno',component: CrearAlumno},
       {path: '/docenteactividades',name: 'docenteactividades',component: Actividad},
-      // {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
+      {path: '/docentemensaje/:curso/:asignatura',name: 'docentemensaje',component: DocenteMensaje},
     ]
  },
   // {

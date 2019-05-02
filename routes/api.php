@@ -62,7 +62,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/listar_permisos_user','AdminCuentaController@listar_permisos_user');
   Route::post('auth/admin/crearapoderado','AdminCuentaController@crearapoderado');
   Route::get('auth/admin/listar_apoderado/{alumno}/{curso}','AdminCuentaController@listar_apoderado');
-
+  Route::post('auth/admin/crear_comportamiento','AdminCuentaController@crear_comportamiento');
+  Route::get('auth/admin/ver_comportamiento','AdminCuentaController@ver_comportamiento');
 
 
 
@@ -87,7 +88,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/docente/actividad_general','DocenteController@actividad_general');
   Route::get('auth/docente/activiar_record/{record}','DocenteController@activiar_record');
   Route::get('auth/docente/desactiviar_record/{record}','DocenteController@desactiviar_record');
-  
+  Route::get('auth/docente/listar_alumnos_y_apoderados/{curso}/{asignatura}','DocenteController@listar_ap_y_doc');
   
 
   // listar_docentes_colegio

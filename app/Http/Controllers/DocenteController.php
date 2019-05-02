@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actividad;
+use App\Alumno;
 use App\Alumno_curso;
 use App\Alumnocalificacion;
 use App\Asignatura;
@@ -192,19 +193,49 @@ class DocenteController extends Controller
     }
     public function listar_docentes_colegio()
     {
+        //return "kckk";
     	//dd($this::establecimiento());
+        // echo "users.id: ".Auth::user()->id.'; <br>';
+        // echo "users.id: ".Auth::user()->id;
+    	// return  User::select([
+    	// 	       'users.id as user_id', 'users.nombres','users.apellido_paterno','users.apellido_materno',
+    	// 	       'users.avatar','nch.visto'
+    	// 	    ])->join('docente as d','d.user_id','users.id')
+    	// 		->join('docente-establecimiento as de','de.docente_id','d.id')
+     //            ->leftjoin('notifica_chat as nch','nch.user_envia', 'users.id')
+    	// 	    ->where([
+    	// 		   	'de.activo' => 'S',
+     //                'd.activo' => 'S',
+    	// 		   	'de.cuenta_id' => $this::establecimiento()->cuenta_id,
+    	//    	    ])->where('users.id','!=', Auth::user()->id)
+    	// 	    ->get();
+        $s="'S'";
+        return DB::select(' SELECT 
+               "x"."user_id",
+               "x"."nombres",
+               "x"."apellido_paterno",
+               "x"."apellido_materno",
+               "x"."avatar",
+               "x"."visto",
+               "x"."updated"
+        from (SELECT "users"."id" as "user_id", 
+                "users"."nombres", 
+                "users"."apellido_paterno", 
+                "users"."apellido_materno", 
+                "users"."avatar", 
+                case when "nch"."user_recibe" = '.Auth::user()->id.' then
+                    "nch"."visto" else null end as visto,
+                "nch"."user_envia", 
+                "nch"."user_recibe",
+                coalesce("nch"."created_at","d"."updated_at") as updated
+                from "users" 
+                inner join "docente" as "d" on "d"."user_id" = "users"."id" 
+                inner join "docente-establecimiento" as "de" on "de"."docente_id" = "d"."id" 
+                left join "notifica_chat" as "nch" on "nch"."user_envia" = "users"."id" and "nch"."user_recibe" ='.Auth::user()->id.' 
+                where ("de"."activo" = '.$s.' and "d"."activo" = '.$s.' and "de"."cuenta_id" = '.$this::establecimiento()->cuenta_id.') 
+                and "users"."id" !='.Auth::user()->id.') as x order by updated desc');
 
-    	return  User::select([
-    		       'users.id as user_id', 'users.nombres','users.apellido_paterno','users.apellido_materno',
-    		       'users.avatar'
-    		    ])->join('docente as d','d.user_id','users.id')
-    			->join('docente-establecimiento as de','de.docente_id','d.id')
-    		    ->where([
-    			   	'de.activo' => 'S',
-                    'd.activo' => 'S',
-    			   	'de.cuenta_id' => $this::establecimiento()->cuenta_id,
-    	   	    ])->where('users.id','!=', Auth::user()->id)
-    		    ->get();
+
     	
     }
 
@@ -299,4 +330,46 @@ class DocenteController extends Controller
     		return "true";
     	}
     }
+
+    public function listar_ap_y_doc($curso, $asignatura)
+    {
+        $valida = $this::validar_docente_en_curso_y_asignatura($curso, $asignatura);
+
+        if ($valida) {
+            
+           $alumno =  Alumno::select([
+                        'alumno.id',
+                        'alumno.nombre',
+                        'alumno.apellido_paterno',
+                        'alumno.apellido_materno',
+                        'ca.curso_id','ca.asignatura_id'
+                    ])
+                   ->join('alumno-curso as ac', 'ac.alumno_id','alumno.id')
+                   ->join('curso-asignatura as ca','ca.curso_id','ac.curso_id') 
+                   ->where([
+                        'ca.docente_id' => $this::docente()->id,
+                        'ca.curso_id' => $curso, 'ca.asignatura_id' => $asignatura, 'ac.activo' => 'S'
+                   ])
+                   ->orderBy('alumno.apellido_paterno')
+                   ->get();
+
+            foreach ($alumno as $a) {
+                //dump($a->id);
+                 $a['apoderado'] = User::join('alumno_apoderado as aa','aa.user_id','users.id')
+                                  ->where([
+                                    'aa.alumno_id' => $a->id,
+                                    'aa.activo' => 'S'
+                                  ])->get();
+                                  //return $a;
+            }
+
+
+            return $alumno;
+        }
+
+    }
 }
+
+// id_envia: 15
+// id_recibe: 33
+// message: "hola pipe"
