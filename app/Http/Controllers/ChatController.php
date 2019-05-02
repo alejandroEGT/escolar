@@ -36,16 +36,23 @@ class ChatController extends Controller
 	                ->where('user_recibe','=', Auth::user()->id)
 	                ->first();
 
-                //return $verify;
+                // return $verify;
 
 	                if ($verify) {
+
+	                	$now = DB::select('select NOW()');
+	                	//dd($now[0]->now);
+
 	                    $verify->id_chat = $message->id;
 	                    $verify->user_envia = Auth::user()->id;
                     	$verify->user_recibe = $request->id_recibe;
 	                    $verify->visto = "N";
-	                    $verify->updated_at = DB::raw('NOW()');
+	                    //$verify->updated_at = $now[0]->now;
 	                    $verify->save();
+
+	                    
 	                }else{
+	                	return "aqui 2";
 	                    $nch = new Notificachat;
 	                    $nch->user_envia = Auth::user()->id;
 	                    $nch->user_recibe = $request->id_recibe;
@@ -53,6 +60,7 @@ class ChatController extends Controller
 	                    $nch->activo = "S";
 	                    $nch->visto = "N";
 	                    $nch->save();
+	                    
 	                }
 
 
