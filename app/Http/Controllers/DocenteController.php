@@ -7,6 +7,7 @@ use App\Alumno;
 use App\Alumno_curso;
 use App\Alumnocalificacion;
 use App\Asignatura;
+use App\Comportamiento;
 use App\Curso;
 use App\Cursoasignatura;
 use App\Docente;
@@ -44,6 +45,19 @@ class DocenteController extends Controller
     	}
     	return null;
 	}
+    public function validar_docente_en_curso($curso)
+    {
+        $ca = Cursoasignatura::where([
+            'curso_id' => $curso,
+            'docente_id' => $this::docente()->id,
+            'activo' => 'S'
+        ])->get();
+
+        if (!empty($ca)) {
+            return count($ca);
+        }
+        return 0;
+    }
 
     public function profesor_jefe()
     {
@@ -367,6 +381,54 @@ class DocenteController extends Controller
             return $alumno;
         }
 
+    }
+    public function ver_comportamiento($alumno, $curso)
+    {
+
+
+        if ($this::validar_docente_en_curso($curso) > 0) {
+            # code...
+        
+            $datos = Alumno::select([
+                        'u.id as user_doc_id',
+                        'u.nombres','u.apellido_paterno','u.apellido_materno',
+                        'alumno.nombre as a_nombre','alumno.apellido_paterno as a_ap_p',
+                        'alumno.apellido_materno as a_ap_m',
+                        'c.descripcion as curso','c.promocion','c.nivel_educativo'
+
+            ])->join('alumno-curso as ac','ac.alumno_id','alumno.id')
+                           ->join('curso as c','c.id','ac.curso_id')
+                           ->join('curso-asignatura as ca','ca.curso_id','c.id')
+                           ->join('docente as d','d.id','ca.docente_id')
+                           ->join('users as u','u.id','d.user_id')
+                           ->where([
+                              'alumno.id' => $alumno,
+                              'ca.docente_id' => $this::docente()->id,
+                              'ca.jefe_curso' => 'S'
+                           ])->get();
+
+            $comp = Comportamiento::select([
+                            'id','activo','descripcion'
+                    ])->where([
+                        'comportamiento.cuenta_id' => $this::establecimiento()->cuenta_id,
+                        'comportamiento.activo' => 'S'
+                   ])->get();
+            foreach ($comp as $key) {
+                $key['nivel'] = DB::table('comportamiento_nivel as cn')
+                                ->select([
+                                        'nivel_educativo_id','descripcion as nivel'
+                                ])
+                ->join('nivel_educativo as ne','ne.id','cn.nivel_educativo_id')->where([
+                        'cn.comportamiento_id' => $key->id,
+                        'ne.activo' => 'S'
+                    ])->get();
+            }
+
+            return [
+                $datos,
+                $comp
+            ];
+        }
     }
 }
 

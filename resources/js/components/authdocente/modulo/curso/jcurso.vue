@@ -104,14 +104,14 @@
 								      
 					    			  	</div>
 					    			  	<div class="col-md-4">
-					    			  		<md-button data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
+					    			  		<md-button @click="click_modal_doc(listado.alumno_id)" data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
 								        <md-icon><i class="fas fa-clipboard-check"></i></md-icon>
 								      </md-button>
 					    			  	</div>
 					    			  </div>
 										<!-- Modal -->
-										<div class="modal fade" :id="'modal'+listado.alumno_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-										  <div class="modal-dialog" role="document">
+										<div class="modal fade fade bd-example-modal-xl" :id="'modal'+listado.alumno_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+										  <div class="modal-dialog modal-xl" role="document">
 										    <div class="modal-content">
 										      <div class="modal-header">
 										        <h5 class="modal-title" id="exampleModalLongTitle">Documentos</h5>
@@ -122,17 +122,17 @@
 										      <div class="modal-body">
 										        <ul class="nav nav-tabs" id="myTab" role="tablist">
 												  <li class="nav-item">
-												    <a class="nav-link active" id="documento-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+												    <a class="nav-link active" id="documento-tab" data-toggle="tab" :href="'#home'+listado.alumno_id" role="tab" aria-controls="home" aria-selected="true">Documantos</a>
 												  </li>
 												  <li class="nav-item">
-												    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+												    <a class="nav-link" id="profile-tab" data-toggle="tab" :href="'#profile'+listado.alumno_id" role="tab" aria-controls="profile" aria-selected="false">Asignar conducta</a>
 												  </li>
 												  <li class="nav-item">
 												    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
 												  </li>
 												</ul>
 												<div class="tab-content" id="myTabContent">
-												  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="documento-tab">
+												  <div class="tab-pane fade show active" :id="'home'+listado.alumno_id" role="tabpanel" aria-labelledby="documento-tab">
 												  	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 												  	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 												  	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -140,7 +140,47 @@
 												  	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 												  	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 												  </div>
-												  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+												  <div class="tab-pane fade" :id="'profile'+listado.alumno_id" role="tabpanel" aria-labelledby="profile-tab">
+												  	<br>
+												  	<table class="table table-responsive">
+												  		<tr style="background:#3F8DF7; color:white">
+												  			<td>Datos básicos</td>
+												  		</tr>
+												  		<tr><td>
+														  	<div class="row">
+														  		<div class="col-md-8">
+														  			<strong>Nombre alumno:</strong> {{ alumno.a_nombre+' '+alumno.a_ap_p+' '+alumno.a_ap_m }}
+														  		</div>
+														  		<div class="col-md-4">
+														  			<strong>Curso:</strong> {{alumno.curso+' - '+alumno.nivel_educativo}}
+														  		</div>
+														  	</div>
+														  	<br>
+														  	<div class="row">
+														  		<div class="col-md-12">
+														  			<strong>Jefe de curso:</strong> {{ alumno.nombres+' '+alumno.apellido_paterno+' '+alumno.apellido_materno }}
+														  		</div>
+														  	</div>
+														  </td>
+														</tr>
+													</table>
+													<br>
+												  	<table class="table table-bordered ">
+												  		<tr style="background:#3F8DF7; color:white">
+												  			<td>Conducta</td>
+												  			<td>Criterio</td>
+												  		</tr>
+												  		<tr v-for="l in conductas">
+												  			<td>
+												  				{{ l.descripcion }}
+												  			</td>
+												  			<td>
+												  				<input style="width:30px" class="form-control form-control-sm" type="" name="">
+												  			</td>
+												  		</tr>
+												  	</table>
+
+												  </div>
 												  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
 												</div>
 										      </div>
@@ -273,7 +313,9 @@
       			apod:{
       				nombres:'', apellido_p:'', apellido_m:'', email:'', alumno:''
       			},
-      			list_apo:{}
+      			list_apo:{},
+      			conductas:{},
+      			alumno:{}
 			}
 		},
 		created(){
@@ -342,6 +384,12 @@
 	  		listar_apoderado($alumno){
 	  			axios.get('api/auth/admin/listar_apoderado/'+$alumno+'/'+this.curso ).then((res)=>{
 	  				this.list_apo = res.data;
+	  			});
+	  		},
+	  		click_modal_doc($alumno){
+	  			axios.get('api/auth/docente/ver_comportamiento/'+$alumno+'/'+this.curso ).then((res)=>{
+	  				this.alumno = res.data[0][0];
+	  				this.conductas = res.data[1];
 	  			});
 	  		}
 		}
