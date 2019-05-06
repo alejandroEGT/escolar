@@ -48,7 +48,7 @@ class Alumno_curso extends Model
 
 			$query = Alumno::leftjoin('alumno-curso as ac','ac.alumno_id','alumno.id')
 						   ->leftjoin('curso as c','c.id','ac.curso_id')
-						   ->where('c.cuenta_id', $cuenta_id)->get();
+						   ->where('c.cuenta_id', $cuenta_id)->orderBy('alumno.apellido_paterno', 'asc')->get();
 
 			return $query;
 		}
@@ -63,7 +63,7 @@ class Alumno_curso extends Model
 						   	'ca.docente_id' => $docente,
 						   	'c.cuenta_id'=> $cuenta_id,
 						   	'ac.curso_id'=> $curso
-						   ])->get();
+						   ])->orderBy('alumno.apellido_paterno', 'asc')->get();
 
 			return $query;
 		}

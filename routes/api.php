@@ -89,8 +89,11 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/docente/activiar_record/{record}','DocenteController@activiar_record');
   Route::get('auth/docente/desactiviar_record/{record}','DocenteController@desactiviar_record');
   Route::get('auth/docente/listar_alumnos_y_apoderados/{curso}/{asignatura}','DocenteController@listar_ap_y_doc');
-  Route::get('auth/docente/ver_comportamiento/{alumno}/{curso}','DocenteController@ver_comportamiento');
+  Route::get('auth/docente/ver_comportamiento/{alumno}/{curso}/{seccion}','DocenteController@ver_comportamiento');
+  Route::post('auth/docente/asignar_comportamiento','DocenteController@asignar_comportamiento');
+  Route::get('auth/docente/ver_notas_prof_jefe/{alumno}/{curso}/{seccion}','DocenteController@ver_notas_prof_jefe');
 
+  
   // listar_docentes_colegio
   //mis_cursos
 

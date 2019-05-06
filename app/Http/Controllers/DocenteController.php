@@ -10,6 +10,7 @@ use App\Asignatura;
 use App\Comportamiento;
 use App\Curso;
 use App\Cursoasignatura;
+use App\DetalleComportamiento;
 use App\Docente;
 use App\User;
 use Carbon\Carbon;
@@ -382,7 +383,7 @@ class DocenteController extends Controller
         }
 
     }
-    public function ver_comportamiento($alumno, $curso)
+    public function ver_comportamiento($alumno, $curso, $seccion)
     {
 
 
@@ -391,10 +392,12 @@ class DocenteController extends Controller
         
             $datos = Alumno::select([
                         'u.id as user_doc_id',
+                        'd.id as docente_id',
                         'u.nombres','u.apellido_paterno','u.apellido_materno',
                         'alumno.nombre as a_nombre','alumno.apellido_paterno as a_ap_p',
-                        'alumno.apellido_materno as a_ap_m',
-                        'c.descripcion as curso','c.promocion','c.nivel_educativo'
+                        'alumno.apellido_materno as a_ap_m', 'alumno.id as alumno_id',
+                        'c.descripcion as curso','c.promocion','c.nivel_educativo', 'c.id as curso_id',
+                        'c.formato_id'
 
             ])->join('alumno-curso as ac','ac.alumno_id','alumno.id')
                            ->join('curso as c','c.id','ac.curso_id')
@@ -424,10 +427,88 @@ class DocenteController extends Controller
                     ])->get();
             }
 
+
+            foreach ($comp as $com) {
+                $exist = DetalleComportamiento::where([
+                    'comportamiento_id' => $com->id,
+                    'alumno_id' => $alumno,
+                    'curso_id' => $curso,
+                    'docente_id' => $this::docente()->id,
+                    'seccion' => $seccion,
+                    'activo' => 'S'
+                ])->first();
+
+                if ($exist) {
+                    $com['existe'] = 'S';
+                    $com['value'] = $exist->descripcion;
+                }else{
+                    $com['existe'] = 'N';
+                    $com['value'] = '';
+                }
+            }
+
+
             return [
                 $datos,
                 $comp
             ];
+        }
+    }
+
+    public function asignar_comportamiento(Request $r)
+    {   
+        $exist = DetalleComportamiento::where([
+                    'comportamiento_id' => $r->comportamiento,
+                    'alumno_id' => $r->alumno,
+                    'curso_id' => $r->curso,
+                    'docente_id' => $this::docente()->id,
+                    'seccion' => $r->seccion,
+                    'activo' => 'S'
+                ])->first();
+
+        if($exist){
+            $exist->descripcion = $r->criterio;
+            if ($exist->save()) {
+                return[
+                        'tipo' => 'success', 'mensaje'=>'Comportamiento actualizado'
+                    ];
+            }
+            return[
+                        'tipo' => 'error', 'mensaje'=>'Error al actualizar'
+            ];
+        }
+        else{
+
+                $dc = new DetalleComportamiento;
+                $dc->comportamiento_id = $r->comportamiento;
+                $dc->alumno_id = $r->alumno;
+                $dc->curso_id = $r->curso;
+                $dc->docente_id = $r->docente;
+                $dc->activo = "S";
+                $dc->descripcion = $r->criterio;
+                $dc->seccion = $r->seccion;
+                if ($dc->save()) {
+                    return[
+                        'tipo' => 'success', 'mensaje'=>'Comportamiento asignado'
+                    ];
+                }
+                return['tipo'=>'error','mensaje'=>'No fue posible realizar guardado'];
+        }
+    }
+
+    public function ver_notas_prof_jefe($alumno, $curso, $seccion)
+    {
+        if ($this::validar_docente_en_curso($curso) > 0) {
+
+            $ac = Alumno::join('alumno-calificacion as ac','ac.alumno_id','alumno.id')
+                        ->join('asignatura as a','a.id','ac.asignatura_id')
+                        ->where([
+                            'ac.alumno_id' => $alumno,
+                            'ac.curso_id' => $curso,
+                            'ac.seccion' => 1
+                        ])->get();
+            return $ac;
+
         }
     }
 }
