@@ -102,7 +102,7 @@
 					    	    </md-button>    
 					    	</div>
 					    	<div class="col-md-4">
-					    		<md-button @click="click_modal_doc(listado.alumno_id)" data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
+					    		<md-button @click="click_modal_doc(listado.alumno_id); seccion='0'; seccion_n='0'" data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
 								        <md-icon><i class="fas fa-clipboard-check"></i></md-icon>
 								</md-button>
 					    	</div>
@@ -126,7 +126,7 @@
 												<a class="nav-link" id="profile-tab" data-toggle="tab" :href="'#profile'+listado.alumno_id" role="tab" aria-controls="profile" aria-selected="false">Asignar conducta</a>
 											</li>
 											<li class="nav-item">
-												<a class="nav-link" @click="click_notas(listado.alumno_id)" id="contact-tab" data-toggle="tab" :href="'#contact'+listado.alumno_id" role="tab" aria-controls="contact" aria-selected="false">Notas</a>
+												<a class="nav-link" @click="click_notas(listado.alumno_id);" id="contact-tab" data-toggle="tab" :href="'#contact'+listado.alumno_id" role="tab" aria-controls="contact" aria-selected="false">Notas</a>
 										    </li>
 										</ul>
 										<div class="tab-content" id="myTabContent">
@@ -226,8 +226,27 @@
 														</td>
 													</tr>
 												</table>
+												<div class="row">
+												<div class="col-md-6">
+													<select v-model="seccion_n" @change="click_notas(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 1">
+														<option value="0">Filtrar notas por criterio..</option>
+														<option value="1">1ER SEMESTRE</option>
+														<option value="2">2DO SEMESTRE</option>
+													</select>
 
-												<table class="table table-responsive table-bordered">
+													<select v-model="seccion" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
+														<option value="0">Filtrar notas por criterio..</option>
+														<option value="1" >1er trimestre</option>
+														<option value="2" >2do trimestre</option>
+														<option value="3" >3ro trimestre</option>
+													</select>
+												</div>
+														
+											</div>
+												<div v-if="seccion_n == '0'" >
+													<center><br>Primero filtre por criterio..</center>
+												</div>
+												<table v-if="seccion_n != '0'" class="table table-responsive table-bordered">
 													<tr style="background:#3F8DF7; color:white">
 														<td>Asignatura</td>
 														<td>Nota1</td>
@@ -243,18 +262,29 @@
 														<td>Promedio</td>
 													</tr>
 													<tr v-for="n in notas">
-														<td>{{ n.descripcion }}</td>
-														<td>{{ n.nota1 }}</td>
-														<td>{{ n.nota2 }}</td>
-														<td>{{ n.nota3 }}</td>
-														<td>{{ n.nota4 }}</td>
-														<td>{{ n.nota5 }}</td>
-														<td>{{ n.nota6 }}</td>
-														<td>{{ n.nota7 }}</td>
-														<td>{{ n.nota8 }}</td>
-														<td>{{ n.nota9 }}</td>
-														<td>{{ n.nota10 }}</td>
-														<td></td>
+														<td>{{ n.asignatura }}</td>
+														<td v-if="n.notas != null">{{ n.notas.nota1 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota2 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota3 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota4 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota5 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota6 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota7 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota8 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota9 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.nota10 }}</td>
+														<td v-if="n.notas == null" ></td>
+														<td v-if="n.notas != null">{{ n.notas.promedio }}</td>
+														<td v-if="n.notas == null"></td>
 													</tr>
 												</table>
 											</div>
@@ -393,6 +423,7 @@
       			conductas:{},
       			alumno:{},
       			seccion:'0',
+      			seccion_n:'0',
       			notas:{}
       		
 			}
@@ -492,7 +523,7 @@
 	  		},
 	  		click_notas($alumno){
 	  			//alert("clicked");
-	  			axios.get('api/auth/docente/ver_notas_prof_jefe/'+$alumno+'/'+this.curso+'/'+this.seccion ).then((res)=>{
+	  			axios.get('api/auth/docente/ver_notas_prof_jefe/'+$alumno+'/'+this.curso+'/'+this.seccion_n ).then((res)=>{
 	  				this.notas = res.data;
 	  			});
 	  		}

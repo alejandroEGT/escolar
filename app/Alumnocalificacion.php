@@ -139,6 +139,31 @@ class Alumnocalificacion extends Model
     		 		# code...
     		 		break;
     		 }
+
+
+
+
+            $arr_total = [
+                $existe->nota1,
+                $existe->nota2,
+                $existe->nota3,
+                $existe->nota4,
+                $existe->nota5,
+                $existe->nota6,
+                $existe->nota7,
+                $existe->nota8,
+                $existe->nota9,
+                $existe->nota10
+
+            ];
+
+            $filtro_total = array_filter($arr_total);
+            $cantidad_total = count($filtro_total);
+            //return ($cantidad_total);
+            $existe->promedio = $cantidad_total==0?null:round(number_format((array_sum($filtro_total) / $cantidad_total),2));
+
+
+
     		 if($existe->save()){
     		 	return[
     		 		'tipo'=>'success', 'mensaje'=>'Nota Ingresada'
@@ -189,6 +214,27 @@ class Alumnocalificacion extends Model
     		 		# code...
     		 		break;
     		 }
+
+
+             $arr_total = [
+                $ac->nota1,
+                $ac->nota2,
+                $ac->nota3,
+                $ac->nota4,
+                $ac->nota5,
+                $ac->nota6,
+                $ac->nota7,
+                $ac->nota8,
+                $ac->nota9,
+                $ac->nota10
+
+             ];
+
+            $filtro_total = array_filter($arr_total);
+            $cantidad_total = count($filtro_total);
+            //return ($cantidad_total);
+            $ac->promedio = $cantidad_total==0?null:round(number_format((array_sum($filtro_total) / $cantidad_total),2));
+
     		  if($ac->save()){
     		 	return[
     		 		'tipo'=>'success', 'mensaje'=>'Nota Ingresada'

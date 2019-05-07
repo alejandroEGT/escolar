@@ -500,14 +500,48 @@ class DocenteController extends Controller
     {
         if ($this::validar_docente_en_curso($curso) > 0) {
 
-            $ac = Alumno::join('alumno-calificacion as ac','ac.alumno_id','alumno.id')
-                        ->join('asignatura as a','a.id','ac.asignatura_id')
-                        ->where([
-                            'ac.alumno_id' => $alumno,
-                            'ac.curso_id' => $curso,
-                            'ac.seccion' => 1
-                        ])->get();
-            return $ac;
+            // $ac = Alumno::join('alumno-calificacion as ac','ac.alumno_id','alumno.id')
+            //             ->join('asignatura as a','a.id','ac.asignatura_id')
+            //             ->where([
+            //                 'ac.alumno_id' => $alumno,
+            //                 'ac.curso_id' => $curso,
+            //                 'ac.seccion' => 1
+            //             ])->get();
+            // return $ac;
+
+            // return Asignatura::leftjoin('alumno-calificacion as ac','ac.asignatura_id','asignatura.id')
+            //                  ->leftjoin('alumno as a','a.id','ac.alumno_id')
+            //         ->where([
+            //                 'ac.alumno_id' => $alumno,
+            //                 'ac.curso_id' => $curso,
+            //                 'ac.seccion' => 1
+            //             ])->get();
+
+
+            $asignaturas = DB::select('SELECT 
+                    asi.id as asignatura_id,
+                    asi.descripcion as asignatura,
+                    c.id as curso_id,
+                    c.descripcion as curso,
+                    ac.alumno_id
+                    
+                from "asignatura" as asi
+                left join "curso-asignatura" as "cuas" on "cuas"."asignatura_id" = "asi"."id"
+                left join "curso" as "c" on "c"."id" = "cuas"."curso_id"
+                left join "alumno-curso" as "ac" on "ac"."curso_id" = "c"."id"
+                --left join "alumno-calificacion" as "alca" on "alca"."alumno_id" = "ac"."alumno_id"
+                where "ac"."alumno_id" = '.$alumno.' and "c"."id" = '.$curso.' order by asi.descripcion asc');
+
+            foreach ($asignaturas as $as) {
+                $as->notas = Alumnocalificacion::where([
+                    'alumno_id' => $alumno,
+                    'curso_id' => $curso,
+                    'asignatura_id' => $as->asignatura_id,
+                    'seccion' => $seccion
+                ])->first();
+            }
+
+            return $asignaturas;
 
         }
     }
