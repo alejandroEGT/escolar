@@ -234,7 +234,7 @@
 														<option value="2">2DO SEMESTRE</option>
 													</select>
 
-													<select v-model="seccion" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
+													<select v-model="seccion_n" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
 														<option value="0">Filtrar notas por criterio..</option>
 														<option value="1" >1er trimestre</option>
 														<option value="2" >2do trimestre</option>
