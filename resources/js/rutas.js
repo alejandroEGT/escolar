@@ -30,6 +30,7 @@ import IndexComponent from './components/inicio.vue';
  import CreaConducta from "./components/authAdmin/modulo/conducta/crear_conducta.vue"
  import VerConducta from "./components/authAdmin/modulo/conducta/ver_conducta.vue"
  import AdminReporte from "./components/authAdmin/modulo/reporte/reporte.vue"
+ import RepoCurso from "./components/authAdmin/modulo/reporte/reporte_curso.vue"
 
  //Docente establecimiento
  import AuthDocente from "./components/authdocente/authdocente.vue"
@@ -109,7 +110,8 @@ const routes = [
       {path: '/adminpermiso',name:'adminpermiso', component:Permisos},
       {path: '/creaconducta',name:'creaconducta', component:CreaConducta},
       {path: '/verconducta',name:'verconducta', component:VerConducta},
-      {path: '/adminreporte',name:'adminreporte', component:AdminReporte}
+      {path: '/adminreporte',name:'adminreporte', component:AdminReporte},
+      {path: '/reportecurso/:anio/:curso',name:'reportecurso', component:RepoCurso}
     ]
  },
  {

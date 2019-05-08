@@ -102,23 +102,17 @@
 					    	    </md-button>    
 					    	</div>
 					    	<div class="col-md-4">
-					    		<md-button @click="click_modal_doc(listado.alumno_id); seccion='0'; seccion_n='0'" data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
+					    		<md-button @click="click_modal_doc(listado.alumno_id); seccion='0'; seccion_n='0';show('modal'+listado.alumno_id);"  class="md-icon-button md-raised md-primary">
 								        <md-icon><i class="fas fa-clipboard-check"></i></md-icon>
 								</md-button>
+					    		<!-- <md-button @click="click_modal_doc(listado.alumno_id); seccion='0'; seccion_n='0'" data-toggle="modal" :data-target="'#modal'+listado.alumno_id" class="md-icon-button md-raised md-primary">
+								        <md-icon><i class="fas fa-clipboard-check"></i></md-icon>
+								</md-button> -->
 					    	</div>
 					    </div>
-						<!-- Modal -->
-						<div class="modal fade fade bd-example-modal-xl" :id="'modal'+listado.alumno_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-							<div class="modal-dialog modal-xl" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLongTitle">Documentos</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										        <span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<ul class="nav nav-tabs" id="myTab" role="tablist">
+					    <modal :name="'modal'+listado.alumno_id" :adaptive="true" width="90%" height="auto" :scrollable="true" >
+					    	
+					    	<div><ul class="nav nav-tabs" id="myTab" role="tablist">
 											<li class="nav-item">
 											    <a class="nav-link active" id="documento-tab" data-toggle="tab" :href="'#home'+listado.alumno_id" role="tab" aria-controls="home" aria-selected="true">Documantos</a>
 										    </li>
@@ -288,7 +282,21 @@
 													</tr>
 												</table>
 											</div>
-										</div>
+										</div></div>
+					    	
+					    </modal>
+						<!-- Modal -->
+						<div class="modal fade fade bd-example-modal-xl" :id="'modal'+listado.alumno_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+							<div class="modal-dialog modal-xl" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLongTitle">Documentos</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										        <span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<!--  -->
 									</div>
 								    <div class="modal-footer">
 										        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

@@ -9,25 +9,23 @@
 			margin-top:4px; border:none; box-shadow: 5px 5px 25px #222 inset;box-shadow: 2px 2px 10px #666; /* Sombra normal */
   			box-shadow: 5px -5px 0 2px #444;" :style="img_section_style">
 				<div class="card-body">
-					    <h5 class="card-title">Alumnos</h5>
+					    <h5 class="card-title">Curso</h5>
 					    <!-- <h6 class="card-subtitle mb-2 text-muted">kkck</h6> -->
 					    
-					     <select class="form-control">
+					     <select v-model="anio" class="form-control">
 					     	<option value="">Seleccione año</option>
 					     	<option value="2018" >2018</option>
 					     	<option value="2019" >2019</option>
 					     </select>
 
-					     <select class="form-control">
+					     <select v-model="cur" class="form-control">
 					     	<option value="">Seleccione Curso</option>
 					     	<option v-for="c in cursos" :value="c.id" >{{ c.descripcion+' - '+c.nivel_educativo}}</option>
 					     	
 					     </select>
 
 
-					      <md-button @click="url_mensaje(listado.curso_id, listado.asignatura_id)" class="md-icon-button md-raised" >
-					        <md-icon><i class="fas fa-envelope"></i></md-icon>
-					      </md-button>
+					      <md-button class="md-raised md-primary" @click="url_repocurso">Buscar</md-button>
 
 					      
 			    </div>
@@ -41,6 +39,8 @@
 	export default{
 		data(){
 			return{
+				anio:'',
+				cur:'',
 				cursos:{}
 			}
 		},
@@ -52,6 +52,12 @@
 				axios.get('api/auth/admin/listarcurso').then((res)=>{
 					this.cursos = res.data
 				})
+			},
+			url_repocurso(){
+				this.$router.push({name:'reportecurso', params:{ 
+					anio: encodeURI(this.anio), 
+					curso: encodeURI(this.cur)
+				}});
 			}
 		},
 		computed: {

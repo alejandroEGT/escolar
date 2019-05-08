@@ -64,7 +64,17 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/admin/listar_apoderado/{alumno}/{curso}','AdminCuentaController@listar_apoderado');
   Route::post('auth/admin/crear_comportamiento','AdminCuentaController@crear_comportamiento');
   Route::get('auth/admin/ver_comportamiento','AdminCuentaController@ver_comportamiento');
+  Route::get('auth/admin/grafico_genero/{anio}/{curso}','AdminCuentaController@grafico_genero');
 
+  Route::get('kkck', function(){
+      
+      return response()->json([ 
+          'categories'=>['aa','bb','cc','dd','ee'],
+          'data' => [100, 200, 300, 400, 500, 600, 700, 800]
+        
+         ]);
+
+  });
 
 
 

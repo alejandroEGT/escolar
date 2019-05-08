@@ -584,4 +584,32 @@ class AdminCuentaController extends Controller
 
         return $comp;
     }
+
+    public function grafico_genero($anio, $curso)
+    {
+        $very= Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+                    ->where('promocion', $anio)->first();
+        if ($very) {
+            $f = Alumno::join('alumno-curso as ac','alumno.id','ac.alumno_id')
+                            ->where([
+                                'ac.curso_id' => $curso,
+                                'ac.activo' => 'S',
+                                'alumno.sexo' => 'F'
+                            ])->get();
+
+            $m = Alumno::join('alumno-curso as ac','alumno.id','ac.alumno_id')
+                            ->where([
+                                'ac.curso_id' => $curso,
+                                'ac.activo' => 'S',
+                                'alumno.sexo' => 'M'
+                            ])->get();
+            $cf = count($f);
+            $cm = count($m);
+            return response()->json([ 
+              'categories'=>['Femenino','Masculino'],
+              'data' => [$cf, $cm]
+            
+             ]);
+        }
+    }
 }
