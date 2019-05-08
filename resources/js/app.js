@@ -53,11 +53,10 @@ Vue.use(VueSidebarMenu)
   Vue.use(VueChatScroll)
 
 
-// chartjs package
-  require('chart.js');
-    // vue-charts package
-    require('hchs-vue-charts');
-Vue.use(VueCharts);
+import VueChartkick from 'vue-chartkick'
+import Chart from 'chart.js'
+
+Vue.use(VueChartkick, {adapter: Chart})
   
 
 

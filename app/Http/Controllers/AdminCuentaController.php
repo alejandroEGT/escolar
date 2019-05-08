@@ -605,10 +605,43 @@ class AdminCuentaController extends Controller
                             ])->get();
             $cf = count($f);
             $cm = count($m);
+
+
+
+            $asignaturas = Cursoasignatura::select(['a.id', 'a.descripcion'])
+            ->join('asignatura as a','a.id','curso-asignatura.asignatura_id')
+            ->where([
+                'curso-asignatura.activo' => 'S',
+                'curso-asignatura.curso_id' => $curso
+            ])->orderBy('a.descripcion','asc')->get();
+            $a_a = [];
+            $p_a = [];
+            foreach ($asignaturas as $key) {
+                
+                $arr = User::select('users.nombres')
+                          ->join('docente as d','d.user_id','users.id')
+                          ->join('curso-asignatura as ca','ca.docente_id','d.id')
+                          ->where([
+                            'ca.curso_id' => $curso,
+                            'ca.asignatura_id' => $key->id,
+                            'ca.activo' => 'S'
+                          ])
+                          ->first();
+
+                //$p_a[] = $arr->nombres;
+                $a_a[] = [$key->descripcion.'('.$arr->nombres.')', 1];
+            }
+
+            //return response()->json($a_a);
+
             return response()->json([ 
-              'categories'=>['Femenino','Masculino'],
-              'data' => [$cf, $cm]
-            
+                [
+                    ['Femenino', $cf], 
+                    ['Masculino', $cm]
+                ],
+                [
+                    $a_a
+                ]
              ]);
         }
     }
