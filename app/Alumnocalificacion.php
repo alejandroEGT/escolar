@@ -24,7 +24,8 @@ class Alumnocalificacion extends Model
     			   ->join('curso-asignatura as ca','ca.curso_id','ac.curso_id')	
     	           ->where([
     	           		'ca.docente_id' => $docente,
-    	           		'ca.curso_id' => $curso, 'ca.asignatura_id' => $asignatura, 'ac.activo' => 'S'
+    	           		'ca.curso_id' => $curso, 'ca.asignatura_id' => $asignatura, 'ac.activo' => 'S',
+                        'ca.activo' => 'S'
     	           ])
     	           ->orderBy('alumno.apellido_paterno')
     	           ->get();

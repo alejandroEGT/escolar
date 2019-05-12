@@ -22,12 +22,7 @@
 						      </select>
 			            </div>
 			            <div class="col-md-2">
-			            	<select v-model="form.promocion" class="form-control form-control-md" id="inlineFormCustomSelect">
-						        
-						        <option value="2019">2019</option>
-						        <option value="2020">2020</option>
-						        <!-- <option value="3">Three</option> -->
-						      </select>
+			            	{{form.promocion}}
 			            </div>
 			            <!--  <div class="col-md-3">
 			     		
@@ -66,6 +61,7 @@
 						    		<td>Nivel Educativo</td>
 						    		<td>Promoción</td>
 						    		<td>Formato</td>
+						    		<td></td>
 						    		<!-- <td>Email</td>
 						    		<td>Contacto</td>
 						    		<td>Activo</td> -->
@@ -82,6 +78,11 @@
 						    		<td>{{listado.promocion}}</td>
 						    		<td v-if="listado.formato_id  == 1">Semestral</td>
 						    		<td v-if="listado.formato_id  == 2">Trimestral</td>
+						    		<td>
+						    			<md-button @click="eliminar_curso(listado.id)" class="md-icon-button md-dense md-raised md-accent">
+									        <md-icon><i class="fas fa-times"></i></md-icon>
+									      </md-button>
+						    		</td>
 						    		<!-- <td>{{ listado.email }}</td>
 						    		<td>{{ listado.contacto }}</td>
 						    		<td>{{ listado.activo }}</td> -->
@@ -104,7 +105,7 @@ import Multiselect from 'vue-multiselect'
 		data(){
 			return{
 				form:{
-					promocion:'2019', nivel:''
+					promocion:'', nivel:''
 					
 				},
 				radio: false,
@@ -123,11 +124,17 @@ import Multiselect from 'vue-multiselect'
 		},
 		created(){
 			this.listar();
+			this.get_anio_actual();
 		},
 		methods:{
 
 			nameWithLang ({ name, language }) {
 		      return `${name} — [${language}]`
+		    },
+		    get_anio_actual(){
+		    	axios.get('api/anio_actual').then((res)=>{
+		    		this.form.promocion = res.data;
+		    	});
 		    },
 			
 			register(){
@@ -147,6 +154,17 @@ import Multiselect from 'vue-multiselect'
 			},
 			url_curso($curso){
 				this.$router.push({ name: 'curso', params: { id: $curso }})
+			},
+			eliminar_curso($curso){
+				var conf = confirm('¿Quieres Desactivar este curso?, no podras ver este curso en otros lados');
+
+				if (conf == true) {
+					axios.get('api/auth/admin/delete_curso/'+$curso).then((res)=>{
+						this.listar();
+					});
+				}else{
+					alert("Nada paso")
+				}
 			}
 		}
 	}

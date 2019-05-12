@@ -43,7 +43,7 @@ import IndexComponent from './components/inicio.vue';
  import Jcurso from "./components/authdocente/modulo/curso/jcurso.vue"
  import Actividad from "./components/authdocente/modulo/historia/historia_general.vue"
  import DocenteMensaje from "./components/authdocente/modulo/mensajeria/mensaje.vue"
-
+ import Escalanotas from "./components/authdocente/modulo/escalanotas/escala_notas.vue"
 
 const routes = [
   {
@@ -132,6 +132,7 @@ const routes = [
       {path: '/docentecrearalumno/',name: 'docentecrearalumno',component: CrearAlumno},
       {path: '/docenteactividades',name: 'docenteactividades',component: Actividad},
       {path: '/docentemensaje/:curso/:asignatura',name: 'docentemensaje',component: DocenteMensaje},
+      {path: '/escalanotas',name: 'escalanotas',component: Escalanotas},
     ]
  },
   // {

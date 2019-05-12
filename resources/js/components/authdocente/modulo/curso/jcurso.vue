@@ -1,5 +1,5 @@
 <template>  	
-<div >
+<div class="animated fadeIn">
 	<div class="card">
 			<div class="card-header">
   				<h5><i class="fas fa-user-graduate"></i>Administrar {{curso_txt}}</h5>
@@ -110,9 +110,9 @@
 								</md-button> -->
 					    	</div>
 					    </div>
-					    <modal :name="'modal'+listado.alumno_id" :adaptive="true" width="90%" height="auto" :scrollable="true" >
+					    <modal :name="'modal'+listado.alumno_id" :adaptive="true" width="90%" height="80%" :scrollable="true" >
 					    	
-					    	<div><ul class="nav nav-tabs" id="myTab" role="tablist">
+					    	<div style="height:500px; overflow: auto;"><ul class="nav nav-tabs" id="myTab" role="tablist">
 											<li class="nav-item">
 											    <a class="nav-link active" id="documento-tab" data-toggle="tab" :href="'#home'+listado.alumno_id" role="tab" aria-controls="home" aria-selected="true">Documantos</a>
 										    </li>

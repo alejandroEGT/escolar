@@ -107,6 +107,7 @@ class DocenteController extends Controller
     	->join('asignatura as a','a.id','curso-asignatura.asignatura_id')
     	->where([
     		'docente_id'=> $this::docente()->id,
+            'curso-asignatura.activo' => 'S',
     		'c.activo' => 'S',
     		'a.activo' => 'S'
     		//'jefe_curso'=> 'S'
@@ -121,7 +122,8 @@ class DocenteController extends Controller
     	$ca = Cursoasignatura::where([
     		'curso_id' => $curso,
     	    'asignatura_id' => $asignatura,
-    		'docente_id' => $this::docente()->id
+    		'docente_id' => $this::docente()->id,
+            
     	])->first();
 
     	return [

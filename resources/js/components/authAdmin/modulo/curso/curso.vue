@@ -1,7 +1,11 @@
 <template>
+	<div>
 	<!-- animated infinite bounce delay-1s -->
-	<div class="animated fadeIn">
-		<div class="container table-responsive">
+	<div v-if="get_curso == ''">
+		<center>Este curso puede no existir o estar inactivo</center>
+	</div>
+	<div v-if="get_curso != ''" class="animated fadeIn">
+		<div  class="container table-responsive">
 			<div class="row">
 				<div class="col-md-5" style="">
 					<i class="fas fa-cube fa-3x"></i>
@@ -90,6 +94,7 @@
 					    		<td>Asignatura</td>
 					    		<td>Docente</td>
 					    		<td>Jefe curso</td>
+					    		<td></td>
 					    	</tr>
 					    </thead>
 					    <tbody>
@@ -100,6 +105,11 @@
 					    		<td v-if="listado.nombres ==null"><label style="">Sin Docente</label></td>
 
 					    		<td>{{ listado.jefe_curso }}</td>
+					    		<td>
+					    			<md-button @click="eliminar_asignatura(listado.asignatura_id)" class="md-icon-button md-dense md-raised md-accent">
+									        <md-icon><i class="fas fa-times"></i></md-icon>
+									      </md-button>
+					    		</td>
 					    		
 					    		
 					    	</tr>
@@ -170,6 +180,7 @@
       <md-tab id="tab-favorites" md-label="Favorites"></md-tab>
     </md-tabs>
 	</div>
+</div>
 </template>
 
 <script>
@@ -298,6 +309,11 @@
 		            this.contar_alumnos = res.data.length+ ' Activo(s)';
 		        })
 	  		},
+	  		eliminar_asignatura($asignatura){
+	  			axios.get('api/auth/admin/eliminar_asignatura_del_curso/'+$asignatura+'/'+this.curso).then((res)=>{
+		            this.listar_asignaturas();
+		        })
+	  		}
 
 			
 		}

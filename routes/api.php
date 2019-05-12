@@ -65,16 +65,18 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::post('auth/admin/crear_comportamiento','AdminCuentaController@crear_comportamiento');
   Route::get('auth/admin/ver_comportamiento','AdminCuentaController@ver_comportamiento');
   Route::get('auth/admin/grafico_genero/{anio}/{curso}','AdminCuentaController@grafico_genero');
+  Route::get('auth/admin/delete_curso/{curso}','AdminCuentaController@delete_curso');
+  Route::get('auth/admin/eliminar_asignatura_del_curso/{asignatura}/{curso}','AdminCuentaController@eliminar_asignatura_del_curso');
 
-  Route::get('kkck', function(){
+
+
+
+  Route::get('anio_actual', function(){
       
-      return response()->json([ 
-          'categories'=>['aa','bb','cc','dd','ee'],
-          'data' => [100, 200, 300, 400, 500, 600, 700, 800]
-        
-         ]);
+      return response()->json(date("Y"));
 
   });
+
 
 
 
@@ -102,7 +104,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
   Route::get('auth/docente/ver_comportamiento/{alumno}/{curso}/{seccion}','DocenteController@ver_comportamiento');
   Route::post('auth/docente/asignar_comportamiento','DocenteController@asignar_comportamiento');
   Route::get('auth/docente/ver_notas_prof_jefe/{alumno}/{curso}/{seccion}','DocenteController@ver_notas_prof_jefe');
-
+  Route::post('auth/registrar_escalanota','EscalanotaController@registrar');
   
   // listar_docentes_colegio
   //mis_cursos

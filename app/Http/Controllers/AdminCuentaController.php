@@ -174,6 +174,7 @@ class AdminCuentaController extends Controller
     	$verify = Cursoasignatura::where([
     			'curso_id' => $r->curso,
     			'asignatura_id' => $r->asignatura,
+                'activo' => 'S'
     			// 'docente_id' => $r->docente
     	])->get();
     	// dd(count($verify) > 0);
@@ -185,7 +186,8 @@ class AdminCuentaController extends Controller
     		$exist_jefe = Cursoasignatura::where([
     		'curso_id' => $r->curso,
     		// 'docente_id' => $r->docente,
-    		'jefe_curso' => 'S'
+    		'jefe_curso' => 'S',
+            'activo' => 'S'
 	    	])->first();
 
 	    	if (!empty($exist_jefe) && $r->jefe == true) {// si el jefe de curso es false
@@ -205,7 +207,7 @@ class AdminCuentaController extends Controller
 			    	return "failed";
 	    }
     }
-    public function listar_asignatura_en_curso($curso)
+    public function listar_asignatura_en_curso($curso) //atento al estado activo = "S" del curso
     {
 
 
@@ -217,7 +219,10 @@ class AdminCuentaController extends Controller
     						  ->join('asignatura as a', 'a.id','curso-asignatura.asignatura_id')
     						  ->leftjoin('docente as d','d.id','curso-asignatura.docente_id')
     						  ->leftjoin('users as u','u.id','d.user_id')
-    						  ->where('c.id', $curso)->get();
+    						  ->where([
+                                'c.id' => $curso,
+                                'curso-asignatura.activo' => 'S'
+                            ])->get();
 
     }
     public function traer_inicio($curso)
@@ -228,7 +233,8 @@ class AdminCuentaController extends Controller
     						])
     	  					  ->join('docente as d','d.id','curso-asignatura.docente_id')
     						  ->join('users as u','u.id','d.user_id')
-    						  ->where([ 'curso-asignatura.curso_id'=> $curso, 'jefe_curso'=>'S' ])
+    						  ->where([ 'curso-asignatura.curso_id'=> $curso, 
+                                'jefe_curso'=>'S', 'curso-asignatura.activo'=>'S' ])
     						  ->first();
 
 
@@ -644,5 +650,26 @@ class AdminCuentaController extends Controller
                 ]
              ]);
         }
+        
+    }
+    public function delete_curso($curso_id)
+    {
+            $curso = Curso::where(['promocion' => date("Y"),'id' => $curso_id])->first();
+            $curso->activo = 'N'; $curso->save();
+    }
+    public function eliminar_asignatura_del_curso($asignatura, $curso)
+    {
+        $cu = Curso::find($curso);
+        if ($cu->promocion == ''.date('Y')) { //si el curso esta en el año actual
+
+            $asig = Cursoasignatura::where(['curso_id'=>$curso,'asignatura_id'=>$asignatura,'activo'=>'S'])->first();
+           
+            if ($asig) {
+                $asig->activo = "N";
+                $asig->jefe_curso = "N";
+                $asig->save();
+            }
+        }
+        
     }
 }

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="animated fadeIn">
 		<div class="card">
 			<div class="card-header">Notas</div>
 			<div class="card-body">

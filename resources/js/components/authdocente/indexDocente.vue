@@ -62,7 +62,29 @@
 		            </md-card-actions>
 		          </md-card>
 	      </div>
+	      
 	  	</div>
+	  	<div class="row">
+	      	<div class="col-md-4 col-sm-5">
+	      		<md-card :style="img_section_style">
+		            <md-card-header>
+		              <md-card-header-text>
+		                <div class="md-title">Escala de notas</div>
+		                <div class="md-subhead">(2019)</div>
+		              </md-card-header-text>
+
+		              <md-card-media>
+		                <img src="/images/school-3.png" alt="People">
+		              </md-card-media>
+		            </md-card-header>
+
+		            <md-card-actions>
+		              <md-button @click="url_escalanotas" class="md-raised md-primary">Ver</md-button>
+		              
+		            </md-card-actions>
+		          </md-card>
+	      	</div>
+	      </div>
 	</div>
 </template>
 
@@ -98,7 +120,11 @@
 	    	},
 	    	url_historial(){
 	    		this.$router.push({path:'/docenteactividades'}); 
-	    	}
+	    	},
+	    	url_escalanotas(){
+	    		this.$router.push({path:'/escalanotas'}); 
+	    	},
+
 	    },
 
 		computed: {
