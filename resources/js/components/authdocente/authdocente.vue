@@ -84,8 +84,8 @@
 </header>
 
         <div style="height:100%">
-                 <router-view :key="$route.path"></router-view>  
-              </div>
+            <router-view :key="$route.path"></router-view>  
+        </div>
     
 
 

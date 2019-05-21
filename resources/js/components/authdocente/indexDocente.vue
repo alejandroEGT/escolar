@@ -2,7 +2,7 @@
 	<div class="animated fadeIn" v-zLoading:circle.fullscreen="isLoading">
 		<br>
 	    <div class="row">
-	      <div class="col-md-4 col-sm-5">
+	      <div class="col-md-4">
 
 	      		<md-card :style="img_section_style">
 		            <md-card-header>
@@ -22,7 +22,7 @@
 		            </md-card-actions>
 		          </md-card>
 	      </div>
-	       <div class="col-md-4 col-sm-5">
+	       <div class="col-md-4">
 
 	      		<md-card :style="img_section_style">
 		            <md-card-header>
@@ -42,7 +42,7 @@
 		            </md-card-actions>
 		          </md-card>
 	      </div>
-	      <div class="col-md-4 col-sm-5">
+	      <div class="col-md-4">
 
 	      		<md-card :style="img_section_style">
 		            <md-card-header>
@@ -65,7 +65,7 @@
 	      
 	  	</div>
 	  	<div class="row">
-	      	<div class="col-md-4 col-sm-5">
+	      	<div class="col-md-4">
 	      		<md-card :style="img_section_style">
 		            <md-card-header>
 		              <md-card-header-text>

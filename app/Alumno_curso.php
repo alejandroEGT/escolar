@@ -10,15 +10,16 @@ class Alumno_curso extends Model
     protected $table ="alumno-curso";
 
 
-    protected function admin_obtener_alumnos($cuenta_id, $curso='')
+    protected function admin_obtener_alumnos($cuenta_id, $curso='',$anio='')
     {
+
 
 		if ($curso == '') {
 
 
 			$query = Alumno::leftjoin('alumno-curso as ac','ac.alumno_id','alumno.id')
 						   ->leftjoin('curso as c','c.id','ac.curso_id')
-						   ->where('c.cuenta_id', $cuenta_id)->get();
+						   ->where(['c.cuenta_id' => $cuenta_id])->get();
 
 			return $query;
 		}
@@ -32,7 +33,8 @@ class Alumno_curso extends Model
 						   ->leftjoin('curso as c','c.id','ac.curso_id')
 						   ->where([
 						   	'c.cuenta_id'=> $cuenta_id,
-						   	'ac.curso_id'=> $curso
+						   	'ac.curso_id'=> $curso,
+						   	//'c.promocion'=>$anio
 						   ])->get();
 
 			return $query;

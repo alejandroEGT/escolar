@@ -114,7 +114,7 @@
 					    	
 					    	<div style="height:500px; overflow: auto;"><ul class="nav nav-tabs" id="myTab" role="tablist">
 											<li class="nav-item">
-											    <a class="nav-link active" id="documento-tab" data-toggle="tab" :href="'#home'+listado.alumno_id" role="tab" aria-controls="home" aria-selected="true">Documantos</a>
+											    <a class="nav-link active" id="documento-tab" data-toggle="tab" :href="'#home'+listado.alumno_id" role="tab" aria-controls="home" aria-selected="true">Documentos</a>
 										    </li>
 										    <li class="nav-item">
 												<a class="nav-link" id="profile-tab" data-toggle="tab" :href="'#profile'+listado.alumno_id" role="tab" aria-controls="profile" aria-selected="false">Asignar conducta</a>
@@ -132,158 +132,161 @@
 												  	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 												  	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 										    </div>
-										    <div class="tab-pane fade" :id="'profile'+listado.alumno_id" role="tabpanel" aria-labelledby="profile-tab">
-										    <br>
-										    <div class="alert alert-warning" role="alert">
-												<small>Importante!, En el <b>criterio</b> de la conducta puede ingresar (<b>N</b>: Nunca, <b>S</b>: Siempre, <b>R</b>: Rara vez), al ingresar un <b>criterio</b> presione la tecla <b>ENTER</b> para registrar dicho <b>criterio</b></small>
-											</div>
-										    <table class="table table-responsive">
-												<tr style="background:#3F8DF7; color:white">
-												  	<td>Datos básicos</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="row">
-														  	<div class="col-md-8">
-														  		<strong>Nombre alumno:</strong> {{ alumno.a_nombre+' '+alumno.a_ap_p+' '+alumno.a_ap_m }}
-														  	</div>
-														  	<div class="col-md-4">
-														  		<strong>Curso:</strong> {{alumno.curso+' - '+alumno.nivel_educativo}}
-														  	</div>
-														</div>
-														<br>
-														<div class="row">
-														  	<div class="col-md-12">
-														  		<strong>Jefe de curso:</strong> {{ alumno.nombres+' '+alumno.apellido_paterno+' '+alumno.apellido_materno }}
-														  	</div>
-														</div>
-												    </td>
-											    </tr>
-											</table>
-											<br>
-											<div class="row">
-												<div class="col-md-6">
-													<select v-model="seccion" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 1">
-														<option value="0">Filtrar notas por criterio..</option>
-														<option value="1">1ER SEMESTRE</option>
-														<option value="2">2DO SEMESTRE</option>
-													</select>
-
-													<select v-model="seccion" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
-														<option value="0">Filtrar notas por criterio..</option>
-														<option value="1" >1er trimestre</option>
-														<option value="2" >2do trimestre</option>
-														<option value="3" >3ro trimestre</option>
-													</select>
+											<div class="tab-pane fade" :id="'profile'+listado.alumno_id" role="tabpanel" aria-labelledby="profile-tab">
+												<div class="container">
+											    <br>
+											    <div class="alert alert-warning" role="alert">
+													<small>Importante!, En el <b>criterio</b> de la conducta puede ingresar (<b>N</b>: Nunca, <b>S</b>: Siempre, <b>R</b>: Rara vez), al ingresar un <b>criterio</b> presione la tecla <b>ENTER</b> para registrar dicho <b>criterio</b></small>
 												</div>
-														
-											</div>
-											<table class="table table-bordered ">
-												<tr style="background:#3F8DF7; color:white">
-												  	<td>Conducta</td>
-												  	<td>Criterio</td>
-												</tr>
-												<tr v-for="l in conductas">
-												  	<td>
-												  		<small>{{ l.descripcion }}</small>
-												  	</td>
-												  	<td>
-												  		<input @keyup.enter="ingresar($event, alumno.docente_id, alumno.alumno_id, alumno.curso_id, l.id)" style="width:30px" class="form-control form-control-sm" :value='l.value'>
-												  	</td>
-												</tr>
-											</table>
+											    <table class="table table-responsive">
+													<tr style="background:#3F8DF7; color:white">
+													  	<td>Datos básicos</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="row">
+															  	<div class="col-md-8">
+															  		<strong>Nombre alumno:</strong> {{ alumno.a_nombre+' '+alumno.a_ap_p+' '+alumno.a_ap_m }}
+															  	</div>
+															  	<div class="col-md-4">
+															  		<strong>Curso:</strong> {{alumno.curso+' - '+alumno.nivel_educativo}}
+															  	</div>
+															</div>
+															<br>
+															<div class="row">
+															  	<div class="col-md-12">
+															  		<strong>Jefe de curso:</strong> {{ alumno.nombres+' '+alumno.apellido_paterno+' '+alumno.apellido_materno }}
+															  	</div>
+															</div>
+													    </td>
+												    </tr>
+												</table>
+												<br>
+												<div class="row">
+													<div class="col-md-6">
+														<select v-model="seccion" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 1">
+															<option value="0">Filtrar notas por criterio..</option>
+															<option value="1">1ER SEMESTRE</option>
+															<option value="2">2DO SEMESTRE</option>
+														</select>
 
-											</div>
+														<select v-model="seccion" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
+															<option value="0">Filtrar notas por criterio..</option>
+															<option value="1" >1er trimestre</option>
+															<option value="2" >2do trimestre</option>
+															<option value="3" >3ro trimestre</option>
+														</select>
+													</div>
+															
+												</div>
+												<table class="table table-bordered ">
+													<tr style="background:#3F8DF7; color:white">
+													  	<td>Conducta</td>
+													  	<td>Criterio</td>
+													</tr>
+													<tr v-for="l in conductas">
+													  	<td>
+													  		<small>{{ l.descripcion }}</small>
+													  	</td>
+													  	<td>
+													  		<input @keyup.enter="ingresar($event, alumno.docente_id, alumno.alumno_id, alumno.curso_id, l.id)" style="width:30px" class="form-control form-control-sm" :value='l.value'>
+													  	</td>
+													</tr>
+												</table>
 
+												</div>
+											</div>
 												  <!-- NOTAS -->
 										    <div class="tab-pane fade" :id="'contact'+listado.alumno_id" role="tabpanel" aria-labelledby="contact-tab">
-												<table class="table table-responsive">
-												  	<tr style="background:#3F8DF7; color:white">
-												  		<td>Datos básicos</td>
-												  	</tr>
-												  	<tr>
-												  		<td>
-														  	<div class="row">
-														  		<div class="col-md-8">
-														  			<strong>Nombre alumno:</strong> {{ alumno.a_nombre+' '+alumno.a_ap_p+' '+alumno.a_ap_m }}
-														  		</div>
-														  		<div class="col-md-4">
-														  			<strong>Curso:</strong> {{alumno.curso+' - '+alumno.nivel_educativo}}
-														  		</div>
-														  	</div>
-														  	<br>
-														  	<div class="row">
-														  		<div class="col-md-12">
-														  			<strong>Jefe de curso:</strong> {{ alumno.nombres+' '+alumno.apellido_paterno+' '+alumno.apellido_materno }}
-														  		</div>
-														  	</div>
-														</td>
-													</tr>
-												</table>
-												<div class="row">
-												<div class="col-md-6">
-													<select v-model="seccion_n" @change="click_notas(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 1">
-														<option value="0">Filtrar notas por criterio..</option>
-														<option value="1">1ER SEMESTRE</option>
-														<option value="2">2DO SEMESTRE</option>
-													</select>
+											    <div class="container">
+													<table class="table table-responsive">
+													  	<tr style="background:#3F8DF7; color:white">
+													  		<td>Datos básicos</td>
+													  	</tr>
+													  	<tr>
+													  		<td>
+															  	<div class="row">
+															  		<div class="col-md-8">
+															  			<strong>Nombre alumno:</strong> {{ alumno.a_nombre+' '+alumno.a_ap_p+' '+alumno.a_ap_m }}
+															  		</div>
+															  		<div class="col-md-4">
+															  			<strong>Curso:</strong> {{alumno.curso+' - '+alumno.nivel_educativo}}
+															  		</div>
+															  	</div>
+															  	<br>
+															  	<div class="row">
+															  		<div class="col-md-12">
+															  			<strong>Jefe de curso:</strong> {{ alumno.nombres+' '+alumno.apellido_paterno+' '+alumno.apellido_materno }}
+															  		</div>
+															  	</div>
+															</td>
+														</tr>
+													</table>
+													<div class="row">
+														<div class="col-md-6">
+															<select v-model="seccion_n" @change="click_notas(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 1">
+																<option value="0">Filtrar notas por criterio..</option>
+																<option value="1">1ER SEMESTRE</option>
+																<option value="2">2DO SEMESTRE</option>
+															</select>
 
-													<select v-model="seccion_n" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
-														<option value="0">Filtrar notas por criterio..</option>
-														<option value="1" >1er trimestre</option>
-														<option value="2" >2do trimestre</option>
-														<option value="3" >3ro trimestre</option>
-													</select>
+															<select v-model="seccion_n" @change="click_modal_doc(alumno.alumno_id)" class="form-control form-control-sm" v-if="alumno.formato_id == 2">
+																<option value="0">Filtrar notas por criterio..</option>
+																<option value="1" >1er trimestre</option>
+																<option value="2" >2do trimestre</option>
+																<option value="3" >3ro trimestre</option>
+															</select>
+														</div>
+																
+													</div>
+													<div v-if="seccion_n == '0'" >
+														<center><br>Primero filtre por criterio..</center>
+													</div>
+													<table v-if="seccion_n != '0'" class="table table-responsive table-bordered">
+														<tr style="background:#3F8DF7; color:white">
+															<td>Asignatura</td>
+															<td>Nota1</td>
+															<td>Nota2</td>
+															<td>Nota3</td>
+															<td>Nota4</td>
+															<td>Nota5</td>
+															<td>Nota6</td>
+															<td>Nota7</td>
+															<td>Nota8</td>
+															<td>Nota9</td>
+															<td>Nota10</td>
+															<td>Promedio</td>
+														</tr>
+														<tr v-for="n in notas">
+															<td>{{ n.asignatura }}</td>
+															<td v-if="n.notas != null">{{ n.notas.nota1 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota2 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota3 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota4 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota5 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota6 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota7 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota8 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota9 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.nota10 }}</td>
+															<td v-if="n.notas == null" ></td>
+															<td v-if="n.notas != null">{{ n.notas.promedio }}</td>
+															<td v-if="n.notas == null"></td>
+														</tr>
+													</table>
 												</div>
-														
 											</div>
-												<div v-if="seccion_n == '0'" >
-													<center><br>Primero filtre por criterio..</center>
-												</div>
-												<table v-if="seccion_n != '0'" class="table table-responsive table-bordered">
-													<tr style="background:#3F8DF7; color:white">
-														<td>Asignatura</td>
-														<td>Nota1</td>
-														<td>Nota2</td>
-														<td>Nota3</td>
-														<td>Nota4</td>
-														<td>Nota5</td>
-														<td>Nota6</td>
-														<td>Nota7</td>
-														<td>Nota8</td>
-														<td>Nota9</td>
-														<td>Nota10</td>
-														<td>Promedio</td>
-													</tr>
-													<tr v-for="n in notas">
-														<td>{{ n.asignatura }}</td>
-														<td v-if="n.notas != null">{{ n.notas.nota1 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota2 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota3 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota4 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota5 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota6 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota7 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota8 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota9 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.nota10 }}</td>
-														<td v-if="n.notas == null" ></td>
-														<td v-if="n.notas != null">{{ n.notas.promedio }}</td>
-														<td v-if="n.notas == null"></td>
-													</tr>
-												</table>
-											</div>
-										</div></div>
-					    	
+									</div>
+					    	  	</div>
 					    </modal>
 						<!-- Modal -->
 						<div class="modal fade fade bd-example-modal-xl" :id="'modal'+listado.alumno_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">

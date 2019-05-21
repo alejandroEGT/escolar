@@ -12,15 +12,14 @@
 					    <h5 class="card-title">Curso</h5>
 					    <!-- <h6 class="card-subtitle mb-2 text-muted">kkck</h6> -->
 					    
-					     <select v-model="anio" class="form-control">
+					     <select v-model="anio" @change="listar_cursos" class="form-control">
 					     	<option value="">Seleccione año</option>
-					     	<option value="2018" >2018</option>
-					     	<option value="2019" >2019</option>
+					     	<option v-for="a in anios" :value="a.anio" >{{a.anio}}</option>
 					     </select>
 
 					     <select v-model="cur" class="form-control">
 					     	<option value="">Seleccione Curso</option>
-					     	<option v-for="c in cursos" :value="c.id" >{{ c.descripcion+' - '+c.nivel_educativo}}</option>
+					     	<option v-for="c in cursos" :value="c.id" >{{ c.descripcion+' - '+c.nivel_educativo+' '+c.promocion}}</option>
 					     	
 					     </select>
 
@@ -41,15 +40,28 @@
 			return{
 				anio:'',
 				cur:'',
-				cursos:{}
+				cursos:{},
+				anios:{},
+				token: this.$route.params.token,
 			}
 		},
 		created(){
-			this.listar_cursos()
+			this.traer_anios();
+			this.validar_token();
+			//this.listar_cursos();
 		},	
 		methods:{
+			validar_token(){
+				if(localStorage.getItem("token") === null){ 
+					this.$router.push({path:'/admin'}); 
+				}
+				if(localStorage.getItem("token") != this.token){ 
+					this.$router.push({path:'/admin'}); 
+				}
+
+			},
 			listar_cursos(){
-				axios.get('api/auth/admin/listarcurso').then((res)=>{
+				axios.get('api/auth/admin/listarcurso_promo/'+this.anio).then((res)=>{
 					this.cursos = res.data
 				})
 			},
@@ -58,12 +70,17 @@
 					anio: encodeURI(this.anio), 
 					curso: encodeURI(this.cur)
 				}});
+			},
+			traer_anios(){
+				axios.get('api/auth/anios').then((res)=>{
+					this.anios = res.data;
+				});
 			}
 		},
 		computed: {
             img_section_style: function(){
             	var bgImg="https://static.rfstat.com/renderforest/images/v2/logo-homepage/bg-bottom-right.svg"
-                // var bgImg= "https://media.istockphoto.com/videos/soft-background-blue-loopable-video-id656234942?s=640x640"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLScrhnHLqmeyJOawurq_DxtYyCOmJzsi3OPuwFBWSQnORPWuJA"/*"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeVz1N3HAKFw2bJtxZSnGDHUZZ5M4CHGdJOFckagmT3m-TS_5S"/*"https://rlv.zcache.com/wavy_teal_aqua_blue_spripes_label-r68f3d96569964f51ac304e6859e334e5_v11mb_8byvr_307.jpg?rvtype=content"*/
+           
 
 	                this.isLoading = false;
 	                return {

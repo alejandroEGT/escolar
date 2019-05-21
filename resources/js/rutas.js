@@ -31,6 +31,8 @@ import IndexComponent from './components/inicio.vue';
  import VerConducta from "./components/authAdmin/modulo/conducta/ver_conducta.vue"
  import AdminReporte from "./components/authAdmin/modulo/reporte/reporte.vue"
  import RepoCurso from "./components/authAdmin/modulo/reporte/reporte_curso.vue"
+ import Perfilalumno from "./components/authAdmin/modulo/alumno/perfil_alumno.vue"
+
 
  //Docente establecimiento
  import AuthDocente from "./components/authdocente/authdocente.vue"
@@ -44,6 +46,7 @@ import IndexComponent from './components/inicio.vue';
  import Actividad from "./components/authdocente/modulo/historia/historia_general.vue"
  import DocenteMensaje from "./components/authdocente/modulo/mensajeria/mensaje.vue"
  import Escalanotas from "./components/authdocente/modulo/escalanotas/escala_notas.vue"
+ import Alumnos from "./components/authdocente/modulo/curso/alumnos.vue"
 
 const routes = [
   {
@@ -107,11 +110,12 @@ const routes = [
       {path:':id/curso', name: 'curso', component:AdminCurso},
       {path: '/adminperfil',name: 'adminperfil',component: AdminPerfil},
       {path: '/adminagregarasignatura',name: 'adminagregarasignatura',component: Adminagregarasignatura},
-      {path: '/adminpermiso',name:'adminpermiso', component:Permisos},
+      {path: '/adminpermiso/:token',name:'adminpermiso', component:Permisos},
       {path: '/creaconducta',name:'creaconducta', component:CreaConducta},
       {path: '/verconducta',name:'verconducta', component:VerConducta},
-      {path: '/adminreporte',name:'adminreporte', component:AdminReporte},
-      {path: '/reportecurso/:anio/:curso',name:'reportecurso', component:RepoCurso}
+      {path: '/adminreporte/:token',name:'adminreporte', component:AdminReporte},
+      {path: '/reportecurso/:anio/:curso',name:'reportecurso', component:RepoCurso},
+      {path: '/perfilalumno/:alumno/:curso',name:'perfilalumno', component:Perfilalumno}
     ]
  },
  {
@@ -133,6 +137,7 @@ const routes = [
       {path: '/docenteactividades',name: 'docenteactividades',component: Actividad},
       {path: '/docentemensaje/:curso/:asignatura',name: 'docentemensaje',component: DocenteMensaje},
       {path: '/escalanotas',name: 'escalanotas',component: Escalanotas},
+      {path: '/alumnos/:curso/:asignatura',name: 'alumnos',component: Alumnos},
     ]
  },
   // {

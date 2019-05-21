@@ -1,6 +1,6 @@
 <template>
 	<div class="animated fadeIn">
-		<div class="container">
+		<div class="">
 			<div class="card">
 				<div class="card-header">
 	  				<h5><i class="fas fa-graduation-cap"></i> Crear Curso / Grado</h5>
@@ -50,10 +50,25 @@
 	  				<h5><i class="fas fa-clipboard-list"></i> Lista Curso / Grado</h5>
 	  			</div>
 			  <div class="card-body">
-
-			  		<div class="table-responsive">
-
-					      	
+					<div class="row" >
+						<div class="col-md-3">
+							<select v-model="niv_ed" @change="listar" class="form-control form-control-sm">
+								<option value='0'>Seleccione nivel educativo</option>
+								<option v-for="l in ne" :value="l.descripcion" >{{ l.descripcion }}</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<select id="promocion" @change="listar" class="form-control form-control-sm">
+								
+								<option v-for="a in anios" :value="a.anio">{{a.anio}}</option>
+								
+							</select>
+						</div>
+						
+					</div>
+					<br>
+			  		<div v-if="visible" class="table-responsive">
+   	
 						  <table class="table">
 						    <thead>
 						    	<tr style="background:#3F8DF7; color:white">
@@ -104,10 +119,16 @@ import Multiselect from 'vue-multiselect'
 		},
 		data(){
 			return{
+				visible: false,
 				form:{
-					promocion:'', nivel:''
+					promocion:'', 
+					nivel:''
 					
 				},
+				niv_ed:'0',
+				//promocion:'',
+				anios:{},
+				ne:{},
 				radio: false,
 				value: null,
 				selectedCountry:null,
@@ -123,8 +144,10 @@ import Multiselect from 'vue-multiselect'
 			    }
 		},
 		created(){
-			this.listar();
+			this.filter_ne();
+			//this.listar();
 			this.get_anio_actual();
+			this.get_anios();
 		},
 		methods:{
 
@@ -143,12 +166,13 @@ import Multiselect from 'vue-multiselect'
 						this.form = {};
 						this.form.promocion = '2019';
 
-						this.listar();
+						//this.listar();
 					}
 				});
 			},
 			listar(){
-				axios.get('api/auth/admin/listarcurso').then((res)=>{
+
+				axios.get('api/auth/admin/listarcurso/'+this.niv_ed+'/'+$('#promocion').val()).then((res)=>{
 					this.listar_cursos = res.data;
 				});
 			},
@@ -165,6 +189,18 @@ import Multiselect from 'vue-multiselect'
 				}else{
 					alert("Nada paso")
 				}
+			},
+			filter_ne(){
+				axios.get('api/auth/admin/nivel_educativo').then((res)=>{
+						this.ne = res.data;
+						this.visible = true;
+					});
+			},
+			get_anios(){
+				axios.get('api/auth/anios').then((res)=>{
+						this.anios = res.data;
+						
+					});
 			}
 		}
 	}

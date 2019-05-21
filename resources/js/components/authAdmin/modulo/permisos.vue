@@ -15,7 +15,6 @@
 						  <ul class="list-group list-group-flush" v-for="(l,i) in listar_permisos">
 						    <li class="list-group-item">
 						    
-
 									<div class="custom-control custom-checkbox">
 									  <input name="chk" :id="'check'+i" type="checkbox" class="custom-control-input" :value="l.id">
 									  <label class="custom-control-label" :for="'check'+i">
@@ -86,15 +85,29 @@
 				listar_permisos:{},
 				listar_docentes:{},
 				usuario:'',
-				tb_list:{}
+				tb_list:{},
+				token: this.$route.params.token,
 			}
 		},
 		created(){
+			
+			this.validar_token();
+
+
 			this.listar();
 			this.obtener_docentes();
 			this.listar_tabla();
 		},
 		methods:{
+			validar_token(){
+				if(localStorage.getItem("token") === null){ 
+					this.$router.push({path:'/admin'}); 
+				}
+				if(localStorage.getItem("token") != this.token){ 
+					this.$router.push({path:'/admin'}); 
+				}
+
+			},
 			listar(){
 				axios.get('api/auth/admin/listar_permisos').then((res)=>{
 					this.listar_permisos = res.data;

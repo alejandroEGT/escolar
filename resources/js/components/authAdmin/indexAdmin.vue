@@ -208,6 +208,7 @@
   		}
   	},
   	created(){
+      localStorage.removeItem('token');
   		this.contar_elementos()
   	},
      methods:{
@@ -250,7 +251,10 @@
            
            axios.get('api/auth/admin/validar_pass/'+this.pass).then((res)=>{
               if (res.data == '1') {
-                this.$router.push('adminpermiso');
+                localStorage.setItem("token", this.makeid(10));
+                this.$router.push({name:'adminpermiso', params:{ 
+                  token: localStorage.getItem("token") //btoa(this.pass) 
+                }});
               }
            });
                 
@@ -258,7 +262,10 @@
        url_permiso_repor(){
           axios.get('api/auth/admin/validar_pass/'+this.pass).then((res)=>{
               if (res.data == '1') {
-                this.$router.push('adminreporte');
+                localStorage.setItem("token", this.makeid(10));
+                this.$router.push({name:'adminreporte', params:{ 
+                  token: localStorage.getItem("token")
+                }});
               }
            });
        },
@@ -271,6 +278,15 @@
           this.obtener_perfil();
             this.$modal.hide(''+$title+'');
        },
+       makeid(length) {
+         var result           = '';
+         var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+         var charactersLength = characters.length;
+         for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+         }
+         return result;
+      }
      } 
      ,
      computed: {

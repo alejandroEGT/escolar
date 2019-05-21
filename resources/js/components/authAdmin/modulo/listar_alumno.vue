@@ -3,9 +3,17 @@
   <div class="animated fadeIn">
 	<div class="card">
 		<div class="card-header">
-  				<h5><i class="fas fa-chalkboard-teacher"></i> Lista Alumnos</h5>
+			<div class="row">
+				<div class="col-md-10">
+  					<h5><i class="fas fa-chalkboard-teacher"></i> Lista Alumnos</h5>
+  				</div>
+  				<div class="col-md-2">
+  					<select id="promocion" @change="listar_cursos($event)"  class="form-control float-right">
+						<option v-for="a in anios" :value="a.anio">{{a.anio}}</option>	
+					</select>
+  				</div>
   			</div>
-
+	    </div>
   		<div class="card-body">
 			
 		    <div class="row justify-content-md-center">
@@ -16,8 +24,10 @@
 				      	<select @change="filter_curso" class="form-control" v-model="cursos">
 					    	<option value="0">Filtrar Todos</option>
 					    	<option v-for="listar in list_cursos" :value="listar.id">
-					    	{{listar.descripcion}}</option>
+					    	{{listar.descripcion+' - '+listar.nivel_educativo+' ('+listar.promocion+')'}}</option>
 					    </select></div>
+
+		
 				      	
 				      <div class="table-responsive">
 
@@ -35,9 +45,9 @@
 					    	</tr>
 					    </thead>
 					    <tbody>
-					    	<tr v-for="listado in listar_docentes">
+					    	<tr v-for="listado in listar_alumnos">
 					    		<td> 
-					    			<md-button class="md-icon-button md-raised md-primary">
+					    			<md-button @click="url_perfilalumno(listado.alumno_id, listado.curso_id)" class="md-icon-button md-raised md-primary">
 								        <md-icon><i class="fas fa-eye"></i></md-icon>
 								      </md-button>
 								</td>
@@ -75,15 +85,19 @@
   		
 	  	data(){
 	  		return{
-	  			listar_docentes:[],
+	  			listar_alumnos:[],
 	  			cursos:'0',
-	  			list_cursos:{}
+	  			list_cursos:{},
+	  			anios:{},
+	  			promocion:''
 	  		}
 	  	},
 	  	
 	  	created(){
-	  		this.listar();
-	  		this.listar_cursos()
+	  		this.anio_actual();
+	  		//this.listar();
+	  		//this.listar_cursos();
+	  		this.get_anios()
 	  	},
 	  	methods:{
 	  		listar(){
@@ -92,24 +106,41 @@
 		        })
 	  		},
 	  		url_crearalumno(){
-	         this.$router.push('admincrearalumno'); 
+	          this.$router.push('admincrearalumno'); 
+	   		},
+	   		url_perfilalumno($alum, $curso){
+	   		  this.$router.push({name:'perfilalumno', params:{ alumno: $alum, curso: $curso}});
 	   		},
 
-	   		listar_cursos(){
-	   			axios.get('api/auth/admin/listarcurso').then((res)=>{
+	   		listar_cursos($val){
+	   			axios.get('api/auth/admin/listarcurso_promo/'+$val.target.value).then((res)=>{
 	   				this.list_cursos = res.data;
 	   			});
 	   		},
 	   		filter_curso(){
-
-	   			if (this.cursos == '0') {
-	   				this.listar()
-	   			}else{
+	   			console.log("filter "+this.cursos)
+	   			
 		   			axios.get('api/auth/admin/listaralumno_filter/'+this.cursos).then((res)=>{
-			            this.listar_docentes = res.data;
+			            this.listar_alumnos = res.data;
 			        })
-	   			}
-	   		}
+	   			
+	   		},
+	   		anio_actual(){
+	   			axios.get('api/anio_actual').then((res)=>{
+						this.promocion = res.data;
+						
+						axios.get('api/auth/admin/listarcurso_promo/'+this.promocion).then((res)=>{
+			   				this.list_cursos = res.data;
+			   			});
+						
+				});
+	   		},
+	   		get_anios(){
+				axios.get('api/auth/anios').then((res)=>{
+						this.anios = res.data;
+						
+				});
+			}
 	  	}
     }
 </script>

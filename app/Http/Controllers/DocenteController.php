@@ -547,6 +547,32 @@ class DocenteController extends Controller
 
         }
     }
+
+    public function alumnos($curso, $asignatura)
+    {
+         $valida = $this::validar_docente_en_curso_y_asignatura($curso, $asignatura);
+
+        if ($valida) {
+            
+           $alumno =  Alumno::select([
+                        'alumno.id',
+                        'alumno.nombre',
+                        'alumno.apellido_paterno',
+                        'alumno.apellido_materno',
+                        'ca.curso_id','ca.asignatura_id'
+                    ])
+                   ->join('alumno-curso as ac', 'ac.alumno_id','alumno.id')
+                   ->join('curso-asignatura as ca','ca.curso_id','ac.curso_id') 
+                   ->where([
+                        'ca.docente_id' => $this::docente()->id,
+                        'ca.curso_id' => $curso, 'ca.asignatura_id' => $asignatura, 'ac.activo' => 'S'
+                   ])
+                   ->orderBy('alumno.apellido_paterno')
+                   ->get();
+
+            return $alumno;
+        }
+    }
 }
 
 // id_envia: 15

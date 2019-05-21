@@ -1,6 +1,6 @@
 <template>
 	<div class="animated fadeIn">
-		<div class="container">
+		<div class="">
 
 		    <div class="card">
 				<div class="card-header">

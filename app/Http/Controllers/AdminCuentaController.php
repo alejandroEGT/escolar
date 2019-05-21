@@ -46,15 +46,57 @@ class AdminCuentaController extends Controller
     	}
     }
 
-    public function listar_curso()
+    public function listar_curso($nivel='', $promocion='')
     {
+        if ($nivel=='' and $promocion=='') {
+            return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+            ->where(['activo'=> 'S'])
+            ->orderBy('descripcion', 'asc')
+            ->orderBy('nivel_educativo','asc')
+            ->orderBy('promocion','Asc')
+            ->get();
+        }
+
+
+
+        if($nivel == '0'){
+            return '';
+        }
     	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
-        ->where('activo', 'S')
+        ->where(['activo'=> 'S', 'nivel_educativo'=> $nivel, 'promocion'=>$promocion])
+        ->orderBy('descripcion', 'asc')
+        ->orderBy('nivel_educativo','asc')
+        ->orderBy('promocion','Asc')
+        ->get();
+    }
+    public function listar_curso_promo($promocion='')
+    {
+        //dd($promocion);
+        if ($promocion=='') {
+            return '';
+            // return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+            // ->where(['activo'=> 'S'])
+            // ->orderBy('descripcion', 'asc')
+            // ->orderBy('nivel_educativo','asc')
+            // ->orderBy('promocion','Asc')
+            // ->get();
+        }
+
+        return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+        ->where(['activo'=> 'S', 'promocion'=>$promocion])
+        ->orderBy('descripcion', 'asc')
+        ->orderBy('nivel_educativo','asc')
+        ->orderBy('promocion','Asc')
         ->get();
     }
     public function obtener_cursos()
     {
     	return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)->where('activo','S')->get();
+    }
+    public function cursos($anio)
+    {
+        return Curso::where('cuenta_id', $this::_cuenta()->cuenta_id)
+        ->where(['activo'=>'S', 'promocion'=>$anio])->get();
     }
     public function perfil_curso($curso)
     {
@@ -148,9 +190,9 @@ class AdminCuentaController extends Controller
 
     	
     }
-    public function obtener_alumnos()
+    public function obtener_alumnos($anio='')
     {
-    	return Alumno_curso::admin_obtener_alumnos($this::_cuenta()->cuenta_id);
+    	return Alumno_curso::admin_obtener_alumnos($this::_cuenta()->cuenta_id,$anio);
     }
      public function obtener_alumnos_filter($curso)
     {
@@ -671,5 +713,56 @@ class AdminCuentaController extends Controller
             }
         }
         
+    }
+    public function cursos_alumnos_select($curso)
+    {
+
+        return Alumno::select([
+                    'alumno.id',
+                    'alumno.nombre',
+                    'alumno.apellido_paterno',
+                    'alumno.apellido_materno'
+                ])
+                ->join('alumno-curso as ac','ac.alumno_id','alumno.id')
+                ->where([
+                    'ac.activo' => 'S',
+                    'ac.curso_id' => $curso
+               ])
+               ->get();
+    }
+    public function first_cursos_alumnos_select($alumno, $curso)
+    {
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+        // En windows
+        setlocale(LC_TIME, 'spanish');
+
+        $a= Alumno::select([
+                    'alumno.id',
+                    'alumno.nombre',
+                    'alumno.apellido_paterno',
+                    'alumno.apellido_materno',
+                    'alumno.run',
+                    'alumno.sexo',
+                    'alumno.direccion',
+                    'alumno.nacimiento'
+                ])
+                ->join('alumno-curso as ac','ac.alumno_id','alumno.id')
+                ->where([
+                    'ac.activo' => 'S',
+                    'ac.curso_id' => $curso,
+                    'ac.alumno_id' => $alumno
+               ])
+               ->first();
+
+         // mb_convert_encoding(strftime("%d de %B del %Y", strtotime(date("d-m-Y",strtotime($a->nacimiento)))),  'UTF-8', 'UTF-8');
+        
+
+               return $a;
+
+
+    }
+    public function first_curso($curso)
+    {
+        return Curso::find($curso);
     }
 }

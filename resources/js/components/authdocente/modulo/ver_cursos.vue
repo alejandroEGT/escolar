@@ -14,7 +14,7 @@
 					        <md-icon><i class="fas fa-book"></i></md-icon>
 					    </md-button>
 
-					      <md-button class="md-icon-button md-raised md-primary">
+					      <md-button @click="url_alumnos(listado.curso_id, listado.asignatura_id)" class="md-icon-button md-raised md-primary">
 					        <md-icon><i class="fas fa-users"></i></md-icon>
 					      </md-button>
 
@@ -58,6 +58,10 @@
 			url_libro($curso, $asignatura){
 				
 				this.$router.push({ name: 'docentelibro', params: { curso: $curso, asignatura:$asignatura }})
+			},
+			url_alumnos($curso, $asignatura){
+				
+				this.$router.push({ name: 'alumnos', params: { curso: $curso, asignatura:$asignatura }})
 			},
 			url_historia($curso, $asignatura){
 				
